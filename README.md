@@ -50,3 +50,17 @@ API	Endpoint	Description
 | ----------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **`/api/health`** | Health check for uptime and monitoring.                        | [🔗 health](https://geekageddon-api.vercel.app/api/health)                                                       |
 | **`/api/echo`**   | Echoes back your JSON payload — useful for testing POST calls. | `curl -X POST -H "Content-Type: application/json" -d '{"msg":"Hi"}' https://geekageddon-api.vercel.app/api/echo` |
+
+
+👩‍💻 Author
+Created by Sanchi Varma
+Part of the Geekageddon project suite.
+
+💬 Contributions and ideas are welcome — especially if you’ve got a joke, quote, or news source to add!
+
+⚖️ License
+All rights reserved.
+You may freely use the public APIs, but cannot copy or redistribute the source code without permission.
+
+✨ Stay Tuned
+More APIs are coming soon —follow Geekageddon.com for updates and release notes.
