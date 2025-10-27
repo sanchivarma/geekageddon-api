@@ -1,0 +1,22 @@
+[
+  {
+    "text": "There are 10 types of people: those who understand binary and those who don't.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "text": "A SQL query walks into a bar and asks: 'May I join you?'",
+    "categories": ["programmer", "database"]
+  },
+  {
+    "text": "HR called — they said you need to attend the 'mandatory fun' meeting.",
+    "categories": ["hr", "office"]
+  },
+  {
+    "text": "C++ developers never die — they just go out of scope.",
+    "categories": ["programmer", "C++"]
+  },
+  {
+    "text": "Our team runs like a well-oiled machine — mostly leaking and full of noise.",
+    "categories": ["office", "humor"]
+  }
+]
