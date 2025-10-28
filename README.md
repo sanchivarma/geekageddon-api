@@ -20,10 +20,20 @@ Available endpoints are modular, so you can fetch what you need: jokes, quotes, 
 For more customizations, checkout : [GEEK-JOKES.md](./GEEK-JOKES.md)
 
 
+## 🧩 2. Geek-Quotes API
+🌍 https://geekageddon-api.vercel.app/api/quotes
 
-## 🔮 2. Upcoming APIs
+> Motivational quotes for makers, devs, and teams. Filter by category and style the SVG with themes and parameters.
+
+![Animated_dash](https://geekageddon-api.vercel.app/api/quotes?theme=aurora&borderAnimation=colorful-dash)
+
+For more customizations, checkout : [GEEK-QUOTES.md](./GEEK-QUOTES.md)
+
+
+
+## 🔮 Upcoming APIs
 API	Endpoint	Description
-💬 Geek-Quotes	/api/quotes	Motivational or witty quotes for geeks.
+
 🧪 Geek-Facts	/api/facts	Random tech/science facts.
 📰 Tech-News	/api/news	Latest headlines from the world of technology.
 🚀 Startup-News	/api/startup	Curated news about tech startups and founders.
