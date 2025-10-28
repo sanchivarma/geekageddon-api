@@ -30,6 +30,7 @@ Available endpoints are modular, so you can fetch what you need: jokes, quotes, 
 ### 🎨 Theme Options
 Use `?theme=themeName` to apply a predefined color scheme:
 
+#### 🌓 Classic Themes
 | Theme | Description |
 |-------|-------------|
 | `default` | Dark navy with cyan accents |
@@ -42,6 +43,31 @@ Use `?theme=themeName` to apply a predefined color scheme:
 | `paper` | Light paper-like theme |
 | `milk` | Soft light theme |
 | `sunny` | Warm light theme |
+
+#### 🎮 Geeky Themes
+| Theme | Description | Preview |
+|-------|-------------|---------|
+| `matrix` | The Matrix inspired green-on-black | ![Matrix Theme](https://geekageddon-api.vercel.app/api/jokes?theme=matrix&category=programmer) |
+| `cyberpunk` | Neon-bright cyberpunk aesthetic | ![Cyberpunk Theme](https://geekageddon-api.vercel.app/api/jokes?theme=cyberpunk&category=programmer) |
+| `synthwave` | 80s synthwave style | ![Synthwave Theme](https://geekageddon-api.vercel.app/api/jokes?theme=synthwave&category=qna) |
+| `github` | GitHub dark theme | ![GitHub Theme](https://geekageddon-api.vercel.app/api/jokes?theme=github&category=programmer) |
+| `hacker` | Classic hacker terminal look | ![Hacker Theme](https://geekageddon-api.vercel.app/api/jokes?theme=hacker&category=programmer) |
+
+### 🌈 Theme Samples
+
+Here are some examples of different joke styles with various themes:
+
+#### Q&A Joke with Dracula Theme
+![QA Dracula](https://geekageddon-api.vercel.app/api/jokes?theme=dracula&category=qna)
+
+#### Programming Joke with Tokyo Night Theme
+![Programming Tokyo Night](https://geekageddon-api.vercel.app/api/jokes?theme=tokyonight&category=programmer)
+
+#### Custom Styled Joke
+![Custom Style](https://geekageddon-api.vercel.app/api/jokes?bgColor=%23073b4c&textColor=%2306d6a0&borderColor=%2306d6a0&width=500&fontSize=16)
+
+#### Light Theme for Documentation
+![Stack Overflow Style](https://geekageddon-api.vercel.app/api/jokes?theme=stackoverflow&category=programmer)
 
 ### 🎪 Custom Styling
 Customize the card appearance using URL parameters:

@@ -2,11 +2,21 @@
   "default":   { "bgColor": "#0f172a", "borderColor": "#22d3ee", "textColor": "#e2e8f0", "qColor": "#fbbf24", "aColor": "#34d399", "codeColor": "#f43f5e" },
   "terminal":  { "bgColor": "#111827", "borderColor": "#10b981", "textColor": "#d1fae5", "qColor": "#f59e0b", "aColor": "#22c55e", "codeColor": "#06b6d4" },
   "dracula":   { "bgColor": "#282a36", "borderColor": "#bd93f9", "textColor": "#f8f8f2", "qColor": "#ffb86c", "aColor": "#50fa7b", "codeColor": "#ff79c6" },
-  "tokyonight":{"bgColor": "#1a1b26", "borderColor": "#7aa2f7", "textColor": "#c0caf5", "qColor": "#e0af68", "aColor": "#9ece6a", "codeColor": "#bb9af7" },
+  "tokyonight":{ "bgColor": "#1a1b26", "borderColor": "#7aa2f7", "textColor": "#c0caf5", "qColor": "#e0af68", "aColor": "#9ece6a", "codeColor": "#bb9af7" },
   "onedark":   { "bgColor": "#282c34", "borderColor": "#61afef", "textColor": "#abb2bf", "qColor": "#e5c07b", "aColor": "#98c379", "codeColor": "#c678dd" },
   "gotham":    { "bgColor": "#0c1014", "borderColor": "#2aa889", "textColor": "#99d1ce", "qColor": "#f0c674", "aColor": "#2aa889", "codeColor": "#599cab" },
   "light":     { "bgColor": "#ffffff", "borderColor": "#2563eb", "textColor": "#111827", "qColor": "#b45309", "aColor": "#065f46", "codeColor": "#7c3aed" },
   "paper":     { "bgColor": "#fafaf9", "borderColor": "#0ea5e9", "textColor": "#1f2937", "qColor": "#a16207", "aColor": "#15803d", "codeColor": "#db2777" },
   "milk":      { "bgColor": "#f8fafc", "borderColor": "#059669", "textColor": "#0f172a", "qColor": "#b45309", "aColor": "#047857", "codeColor": "#7c3aed" },
-  "sunny":     { "bgColor": "#fffdf5", "borderColor": "#f59e0b", "textColor": "#111827", "qColor": "#a16207", "aColor": "#15803d", "codeColor": "#2563eb" }
+  "sunny":     { "bgColor": "#fffdf5", "borderColor": "#f59e0b", "textColor": "#111827", "qColor": "#a16207", "aColor": "#15803d", "codeColor": "#2563eb" },
+  "matrix":    { "bgColor": "#0D0208", "borderColor": "#00FF41", "textColor": "#00FF41", "qColor": "#08FF08", "aColor": "#00FF41", "codeColor": "#03A062" },
+  "cyberpunk": { "bgColor": "#2B213A", "borderColor": "#FF2E97", "textColor": "#E0E0F0", "qColor": "#FFD319", "aColor": "#01FFF4", "codeColor": "#FF2E97" },
+  "retro":     { "bgColor": "#2D0320", "borderColor": "#FF6B97", "textColor": "#EEE2FF", "qColor": "#FFE53D", "aColor": "#30E1B9", "codeColor": "#FF6B97" },
+  "hacker":    { "bgColor": "#0C0C0C", "borderColor": "#00FF00", "textColor": "#00FF00", "qColor": "#FF0000", "aColor": "#00FF00", "codeColor": "#FFFFFF" },
+  "synthwave": { "bgColor": "#241734", "borderColor": "#F83890", "textColor": "#F0E7FF", "qColor": "#FBB13C", "aColor": "#28EDC9", "codeColor": "#F83890" },
+  "github":    { "bgColor": "#0D1117", "borderColor": "#58A6FF", "textColor": "#C9D1D9", "qColor": "#FFA657", "aColor": "#7EE787", "codeColor": "#FF7B72" },
+  "vscode":    { "bgColor": "#1E1E1E", "borderColor": "#007ACC", "textColor": "#D4D4D4", "qColor": "#CE9178", "aColor": "#6A9955", "codeColor": "#569CD6" },
+  "gameboy":   { "bgColor": "#8B956D", "borderColor": "#4D533C", "textColor": "#1F1F1F", "qColor": "#4D533C", "aColor": "#1F1F1F", "codeColor": "#4D533C" },
+  "minecraft": { "bgColor": "#44B04C", "borderColor": "#3C8C42", "textColor": "#FFFFFF", "qColor": "#FFD800", "aColor": "#FFFFFF", "codeColor": "#8B8B8B" },
+  "stackoverflow": { "bgColor": "#F8F9F9", "borderColor": "#F48024", "textColor": "#242729", "qColor": "#0C0D0E", "aColor": "#2E6F44", "codeColor": "#F48024" }
 }
