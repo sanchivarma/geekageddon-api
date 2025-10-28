@@ -15,10 +15,15 @@ export default function handler(req, res) {
   }
 
   if (!filtered.length) {
-    return res.status(404).json({ error: "No jokes found for given category." });
+    res.status(404);
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    return res.send("No jokes found for given category.");
   }
 
   const joke = filtered[Math.floor(Math.random() * filtered.length)];
+
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.status(200).json(joke);
+  res.status(200).send(joke.text);
 }
