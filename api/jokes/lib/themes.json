@@ -1,0 +1,12 @@
+{
+  "default":   { "bgColor": "#0f172a", "borderColor": "#22d3ee", "textColor": "#e2e8f0", "qColor": "#fbbf24", "aColor": "#34d399", "codeColor": "#f43f5e" },
+  "terminal":  { "bgColor": "#111827", "borderColor": "#10b981", "textColor": "#d1fae5", "qColor": "#f59e0b", "aColor": "#22c55e", "codeColor": "#06b6d4" },
+  "dracula":   { "bgColor": "#282a36", "borderColor": "#bd93f9", "textColor": "#f8f8f2", "qColor": "#ffb86c", "aColor": "#50fa7b", "codeColor": "#ff79c6" },
+  "tokyonight":{"bgColor": "#1a1b26", "borderColor": "#7aa2f7", "textColor": "#c0caf5", "qColor": "#e0af68", "aColor": "#9ece6a", "codeColor": "#bb9af7" },
+  "onedark":   { "bgColor": "#282c34", "borderColor": "#61afef", "textColor": "#abb2bf", "qColor": "#e5c07b", "aColor": "#98c379", "codeColor": "#c678dd" },
+  "gotham":    { "bgColor": "#0c1014", "borderColor": "#2aa889", "textColor": "#99d1ce", "qColor": "#f0c674", "aColor": "#2aa889", "codeColor": "#599cab" },
+  "light":     { "bgColor": "#ffffff", "borderColor": "#2563eb", "textColor": "#111827", "qColor": "#b45309", "aColor": "#065f46", "codeColor": "#7c3aed" },
+  "paper":     { "bgColor": "#fafaf9", "borderColor": "#0ea5e9", "textColor": "#1f2937", "qColor": "#a16207", "aColor": "#15803d", "codeColor": "#db2777" },
+  "milk":      { "bgColor": "#f8fafc", "borderColor": "#059669", "textColor": "#0f172a", "qColor": "#b45309", "aColor": "#047857", "codeColor": "#7c3aed" },
+  "sunny":     { "bgColor": "#fffdf5", "borderColor": "#f59e0b", "textColor": "#111827", "qColor": "#a16207", "aColor": "#15803d", "codeColor": "#2563eb" }
+}

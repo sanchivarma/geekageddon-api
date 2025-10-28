@@ -18,5 +18,25 @@
   {
     "text": "Our team runs like a well-oiled machine — mostly leaking and full of noise.",
     "categories": ["office", "humor"]
+  },
+  {
+    "text": "Q: What's a programmer's favorite place in the house?\nA: The living ROOM!",
+    "categories": ["programmer", "qna"]
+  },
+  {
+    "text": "Q: Why do programmers prefer dark mode?\nA: Because light attracts bugs!",
+    "categories": ["programmer", "qna"]
+  },
+  {
+    "text": "Q: What's a frontend developer's favorite sandwich?\nA: One with lots of CSS (cheese sauce sauce)!",
+    "categories": ["programmer", "qna", "frontend"]
+  },
+  {
+    "text": "Q: Why did the JavaScript developer quit his job?\nA: Because he didn't get arrays!",
+    "categories": ["programmer", "qna", "javascript"]
+  },
+  {
+    "text": "Q: How many programmers does it take to change a light bulb?\nA: None, that's a hardware problem!",
+    "categories": ["programmer", "qna"]
   }
 ]
