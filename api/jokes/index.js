@@ -1,11 +1,14 @@
 import fs from "fs";
 import path from "path";
 
-function generateJokeSVG(joke, theme) {
-  const padding = 24;
-  const width = 480;
-  const lineHeight = 20;
-  const fontSize = 14;
+import { getBorderSVG } from "./lib/borders.js";
+
+function generateJokeSVG(joke, theme, opts = {}) {
+  // Allow layout overrides from theme (getCustomTheme provides defaults)
+  const padding = theme.padding || 24;
+  const width = theme.width || 480;
+  const lineHeight = theme.lineHeight || 20;
+  const fontSize = theme.fontSize || 14;
   
   const charsPerLine = Math.floor((width - (padding * 2)) / (fontSize * 0.6));
   
@@ -71,14 +74,33 @@ function generateJokeSVG(joke, theme) {
 
   const height = (lines.length * lineHeight) + (padding * 2);
 
-  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+  // Border generation (defs + element) based on opts
+  const borderAnimation = opts.borderAnimation || 'none';
+  const borderImage = opts.borderImage || null;
+  const reduceMotion = opts.reduceMotion === 'true' || opts.reduceMotion === true;
+
+  const { defs: borderDefs, element: borderElement } = getBorderSVG(
+    borderAnimation,
+    theme,
+    width,
+    height,
+    padding,
+    reduceMotion,
+    borderImage
+  );
+
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Joke card">
+    <defs>${borderDefs}</defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter&amp;display=swap');
       text { font-family: 'Inter', sans-serif; }
+      /* Respect reduced motion preference by defaulting animations off when requested */
+      @media (prefers-reduced-motion: reduce) {
+        .anim { animation: none !important; }
+      }
     </style>
     <rect width="100%" height="100%" fill="${theme.bgColor}" rx="8"/>
-    <rect width="calc(100% - 4px)" height="calc(100% - 4px)" x="2" y="2" 
-          fill="none" stroke="${theme.borderColor}" stroke-width="1.5" rx="7"/>
+    ${borderElement}
     ${lines.map((line, i) => {
       if (line.type === 'space') return '';
       const color = line.type === 'q' ? theme.qColor : 
@@ -157,11 +179,23 @@ export default function handler(req, res) {
   const joke = filtered[Math.floor(Math.random() * filtered.length)];
   const customTheme = getCustomTheme(req.query, themes);
 
-  // Pass the entire joke object to generateJokeSVG
+  // Read border and motion options from query params
+  const borderAnimation = req.query.borderAnimation || req.query.border || 'none';
+  const borderImage = req.query.borderImage || null;
+  const reduceMotion = req.query.reduceMotion || req.query.reducedMotion || false;
+
+  // Pass the entire joke object to generateJokeSVG along with options
   // It will handle both Q&A format (joke.q & joke.a) and text format (joke.text)
-  const svg = generateJokeSVG(joke, customTheme);
+  const svg = generateJokeSVG(joke, customTheme, {
+    borderAnimation,
+    borderImage,
+    reduceMotion
+  });
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).send(svg);
 }
+
+// Export generateJokeSVG for lightweight testing and local generation
+export { generateJokeSVG };
