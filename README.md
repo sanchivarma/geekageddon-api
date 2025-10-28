@@ -49,7 +49,7 @@ Use `?theme=themeName` to apply a predefined color scheme:
 |-------|-------------|---------|
 | `matrix` | The Matrix inspired green-on-black | ![Matrix Theme](https://geekageddon-api.vercel.app/api/jokes?theme=matrix&category=programmer) |
 | `cyberpunk` | Neon-bright cyberpunk aesthetic | ![Cyberpunk Theme](https://geekageddon-api.vercel.app/api/jokes?theme=cyberpunk&category=programmer) |
-| `synthwave` | 80s synthwave style | ![Synthwave Theme](https://geekageddon-api.vercel.app/api/jokes?theme=synthwave&category=qna) |
+| `synthwave` | 80s synthwave style | ![Synthwave Theme](https://geekageddon-api.vercel.app/api/jokes?theme=synthwave) |
 | `github` | GitHub dark theme | ![GitHub Theme](https://geekageddon-api.vercel.app/api/jokes?theme=github&category=programmer) |
 | `hacker` | Classic hacker terminal look | ![Hacker Theme](https://geekageddon-api.vercel.app/api/jokes?theme=hacker&category=programmer) |
 
@@ -58,7 +58,7 @@ Use `?theme=themeName` to apply a predefined color scheme:
 |-------|-------------|---------|
 | `dash` | Animated dash | ![Animated_dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=dash) |
 | `neon` | Neon look | ![Neon](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=neon) |
-| `gradient` | gradient | ![Gradient](http://localhost:3000/api/jokes?borderAnimation=gradient&reduceMotion=true) |
+| `gradient` | gradient | ![Gradient](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=gradient&reduceMotion=true) |
 | `colorful-dash` | Animated blinking dash | ![Animated_dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=colorful-dash) |
 | `colorful-dots` | Animated blinking dots | ![Animated_dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=colorful-dots) |
 
