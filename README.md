@@ -14,26 +14,68 @@ Available endpoints are modular, so you can fetch what you need: jokes, quotes, 
 > The first live module of Geekageddon — random humor for developers, office survivors, and caffeine addicts ☕.
 
 ### 🧠 Endpoint : /api/jokes
+
+### 🎯 Available Categories
+| Category | Description |
+|----------|-------------|
+| `programmer` | Programming and developer jokes |
+| `database` | Database and SQL related humor |
+| `office` | Office life and work culture jokes |
+| `hr` | Human Resources related humor |
+| `qna` | Question and Answer format jokes |
+| `javascript` | JavaScript specific jokes |
+| `frontend` | Frontend development jokes |
+| `C++` | C++ programming jokes |
+
+### 🎨 Theme Options
+Use `?theme=themeName` to apply a predefined color scheme:
+
+| Theme | Description |
+|-------|-------------|
+| `default` | Dark navy with cyan accents |
+| `terminal` | Dark terminal style with green accents |
+| `dracula` | Classic Dracula theme colors |
+| `tokyonight` | Tokyo Night theme inspired |
+| `onedark` | Atom One Dark inspired theme |
+| `gotham` | Dark Gotham colors |
+| `light` | Light theme with blue accents |
+| `paper` | Light paper-like theme |
+| `milk` | Soft light theme |
+| `sunny` | Warm light theme |
+
+### 🎪 Custom Styling
+Customize the card appearance using URL parameters:
+
+#### Colors (use hex values with #)
+- `bgColor` - Background color
+- `textColor` - Regular text color
+- `borderColor` - Border color
+- `qColor` - Question color (for Q&A jokes)
+- `aColor` - Answer color (for Q&A jokes)
+- `codeColor` - Code snippet color
+
+#### Layout
+- `fontSize` - Text size (default: 14)
+- `width` - Card width (default: 480)
+- `padding` - Edge padding (default: 24)
+- `lineHeight` - Space between lines (default: 20)
+
 ### 🔹 Sample Endpoints
 
 | Description | Example |
-|--------------|----------|
-| Get a random joke (any category) | [🔗 /api/jokes](https://geekageddon-api.vercel.app/api/jokes) |
-| Filter by one category | [🔗 /api/jokes?category=programmer](https://geekageddon-api.vercel.app/api/jokes?category=programmer) |
-| Multiple categories | [🔗 /api/jokes?category=programmer,hr](https://geekageddon-api.vercel.app/api/jokes?category=programmer,hr) |
+|------------|----------|
+| Basic random joke | [🔗 /api/jokes](https://geekageddon-api.vercel.app/api/jokes) |
+| Filter by category | [🔗 /api/jokes?category=programmer](https://geekageddon-api.vercel.app/api/jokes?category=programmer) |
+| Multiple categories | [🔗 /api/jokes?category=qna,javascript](https://geekageddon-api.vercel.app/api/jokes?category=qna,javascript) |
+| With theme | [🔗 /api/jokes?theme=dracula](https://geekageddon-api.vercel.app/api/jokes?theme=dracula) |
+| Custom colors | [🔗 /api/jokes?bgColor=#073b4c&textColor=#06d6a0&borderColor=#06d6a0](https://geekageddon-api.vercel.app/api/jokes?bgColor=#073b4c&textColor=#06d6a0&borderColor=#06d6a0) |
+| Custom layout | [🔗 /api/jokes?fontSize=16&width=600](https://geekageddon-api.vercel.app/api/jokes?fontSize=16&width=600) |
+| Full customization | [🔗 /api/jokes?theme=dark&category=qna&fontSize=18&width=550](https://geekageddon-api.vercel.app/api/jokes?theme=dark&category=qna&fontSize=18&width=550) |
 
+### 📤 Response Format
+The API returns an SVG image with the joke text styled according to the theme or custom parameters.
 
-For Example:
-
-`GET /api/jokes?category=programmer,office`
-
-**Response:**
-```json
-{
-  "text": "Our team runs like a well-oiled machine — mostly leaking and full of noise.",
-  "categories": ["office", "team"]
-}
-```
+For Q&A format jokes, questions and answers are styled differently using the theme's qColor and aColor respectively.
 
 ## 🔮 2. Upcoming APIs
 API	Endpoint	Description
