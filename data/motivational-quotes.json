@@ -1,0 +1,103 @@
+[
+  {
+    "text": "The only way to do great work is to love what you do.",
+    "author": "Steve Jobs",
+    "categories": ["inspiration", "work", "passion"]
+  },
+  {
+    "text": "Success is the sum of small efforts, repeated day in and day out.",
+    "author": "Robert Collier",
+    "categories": ["success", "habits", "consistency"]
+  },
+  {
+    "text": "It always seems impossible until it's done.",
+    "author": "Nelson Mandela",
+    "categories": ["grit", "perseverance", "mindset"]
+  },
+  {
+    "text": "Don't watch the clock; do what it does. Keep going.",
+    "author": "Sam Levenson",
+    "categories": ["productivity", "focus", "grit"]
+  },
+  {
+    "text": "Whether you think you can or you think you can't, you're right.",
+    "author": "Henry Ford",
+    "categories": ["mindset", "belief", "confidence"]
+  },
+  {
+    "text": "If you want to go fast, go alone. If you want to go far, go together.",
+    "author": "African Proverb",
+    "categories": ["team", "leadership", "collaboration"]
+  },
+  {
+    "text": "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+    "author": "Will Durant",
+    "categories": ["excellence", "habits", "learning"]
+  },
+  {
+    "text": "Hard choices, easy life. Easy choices, hard life.",
+    "author": "Jerzy Gregorek",
+    "categories": ["discipline", "grit", "choices"]
+  },
+  {
+    "text": "If I have seen further it is by standing on the shoulders of giants.",
+    "author": "Isaac Newton",
+    "categories": ["learning", "humility", "progress"]
+  },
+  {
+    "text": "You do not rise to the level of your goals. You fall to the level of your systems.",
+    "author": "James Clear",
+    "categories": ["systems", "habits", "goals"]
+  },
+  {
+    "text": "The secret of getting ahead is getting started.",
+    "author": "Mark Twain",
+    "categories": ["start", "momentum", "action"]
+  },
+  {
+    "text": "Simplicity is the ultimate sophistication.",
+    "author": "Leonardo da Vinci",
+    "categories": ["simplicity", "design", "clarity"]
+  },
+  {
+    "text": "The best time to plant a tree was 20 years ago. The second best time is now.",
+    "author": "Chinese Proverb",
+    "categories": ["start", "patience", "action"]
+  },
+  {
+    "text": "Be stubborn about your goals and flexible about your methods.",
+    "author": "Unknown",
+    "categories": ["goals", "adaptability", "strategy"]
+  },
+  {
+    "text": "Discipline is choosing what you want most over what you want now.",
+    "author": "Abraham Lincoln",
+    "categories": ["discipline", "focus", "tradeoffs"]
+  },
+  {
+    "text": "Make it work, make it right, make it fast.",
+    "author": "Kent Beck",
+    "categories": ["engineering", "craft", "iteration"]
+  },
+  {
+    "text": "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.",
+    "author": "Antoine de Saint-Exupéry",
+    "categories": ["simplicity", "design", "focus"]
+  },
+  {
+    "text": "Courage is not the absence of fear, but the triumph over it.",
+    "author": "Nelson Mandela",
+    "categories": ["courage", "fear", "grit"]
+  },
+  {
+    "text": "Do the hard things first.",
+    "author": "Cal Newport",
+    "categories": ["focus", "deepwork", "productivity"]
+  },
+  {
+    "text": "A year from now you’ll wish you had started today.",
+    "author": "Karen Lamb",
+    "categories": ["start", "momentum", "regret"]
+  }
+]
+

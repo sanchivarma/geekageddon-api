@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { getBorderSVG } from "./lib/borders.js";
+import { getBorderSVG } from "../../lib/borders.js";
 
 function generateJokeSVG(joke, theme, opts = {}) {
   // Allow layout overrides from theme (getCustomTheme provides defaults)
@@ -155,7 +155,7 @@ function getCustomTheme(query, themes) {
 
 export default function handler(req, res) {
   const jokesPath = path.join(process.cwd(), "data", "jokes.json");
-  const themesPath = path.join(process.cwd(), "api", "jokes", "lib", "themes.json");
+  const themesPath = path.join(process.cwd(), "lib", "themes.json");
   
   const jokes = JSON.parse(fs.readFileSync(jokesPath, "utf8"));
   const themes = JSON.parse(fs.readFileSync(themesPath, "utf8"));
