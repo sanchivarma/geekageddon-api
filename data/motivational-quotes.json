@@ -98,6 +98,896 @@
     "text": "A year from now you’ll wish you had started today.",
     "author": "Karen Lamb",
     "categories": ["start", "momentum", "regret"]
+  },
+    {
+    "text": "The future depends on what you do today.",
+    "author": "Mahatma Gandhi",
+    "categories": ["action", "future", "responsibility"]
+  },
+  {
+    "text": "Do what you can, with what you have, where you are.",
+    "author": "Theodore Roosevelt",
+    "categories": ["resourcefulness", "action", "mindset"]
+  },
+  {
+    "text": "The man who moves a mountain begins by carrying away small stones.",
+    "author": "Confucius",
+    "categories": ["patience", "progress", "discipline"]
+  },
+  {
+    "text": "If you're going through hell, keep going.",
+    "author": "Winston Churchill",
+    "categories": ["grit", "perseverance", "resilience"]
+  },
+  {
+    "text": "The way to get started is to quit talking and begin doing.",
+    "author": "Walt Disney",
+    "categories": ["action", "start", "momentum"]
+  },
+  {
+    "text": "Everything you’ve ever wanted is sitting on the other side of fear.",
+    "author": "George Addair",
+    "categories": ["courage", "fear", "growth"]
+  },
+  {
+    "text": "Don’t let the noise of others’ opinions drown out your own inner voice.",
+    "author": "Steve Jobs",
+    "categories": ["authenticity", "focus", "confidence"]
+  },
+  {
+    "text": "You miss 100% of the shots you don’t take.",
+    "author": "Wayne Gretzky",
+    "categories": ["risk", "action", "motivation"]
+  },
+  {
+    "text": "The harder I work, the luckier I get.",
+    "author": "Samuel Goldwyn",
+    "categories": ["work", "effort", "luck"]
+  },
+  {
+    "text": "Dream big. Start small. Act now.",
+    "author": "Robin Sharma",
+    "categories": ["dreams", "action", "momentum"]
+  },
+  {
+    "text": "In the middle of difficulty lies opportunity.",
+    "author": "Albert Einstein",
+    "categories": ["mindset", "opportunity", "resilience"]
+  },
+  {
+    "text": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "author": "Winston Churchill",
+    "categories": ["success", "failure", "courage"]
+  },
+  {
+    "text": "Action is the foundational key to all success.",
+    "author": "Pablo Picasso",
+    "categories": ["action", "success", "momentum"]
+  },
+  {
+    "text": "What we fear doing most is usually what we most need to do.",
+    "author": "Tim Ferriss",
+    "categories": ["fear", "growth", "courage"]
+  },
+  {
+    "text": "If opportunity doesn’t knock, build a door.",
+    "author": "Milton Berle",
+    "categories": ["initiative", "creativity", "opportunity"]
+  },
+  {
+    "text": "Don’t wish it were easier; wish you were better.",
+    "author": "Jim Rohn",
+    "categories": ["growth", "mindset", "discipline"]
+  },
+  {
+    "text": "Amateurs sit and wait for inspiration, the rest of us just get up and go to work.",
+    "author": "Stephen King",
+    "categories": ["work", "creativity", "discipline"]
+  },
+  {
+    "text": "Saying no to something good gives you space to say yes to something great.",
+    "author": "Unknown",
+    "categories": ["focus", "priorities", "minimalism"]
+  },
+  {
+    "text": "Small daily improvements over time lead to stunning results.",
+    "author": "Robin Sharma",
+    "categories": ["habits", "growth", "consistency"]
+  },
+  {
+    "text": "Don’t count the days, make the days count.",
+    "author": "Muhammad Ali",
+    "categories": ["time", "purpose", "motivation"]
+  },
+  {
+    "text": "A ship is safe in harbor, but that’s not what ships are built for.",
+    "author": "John A. Shedd",
+    "categories": ["risk", "purpose", "courage"]
+  },
+  {
+    "text": "You can’t build a reputation on what you are going to do.",
+    "author": "Henry Ford",
+    "categories": ["action", "reputation", "execution"]
+  },
+  {
+    "text": "The expert in anything was once a beginner.",
+    "author": "Helen Hayes",
+    "categories": ["learning", "growth", "patience"]
+  },
+  {
+    "text": "Don’t be pushed by your problems. Be led by your dreams.",
+    "author": "Ralph Waldo Emerson",
+    "categories": ["mindset", "purpose", "motivation"]
+  },
+  {
+    "text": "Fall seven times and stand up eight.",
+    "author": "Japanese Proverb",
+    "categories": ["resilience", "grit", "perseverance"]
+  },
+    {
+    "text": "Do not wait to strike till the iron is hot; but make it hot by striking.",
+    "author": "William Butler Yeats",
+    "categories": ["action", "initiative", "momentum"]
+  },
+  {
+    "text": "Motivation gets you started. Habit keeps you going.",
+    "author": "Jim Ryun",
+    "categories": ["motivation", "habits", "discipline"]
+  },
+  {
+    "text": "Don’t aim for success if you want it; just do what you love and believe in.",
+    "author": "David Frost",
+    "categories": ["passion", "authenticity", "success"]
+  },
+  {
+    "text": "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
+    "author": "Ralph Waldo Emerson",
+    "categories": ["self", "mindset", "innerstrength"]
+  },
+  {
+    "text": "It’s not that I’m so smart, it’s just that I stay with problems longer.",
+    "author": "Albert Einstein",
+    "categories": ["perseverance", "grit", "learning"]
+  },
+  {
+    "text": "Focus on being productive instead of busy.",
+    "author": "Tim Ferriss",
+    "categories": ["productivity", "focus", "efficiency"]
+  },
+  {
+    "text": "Clarity precedes success.",
+    "author": "Robin Sharma",
+    "categories": ["clarity", "goals", "focus"]
+  },
+  {
+    "text": "You must be the change you wish to see in the world.",
+    "author": "Mahatma Gandhi",
+    "categories": ["action", "leadership", "values"]
+  },
+  {
+    "text": "The best revenge is massive success.",
+    "author": "Frank Sinatra",
+    "categories": ["success", "motivation", "resilience"]
+  },
+  {
+    "text": "Quality means doing it right when no one is looking.",
+    "author": "Henry Ford",
+    "categories": ["integrity", "craft", "discipline"]
+  },
+  {
+    "text": "Success usually comes to those who are too busy to be looking for it.",
+    "author": "Henry David Thoreau",
+    "categories": ["success", "focus", "work"]
+  },
+  {
+    "text": "If you want to lift yourself up, lift up someone else.",
+    "author": "Booker T. Washington",
+    "categories": ["leadership", "kindness", "growth"]
+  },
+  {
+    "text": "Do one thing every day that scares you.",
+    "author": "Eleanor Roosevelt",
+    "categories": ["courage", "growth", "fear"]
+  },
+  {
+    "text": "Energy and persistence conquer all things.",
+    "author": "Benjamin Franklin",
+    "categories": ["persistence", "energy", "grit"]
+  },
+  {
+    "text": "Don’t let perfection be the enemy of progress.",
+    "author": "Voltaire",
+    "categories": ["progress", "perfectionism", "action"]
+  },
+  {
+    "text": "If you spend too much time thinking about a thing, you’ll never get it done.",
+    "author": "Bruce Lee",
+    "categories": ["action", "focus", "discipline"]
+  },
+  {
+    "text": "You can’t use up creativity. The more you use, the more you have.",
+    "author": "Maya Angelou",
+    "categories": ["creativity", "innovation", "growth"]
+  },
+  {
+    "text": "Don’t be afraid to give up the good to go for the great.",
+    "author": "John D. Rockefeller",
+    "categories": ["goals", "ambition", "focus"]
+  },
+  {
+    "text": "Productivity is never an accident. It is always the result of a commitment to excellence, intelligent planning, and focused effort.",
+    "author": "Paul J. Meyer",
+    "categories": ["productivity", "planning", "excellence"]
+  },
+  {
+    "text": "If you really look closely, most overnight successes took a long time.",
+    "author": "Steve Jobs",
+    "categories": ["success", "patience", "perseverance"]
+  },
+  {
+    "text": "The difference between ordinary and extraordinary is that little extra.",
+    "author": "Jimmy Johnson",
+    "categories": ["excellence", "effort", "mindset"]
+  },
+  {
+    "text": "Don’t limit your challenges; challenge your limits.",
+    "author": "Jerry Dunn",
+    "categories": ["growth", "limits", "courage"]
+  },
+  {
+    "text": "The key to success is to start before you are ready.",
+    "author": "Marie Forleo",
+    "categories": ["start", "courage", "execution"]
+  },
+  {
+    "text": "The greatest weapon against stress is our ability to choose one thought over another.",
+    "author": "William James",
+    "categories": ["mindset", "calm", "resilience"]
+  },
+  {
+    "text": "When something is important enough, you do it even if the odds are not in your favor.",
+    "author": "Elon Musk",
+    "categories": ["determination", "risk", "vision"]
+  },
+    {
+    "text": "Success is liking yourself, liking what you do, and liking how you do it.",
+    "author": "Maya Angelou",
+    "categories": ["success", "self", "happiness"]
+  },
+  {
+    "text": "Don’t let what you cannot do interfere with what you can do.",
+    "author": "John Wooden",
+    "categories": ["focus", "mindset", "resilience"]
+  },
+  {
+    "text": "It’s not the load that breaks you down, it’s the way you carry it.",
+    "author": "Lou Holtz",
+    "categories": ["resilience", "perspective", "mindset"]
+  },
+  {
+    "text": "Your time is limited, so don’t waste it living someone else’s life.",
+    "author": "Steve Jobs",
+    "categories": ["life", "authenticity", "motivation"]
+  },
+  {
+    "text": "Do not be embarrassed by your failures, learn from them and start again.",
+    "author": "Richard Branson",
+    "categories": ["failure", "learning", "growth"]
+  },
+  {
+    "text": "Don’t be afraid to give up the good to go for the great.",
+    "author": "John D. Rockefeller",
+    "categories": ["growth", "risk", "ambition"]
+  },
+  {
+    "text": "Success is walking from failure to failure with no loss of enthusiasm.",
+    "author": "Winston Churchill",
+    "categories": ["resilience", "success", "mindset"]
+  },
+  {
+    "text": "Opportunities don't happen. You create them.",
+    "author": "Chris Grosser",
+    "categories": ["initiative", "success", "action"]
+  },
+  {
+    "text": "The best way to predict the future is to create it.",
+    "author": "Peter Drucker",
+    "categories": ["leadership", "innovation", "vision"]
+  },
+  {
+    "text": "You are never too old to set another goal or to dream a new dream.",
+    "author": "C.S. Lewis",
+    "categories": ["goals", "dreams", "growth"]
+  },
+  {
+    "text": "I am not a product of my circumstances. I am a product of my decisions.",
+    "author": "Stephen R. Covey",
+    "categories": ["mindset", "decisions", "responsibility"]
+  },
+  {
+    "text": "Things work out best for those who make the best of how things work out.",
+    "author": "John Wooden",
+    "categories": ["attitude", "mindset", "resilience"]
+  },
+  {
+    "text": "When you have a dream, you’ve got to grab it and never let go.",
+    "author": "Carol Burnett",
+    "categories": ["dreams", "determination", "focus"]
+  },
+  {
+    "text": "Don’t be discouraged. It’s often the last key in the bunch that opens the lock.",
+    "author": "Unknown",
+    "categories": ["perseverance", "hope", "grit"]
+  },
+  {
+    "text": "Do one thing today that your future self will thank you for.",
+    "author": "Sean Patrick Flanery",
+    "categories": ["action", "future", "discipline"]
+  },
+  {
+    "text": "We become what we think about.",
+    "author": "Earl Nightingale",
+    "categories": ["mindset", "belief", "focus"]
+  },
+  {
+    "text": "Hustle beats talent when talent doesn’t hustle.",
+    "author": "Ross Simmonds",
+    "categories": ["hustle", "work", "discipline"]
+  },
+  {
+    "text": "The distance between dreams and reality is called action.",
+    "author": "Unknown",
+    "categories": ["dreams", "action", "motivation"]
+  },
+  {
+    "text": "Don’t wait. The time will never be just right.",
+    "author": "Napoleon Hill",
+    "categories": ["action", "start", "motivation"]
+  },
+  {
+    "text": "Everything you can imagine is real.",
+    "author": "Pablo Picasso",
+    "categories": ["creativity", "imagination", "belief"]
+  },
+  {
+    "text": "A goal without a plan is just a wish.",
+    "author": "Antoine de Saint-Exupéry",
+    "categories": ["goals", "planning", "execution"]
+  },
+  {
+    "text": "You learn more from failure than from success. Don’t let it stop you.",
+    "author": "Unknown",
+    "categories": ["failure", "learning", "resilience"]
+  },
+  {
+    "text": "If you cannot do great things, do small things in a great way.",
+    "author": "Napoleon Hill",
+    "categories": ["excellence", "focus", "mindset"]
+  },
+  {
+    "text": "Discipline equals freedom.",
+    "author": "Jocko Willink",
+    "categories": ["discipline", "freedom", "focus"]
+  },
+  {
+    "text": "You don’t have to be great to start, but you have to start to be great.",
+    "author": "Zig Ziglar",
+    "categories": ["start", "growth", "motivation"]
+  },
+    {
+    "text": "Believe you can and you're halfway there.",
+    "author": "Theodore Roosevelt",
+    "categories": ["belief", "confidence", "motivation"]
+  },
+  {
+    "text": "Act as if what you do makes a difference. It does.",
+    "author": "William James",
+    "categories": ["purpose", "action", "influence"]
+  },
+  {
+    "text": "You must expect great things of yourself before you can do them.",
+    "author": "Michael Jordan",
+    "categories": ["selfbelief", "goals", "performance"]
+  },
+  {
+    "text": "The mind is everything. What you think, you become.",
+    "author": "Buddha",
+    "categories": ["mindset", "thoughts", "self"]
+  },
+  {
+    "text": "The harder the conflict, the greater the triumph.",
+    "author": "George Washington",
+    "categories": ["grit", "success", "courage"]
+  },
+  {
+    "text": "Do not go where the path may lead, go instead where there is no path and leave a trail.",
+    "author": "Ralph Waldo Emerson",
+    "categories": ["leadership", "innovation", "courage"]
+  },
+  {
+    "text": "Failure is simply the opportunity to begin again, this time more intelligently.",
+    "author": "Henry Ford",
+    "categories": ["failure", "learning", "growth"]
+  },
+  {
+    "text": "What you get by achieving your goals is not as important as what you become by achieving them.",
+    "author": "Zig Ziglar",
+    "categories": ["growth", "goals", "selfdevelopment"]
+  },
+  {
+    "text": "Keep your face always toward the sunshine—and shadows will fall behind you.",
+    "author": "Walt Whitman",
+    "categories": ["positivity", "mindset", "hope"]
+  },
+  {
+    "text": "Don’t judge each day by the harvest you reap but by the seeds that you plant.",
+    "author": "Robert Louis Stevenson",
+    "categories": ["effort", "patience", "growth"]
+  },
+  {
+    "text": "Do not let making a living prevent you from making a life.",
+    "author": "John Wooden",
+    "categories": ["balance", "life", "purpose"]
+  },
+  {
+    "text": "Innovation distinguishes between a leader and a follower.",
+    "author": "Steve Jobs",
+    "categories": ["innovation", "leadership", "creativity"]
+  },
+  {
+    "text": "If you want to achieve greatness stop asking for permission.",
+    "author": "Unknown",
+    "categories": ["initiative", "courage", "leadership"]
+  },
+  {
+    "text": "Life is 10% what happens to us and 90% how we react to it.",
+    "author": "Charles R. Swindoll",
+    "categories": ["mindset", "reaction", "resilience"]
+  },
+  {
+    "text": "Courage is grace under pressure.",
+    "author": "Ernest Hemingway",
+    "categories": ["courage", "calm", "grace"]
+  },
+  {
+    "text": "Don’t let yesterday take up too much of today.",
+    "author": "Will Rogers",
+    "categories": ["mindset", "focus", "present"]
+  },
+  {
+    "text": "If you cannot do what you love, then love what you do.",
+    "author": "Unknown",
+    "categories": ["work", "attitude", "happiness"]
+  },
+  {
+    "text": "Make each day your masterpiece.",
+    "author": "John Wooden",
+    "categories": ["focus", "excellence", "daily"]
+  },
+  {
+    "text": "Be not afraid of life. Believe that life is worth living, and your belief will help create the fact.",
+    "author": "William James",
+    "categories": ["belief", "life", "mindset"]
+  },
+  {
+    "text": "Don’t cry because it’s over, smile because it happened.",
+    "author": "Dr. Seuss",
+    "categories": ["gratitude", "perspective", "life"]
+  },
+  {
+    "text": "Success is not in what you have, but who you are.",
+    "author": "Bo Bennett",
+    "categories": ["success", "values", "character"]
+  },
+  {
+    "text": "Happiness is not something ready made. It comes from your own actions.",
+    "author": "Dalai Lama",
+    "categories": ["happiness", "action", "mindset"]
+  },
+  {
+    "text": "Success is getting what you want, happiness is wanting what you get.",
+    "author": "W. P. Kinsella",
+    "categories": ["success", "happiness", "gratitude"]
+  },
+  {
+    "text": "Keep going. Everything you need will come to you at the perfect time.",
+    "author": "Unknown",
+    "categories": ["patience", "faith", "persistence"]
+  },
+  {
+    "text": "A comfort zone is a beautiful place, but nothing ever grows there.",
+    "author": "Unknown",
+    "categories": ["growth", "comfortzone", "change"]
+  },
+  {
+    "text": "Don’t just aspire to make a living, aspire to make a difference.",
+    "author": "Denzel Washington",
+    "categories": ["purpose", "influence", "leadership"]
+  },
+  {
+    "text": "If you don’t build your dream, someone else will hire you to build theirs.",
+    "author": "Tony Gaskins",
+    "categories": ["dreams", "career", "motivation"]
+  },
+  {
+    "text": "In any given moment we have two options: to step forward into growth or to step back into safety.",
+    "author": "Abraham Maslow",
+    "categories": ["growth", "fear", "decision"]
+  },
+  {
+    "text": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "author": "Nelson Mandela",
+    "categories": ["resilience", "grit", "courage"]
+  },
+  {
+    "text": "It is never too late to be what you might have been.",
+    "author": "George Eliot",
+    "categories": ["potential", "change", "growth"]
+  },
+  {
+    "text": "If you want something you’ve never had, you must be willing to do something you’ve never done.",
+    "author": "Thomas Jefferson",
+    "categories": ["courage", "change", "ambition"]
+  },
+  {
+    "text": "Don’t limit yourself. Many people limit themselves to what they think they can do.",
+    "author": "Mary Kay Ash",
+    "categories": ["belief", "potential", "confidence"]
+  },
+  {
+    "text": "Your limitation—it’s only your imagination.",
+    "author": "Unknown",
+    "categories": ["mindset", "imagination", "limits"]
+  },
+  {
+    "text": "The future belongs to those who believe in the beauty of their dreams.",
+    "author": "Eleanor Roosevelt",
+    "categories": ["dreams", "belief", "future"]
+  },
+  {
+    "text": "Success is a journey, not a destination.",
+    "author": "Arthur Ashe",
+    "categories": ["success", "journey", "perspective"]
+  },
+  {
+    "text": "Inspiration does exist, but it must find you working.",
+    "author": "Pablo Picasso",
+    "categories": ["creativity", "work", "discipline"]
+  },
+  {
+    "text": "There is no substitute for hard work.",
+    "author": "Thomas Edison",
+    "categories": ["work", "effort", "discipline"]
+  },
+  {
+    "text": "Doubt kills more dreams than failure ever will.",
+    "author": "Suzy Kassem",
+    "categories": ["belief", "fear", "mindset"]
+  },
+  {
+    "text": "Push yourself, because no one else is going to do it for you.",
+    "author": "Unknown",
+    "categories": ["selfmotivation", "discipline", "grit"]
+  },
+  {
+    "text": "Great things never come from comfort zones.",
+    "author": "Unknown",
+    "categories": ["growth", "comfortzone", "progress"]
+  },
+  {
+    "text": "The secret of change is to focus all your energy not on fighting the old, but on building the new.",
+    "author": "Socrates",
+    "categories": ["change", "focus", "energy"]
+  },
+  {
+    "text": "The best way out is always through.",
+    "author": "Robert Frost",
+    "categories": ["resilience", "grit", "courage"]
+  },
+  {
+    "text": "Work hard in silence, let your success make the noise.",
+    "author": "Frank Ocean",
+    "categories": ["work", "success", "humility"]
+  },
+  {
+    "text": "Success doesn’t just find you. You have to go out and get it.",
+    "author": "Unknown",
+    "categories": ["action", "success", "initiative"]
+  },
+  {
+    "text": "The road to success and the road to failure are almost exactly the same.",
+    "author": "Colin R. Davis",
+    "categories": ["success", "effort", "choice"]
+  },
+  {
+    "text": "Hard work beats talent when talent doesn’t work hard.",
+    "author": "Tim Notke",
+    "categories": ["discipline", "effort", "grit"]
+  },
+  {
+    "text": "Don’t be afraid to fail. Be afraid not to try.",
+    "author": "Michael Jordan",
+    "categories": ["fear", "courage", "action"]
+  },
+  {
+    "text": "The secret of your future is hidden in your daily routine.",
+    "author": "Mike Murdock",
+    "categories": ["habits", "future", "discipline"]
+  },
+  {
+    "text": "You can’t cross the sea merely by standing and staring at the water.",
+    "author": "Rabindranath Tagore",
+    "categories": ["action", "courage", "initiative"]
+  },
+  {
+    "text": "Dreams don’t work unless you do.",
+    "author": "John C. Maxwell",
+    "categories": ["dreams", "work", "effort"]
+  },
+  {
+    "text": "A smooth sea never made a skilled sailor.",
+    "author": "Franklin D. Roosevelt",
+    "categories": ["resilience", "adversity", "growth"]
+  },
+    {
+    "text": "You don’t have to see the whole staircase, just take the first step.",
+    "author": "Martin Luther King Jr.",
+    "categories": ["action", "faith", "progress"]
+  },
+  {
+    "text": "Imagination is more important than knowledge.",
+    "author": "Albert Einstein",
+    "categories": ["creativity", "innovation", "thinking"]
+  },
+  {
+    "text": "The price of greatness is responsibility.",
+    "author": "Winston Churchill",
+    "categories": ["leadership", "responsibility", "greatness"]
+  },
+  {
+    "text": "Do not be afraid to fail. Be afraid not to learn.",
+    "author": "Unknown",
+    "categories": ["learning", "failure", "growth"]
+  },
+  {
+    "text": "Creativity is intelligence having fun.",
+    "author": "Albert Einstein",
+    "categories": ["creativity", "fun", "innovation"]
+  },
+  {
+    "text": "Leadership is not about being in charge. It’s about taking care of those in your charge.",
+    "author": "Simon Sinek",
+    "categories": ["leadership", "empathy", "service"]
+  },
+  {
+    "text": "Your passion is waiting for your courage to catch up.",
+    "author": "Isabelle Lafleche",
+    "categories": ["passion", "courage", "action"]
+  },
+  {
+    "text": "To handle yourself, use your head; to handle others, use your heart.",
+    "author": "Eleanor Roosevelt",
+    "categories": ["leadership", "empathy", "wisdom"]
+  },
+  {
+    "text": "Great minds discuss ideas; average minds discuss events; small minds discuss people.",
+    "author": "Eleanor Roosevelt",
+    "categories": ["thinking", "wisdom", "leadership"]
+  },
+  {
+    "text": "A person who never made a mistake never tried anything new.",
+    "author": "Albert Einstein",
+    "categories": ["mistakes", "learning", "innovation"]
+  },
+  {
+    "text": "If you can dream it, you can do it.",
+    "author": "Walt Disney",
+    "categories": ["dreams", "belief", "action"]
+  },
+  {
+    "text": "You can’t depend on your eyes when your imagination is out of focus.",
+    "author": "Mark Twain",
+    "categories": ["creativity", "vision", "focus"]
+  },
+  {
+    "text": "Start where you are. Use what you have. Do what you can.",
+    "author": "Arthur Ashe",
+    "categories": ["action", "resourcefulness", "focus"]
+  },
+  {
+    "text": "The function of leadership is to produce more leaders, not more followers.",
+    "author": "Ralph Nader",
+    "categories": ["leadership", "influence", "growth"]
+  },
+  {
+    "text": "Vision without action is merely a dream. Action without vision just passes the time. Vision with action can change the world.",
+    "author": "Joel A. Barker",
+    "categories": ["vision", "action", "leadership"]
+  },
+  {
+    "text": "You can’t connect the dots looking forward; you can only connect them looking backward.",
+    "author": "Steve Jobs",
+    "categories": ["perspective", "trust", "life"]
+  },
+  {
+    "text": "Every strike brings me closer to the next home run.",
+    "author": "Babe Ruth",
+    "categories": ["resilience", "failure", "success"]
+  },
+  {
+    "text": "If you want creative workers, give them enough time to play.",
+    "author": "John Cleese",
+    "categories": ["creativity", "work", "balance"]
+  },
+  {
+    "text": "Never let success get to your head and never let failure get to your heart.",
+    "author": "Drake",
+    "categories": ["success", "humility", "balance"]
+  },
+  {
+    "text": "To invent, you need a good imagination and a pile of junk.",
+    "author": "Thomas Edison",
+    "categories": ["innovation", "creativity", "resourcefulness"]
+  },
+  {
+    "text": "Don’t follow the crowd; let the crowd follow you.",
+    "author": "Margaret Thatcher",
+    "categories": ["leadership", "individuality", "confidence"]
+  },
+  {
+    "text": "If you want to go where the crowd doesn’t, you have to think like the crowd doesn’t.",
+    "author": "Unknown",
+    "categories": ["thinking", "innovation", "creativity"]
+  },
+  {
+    "text": "The best way to have a good idea is to have lots of ideas.",
+    "author": "Linus Pauling",
+    "categories": ["creativity", "innovation", "iteration"]
+  },
+  {
+    "text": "Change is inevitable. Growth is optional.",
+    "author": "John C. Maxwell",
+    "categories": ["growth", "change", "mindset"]
+  },
+  {
+    "text": "A leader is one who knows the way, goes the way, and shows the way.",
+    "author": "John C. Maxwell",
+    "categories": ["leadership", "example", "integrity"]
+  },
+  {
+    "text": "The most difficult thing is the decision to act, the rest is merely tenacity.",
+    "author": "Amelia Earhart",
+    "categories": ["courage", "action", "grit"]
+  },
+  {
+    "text": "The difference between a dream and a goal is a plan.",
+    "author": "Dave Ramsey",
+    "categories": ["goals", "planning", "execution"]
+  },
+  {
+    "text": "A goal properly set is halfway reached.",
+    "author": "Zig Ziglar",
+    "categories": ["goals", "planning", "success"]
+  },
+  {
+    "text": "Don’t be afraid to give up the good to pursue the great.",
+    "author": "Kenny Rogers",
+    "categories": ["focus", "growth", "ambition"]
+  },
+  {
+    "text": "Inspiration is for amateurs — the rest of us just show up and get to work.",
+    "author": "Chuck Close",
+    "categories": ["work", "creativity", "discipline"]
+  },
+  {
+    "text": "Every accomplishment starts with the decision to try.",
+    "author": "John F. Kennedy",
+    "categories": ["action", "courage", "beginning"]
+  },
+  {
+    "text": "You can’t wait for inspiration. You have to go after it with a club.",
+    "author": "Jack London",
+    "categories": ["creativity", "motivation", "discipline"]
+  },
+  {
+    "text": "Innovation is seeing what everybody has seen and thinking what nobody has thought.",
+    "author": "Dr. Albert Szent-Györgyi",
+    "categories": ["innovation", "thinking", "creativity"]
+  },
+  {
+    "text": "The most effective way to do it, is to do it.",
+    "author": "Amelia Earhart",
+    "categories": ["action", "execution", "focus"]
+  },
+  {
+    "text": "Good artists copy, great artists steal.",
+    "author": "Pablo Picasso",
+    "categories": ["creativity", "influence", "art"]
+  },
+  {
+    "text": "Be yourself; everyone else is already taken.",
+    "author": "Oscar Wilde",
+    "categories": ["authenticity", "confidence", "life"]
+  },
+  {
+    "text": "If you can’t explain it simply, you don’t understand it well enough.",
+    "author": "Albert Einstein",
+    "categories": ["simplicity", "clarity", "communication"]
+  },
+  {
+    "text": "The best ideas come as jokes. Make your thinking as funny as possible.",
+    "author": "David Ogilvy",
+    "categories": ["creativity", "humor", "innovation"]
+  },
+  {
+    "text": "Learn the rules like a pro, so you can break them like an artist.",
+    "author": "Pablo Picasso",
+    "categories": ["creativity", "mastery", "art"]
+  },
+  {
+    "text": "Failure is an option here. If things are not failing, you are not innovating enough.",
+    "author": "Elon Musk",
+    "categories": ["innovation", "failure", "risk"]
+  },
+  {
+    "text": "If people are doubting how far you can go, go so far that you can’t hear them anymore.",
+    "author": "Michele Ruiz",
+    "categories": ["confidence", "motivation", "resilience"]
+  },
+  {
+    "text": "The true sign of intelligence is not knowledge but imagination.",
+    "author": "Albert Einstein",
+    "categories": ["intelligence", "imagination", "creativity"]
+  },
+  {
+    "text": "Perseverance is not a long race; it is many short races one after another.",
+    "author": "Walter Elliot",
+    "categories": ["grit", "persistence", "discipline"]
+  },
+  {
+    "text": "Creativity takes courage.",
+    "author": "Henri Matisse",
+    "categories": ["creativity", "courage", "art"]
+  },
+  {
+    "text": "Don’t let perfection stop you from progress.",
+    "author": "Unknown",
+    "categories": ["progress", "perfectionism", "action"]
+  },
+  {
+    "text": "The only limit to our realization of tomorrow will be our doubts of today.",
+    "author": "Franklin D. Roosevelt",
+    "categories": ["belief", "future", "mindset"]
+  },
+  {
+    "text": "The greater the difficulty, the more glory in surmounting it.",
+    "author": "Epicurus",
+    "categories": ["challenge", "glory", "resilience"]
+  },
+  {
+    "text": "Stay hungry, stay foolish.",
+    "author": "Steve Jobs",
+    "categories": ["growth", "curiosity", "innovation"]
+  },
+  {
+    "text": "You can’t use up imagination. The more you use, the more you have.",
+    "author": "Maya Angelou",
+    "categories": ["creativity", "abundance", "thinking"]
+  },
+  {
+    "text": "Make your life a masterpiece; imagine no limitations on what you can be or do.",
+    "author": "Brian Tracy",
+    "categories": ["mindset", "potential", "dreams"]
+  },
+  {
+    "text": "Every great design begins with an even better story.",
+    "author": "Lorinda Mamo",
+    "categories": ["design", "creativity", "storytelling"]
+  },
+  {
+    "text": "Simplicity is not the goal. It is the by-product of a good idea and modest expectations.",
+    "author": "Paul Rand",
+    "categories": ["design", "simplicity", "clarity"]
   }
 ]
 
