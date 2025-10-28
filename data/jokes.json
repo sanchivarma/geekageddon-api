@@ -86,5 +86,447 @@
   {
     "text": "If debugging is the process of removing software bugs, then programming must be the process of putting them in.",
     "categories": ["programmer", "debugging", "bugs"]
+  },
+  {
+    "text": "Debugging is like being the detective in a crime movie where you are also the murderer.",
+    "categories": ["programmer", "debugging", "humor"]
+  },
+  {
+    "q": "Why did the neural network break up with its dataset?",
+    "a": "It found too many outliers in the relationship.",
+    "categories": ["ai", "data", "humor"]
+  },
+  {
+    "text": "Startup meetings are just therapy sessions with PowerPoint slides.",
+    "categories": ["startup", "office", "humor"]
+  },
+  {
+    "q": "What do you call a developer who doesn’t test their code?",
+    "a": "An optimist.",
+    "categories": ["programmer", "testing", "pun"]
+  },
+  {
+    "text": "The cloud is just someone else’s computer with better marketing.",
+    "categories": ["cloud", "networking", "humor"]
+  },
+  {
+    "q": "Why did the cybersecurity expert go broke?",
+    "a": "Because he lost his domain in a phishing scam.",
+    "categories": ["cybersecurity", "pun"]
+  },
+  {
+    "text": "AI: the only thing that confidently gives wrong answers faster than humans.",
+    "categories": ["ai", "humor"]
+  },
+  {
+    "q": "Why don’t quantum physicists tell inside jokes?",
+    "a": "Because they never know if you’ll get them or not.",
+    "categories": ["science", "quantum", "pun"]
+  },
+  {
+    "text": "My Wi-Fi dropped during my online therapy. Even my connection has attachment issues.",
+    "categories": ["networking", "office", "humor"]
+  },
+  {
+    "q": "What’s a hacker’s favorite type of music?",
+    "a": "Phish!",
+    "categories": ["cybersecurity", "pun", "humor"]
+  },
+  {
+    "text": "Version 1.0 is just a public beta with hope.",
+    "categories": ["startup", "software", "humor"]
+  },
+  {
+    "q": "Why did the computer keep sneezing?",
+    "a": "It had a virus.",
+    "categories": ["hardware", "cybersecurity", "pun"]
+  },
+  {
+    "text": "Gamers don’t age — they just respawn slower.",
+    "categories": ["gaming", "humor"]
+  },
+  {
+    "q": "How many programmers does it take to change a light bulb?",
+    "a": "None. That’s a hardware problem.",
+    "categories": ["programmer", "hardware", "pun"]
+  },
+  {
+    "text": "Space engineers have stellar careers — but sometimes they need more space.",
+    "categories": ["space", "pun", "science"]
+  },
+  {
+    "q": "Why did the AI start meditating?",
+    "a": "To improve its inner algorithm.",
+    "categories": ["ai", "wellness", "pun"]
+  },
+  {
+    "text": "My favorite exercise is a cross between a lunge and a crunch… I call it lunch.",
+    "categories": ["office", "humor"]
+  },
+  {
+    "q": "Why was the function so calm?",
+    "a": "Because it had no side effects.",
+    "categories": ["programmer", "functional-programming", "pun"]
+  },
+  {
+    "text": "That moment when you realize your job title is just ‘professional Googler’.",
+    "categories": ["programmer", "office", "humor"]
+  },
+  {
+    "q": "Why do startup founders never play hide and seek?",
+    "a": "Because good luck hiding when you’re always seeking funding.",
+    "categories": ["startup", "humor", "pun"]
+  },
+  {
+    "text": "My password is the name of my crush… now my login is unrequited too.",
+    "categories": ["cybersecurity", "humor"]
+  },
+  {
+    "q": "Why did the backend developer get locked out of the house?",
+    "a": "He forgot to handle authentication.",
+    "categories": ["backend", "programmer", "pun"]
+  },
+  {
+    "text": "Nothing teaches patience like waiting for npm install on hotel Wi-Fi.",
+    "categories": ["frontend", "developer", "humor"]
+  },
+  {
+    "q": "Why did the scientist bring a ladder to the lab?",
+    "a": "To reach new heights in research!",
+    "categories": ["science", "pun"]
+  },
+  {
+    "text": "Startup math: 10% product, 90% pretending it’s going viral.",
+    "categories": ["startup", "humor"]
+  },
+  {
+    "q": "Why did the robot go on a diet?",
+    "a": "Too many bytes.",
+    "categories": ["ai", "hardware", "pun"]
+  },
+  {
+    "text": "My productivity app keeps reminding me how unproductive I am.",
+    "categories": ["office", "startup", "humor"]
+  },
+  {
+    "q": "What’s a web developer’s favorite hangout?",
+    "a": "The local host.",
+    "categories": ["frontend", "backend", "pun"]
+  },
+  {
+    "text": "Artificial intelligence is no match for natural stupidity.",
+    "categories": ["ai", "humor"]
+  },
+  {
+    "q": "Why did the gamer get kicked out of school?",
+    "a": "Because he kept trying to level up the teacher.",
+    "categories": ["gaming", "humor"]
+  },
+  {
+    "text": "The best part of working remotely is pretending your mic doesn’t work.",
+    "categories": ["office", "remote", "humor"]
+  },
+  {
+    "q": "Why did the computer show up late?",
+    "a": "It had a hard drive.",
+    "categories": ["hardware", "pun"]
+  },
+  {
+    "text": "A good commit message is like a good joke — if you have to explain it, it’s bad.",
+    "categories": ["programmer", "git", "humor"]
+  },
+  {
+    "q": "Why are computers terrible at soccer?",
+    "a": "They always kick up errors.",
+    "categories": ["hardware", "humor"]
+  },
+  {
+    "text": "I dream in code and wake up in syntax errors.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why did the database administrator leave the party early?",
+    "a": "He didn’t like the table layout.",
+    "categories": ["database", "pun"]
+  },
+  {
+    "text": "Every startup has a mascot — it’s usually an overworked developer.",
+    "categories": ["startup", "office", "humor"]
+  },
+  {
+    "q": "What do you call 8 hobbits?",
+    "a": "A hobbyte.",
+    "categories": ["gaming", "fantasy", "pun"]
+  },
+  {
+    "text": "Machine learning is just statistics wearing sunglasses.",
+    "categories": ["ai", "science", "humor"]
+  },
+  {
+    "q": "Why did the server get promoted?",
+    "a": "Because it always delivered.",
+    "categories": ["backend", "networking", "pun"]
+  },
+  {
+    "text": "Space exploration: proving humans will do anything to get Wi-Fi on Mars.",
+    "categories": ["space", "humor"]
+  },
+  {
+    "q": "Why did the keyboard break up with the computer?",
+    "a": "Too many shifts in the relationship.",
+    "categories": ["hardware", "pun"]
+  },
+  {
+    "text": "The difference between hardware and software: you can hit hardware.",
+    "categories": ["hardware", "programmer", "humor"]
+  },
+  {
+    "q": "What’s a mathematician’s favorite place to hang out?",
+    "a": "The function room.",
+    "categories": ["math", "pun"]
+  },
+  {
+    "text": "Our startup is so lean, even our bugs are on a diet.",
+    "categories": ["startup", "humor"]
+  },
+  {
+    "q": "Why did the software engineer move to the countryside?",
+    "a": "Too many cache misses in the city.",
+    "categories": ["programmer", "pun"]
+  },
+  {
+    "text": "You never truly appreciate version control until you lose it.",
+    "categories": ["git", "programmer", "humor"]
+  },
+  {
+    "q": "Why do space programmers prefer dark mode?",
+    "a": "Because the universe runs best in black.",
+    "categories": ["space", "programmer", "ui"]
+  },
+  {
+    "text": "The best AI model is still caffeine-fueled human intuition.",
+    "categories": ["ai", "humor"]
+  },
+  {
+    "q": "Why did the app go to therapy?",
+    "a": "It couldn’t handle rejection.",
+    "categories": ["startup", "frontend", "pun"]
+  },
+  {
+    "text": "Some people dream of success — developers dream of 0 errors.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why did the physicist take a nap at work?",
+    "a": "Because he was in a state of super-position.",
+    "categories": ["science", "quantum", "pun"]
+  },
+  {
+    "text": "AI art: where code meets creativity and argues over credit.",
+    "categories": ["ai", "art", "humor"]
+  },
+  {
+    "q": "Why did the startup founder buy a treadmill?",
+    "a": "To keep the company running.",
+    "categories": ["startup", "pun"]
+  },
+  {
+    "text": "My to-do list and my reality are in different time zones.",
+    "categories": ["office", "humor"]
+  },
+  {
+    "q": "Why do hackers prefer dark mode?",
+    "a": "It helps them stay under the radar.",
+    "categories": ["cybersecurity", "ui"]
+  },
+  {
+    "text": "Being a full-stack developer means you fix everything — including the coffee machine.",
+    "categories": ["programmer", "office", "humor"]
+  },
+  {
+    "q": "Why did the computer sit next to the AC?",
+    "a": "It wanted to keep its cool.",
+    "categories": ["hardware", "pun"]
+  },
+  {
+    "text": "Every AI prompt starts with hope and ends with overfitting.",
+    "categories": ["ai", "humor"]
+  },
+  {
+    "q": "What’s a startup’s favorite movie genre?",
+    "a": "Pitch perfect.",
+    "categories": ["startup", "pun"]
+  },
+  {
+    "text": "Cybersecurity is 90% paranoia and 10% being right.",
+    "categories": ["cybersecurity", "humor"]
+  },
+  {
+    "q": "Why did the rocket developer break up with gravity?",
+    "a": "It needed space.",
+    "categories": ["space", "pun"]
+  },
+  {
+    "text": "I once dated a UI designer — but it just didn’t feel right.",
+    "categories": ["ui", "frontend", "pun"]
+  },
+  {
+    "q": "Why don’t scientists trust atoms?",
+    "a": "Because they make up everything!",
+    "categories": ["science", "pun"]
+  },
+  {
+    "text": "Half of programming is fixing bugs. The other half is writing new ones.",
+    "categories": ["programmer", "debugging"]
+  },
+  {
+    "q": "Why did the developer go broke?",
+    "a": "Because he used up all his cache.",
+    "categories": ["programmer", "backend", "pun"]
+  },
+  {
+    "text": "Startup success formula: caffeine + chaos + sheer denial.",
+    "categories": ["startup", "humor"]
+  },
+  {
+    "q": "Why do mathematicians hate the outdoors?",
+    "a": "Too many natural logs.",
+    "categories": ["math", "pun"]
+  },
+  {
+    "text": "Every space engineer’s dream: fewer meetings, more Mars.",
+    "categories": ["space", "office", "humor"]
+  },
+  {
+    "q": "Why did the laptop join the band?",
+    "a": "Because it had the right keys.",
+    "categories": ["hardware", "music", "pun"]
+  },
+  {
+    "text": "AI may never replace humans — it still can’t explain project deadlines.",
+    "categories": ["ai", "office", "humor"]
+  },
+  {
+    "q": "What’s a developer’s favorite hangover cure?",
+    "a": "Fresh environment variables.",
+    "categories": ["programmer", "pun"]
+  },
+  {
+    "text": "My life is basically an infinite while loop of coffee and commits.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why did the cloud break up with the data center?",
+    "a": "It needed some space.",
+    "categories": ["cloud", "networking", "pun"]
+  },
+  {
+    "text": "The only thing more unstable than my code is my sleep schedule.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why do Java developers wear glasses?",
+    "a": "Because they don’t C#.",
+    "categories": ["programmer", "java", "pun", "C#"]
+  },
+  {
+    "q": "Why did the AI refuse to take a vacation?",
+    "a": "It couldn’t find a replacement model.",
+    "categories": ["ai", "humor"]
+  },
+  {
+    "text": "Frontend developers live in CSS hell — where divs never align and margins betray.",
+    "categories": ["frontend", "humor"]
+  },
+  {
+    "q": "Why did the physicist break up with the biologist?",
+    "a": "They had no chemistry.",
+    "categories": ["science", "pun"]
+  },
+  {
+    "text": "My boss said to think outside the box — so I quit Slack.",
+    "categories": ["office", "startup", "humor"]
+  },
+  {
+    "q": "Why do data scientists love nature?",
+    "a": "It has the best random forests.",
+    "categories": ["ai", "data", "pun"]
+  },
+  {
+    "text": "The first rule of Machine Learning Club: always normalize your data.",
+    "categories": ["ai", "data", "humor"]
+  },
+  {
+    "q": "Why was the software developer calm during the fire drill?",
+    "a": "Because he had a try-catch plan.",
+    "categories": ["programmer", "debugging", "pun"]
+  },
+  {
+    "text": "If life gives you lemons, console.log them and move on.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why did the astronaut bring string to space?",
+    "a": "To tie up loose ends in the universe.",
+    "categories": ["space", "pun"]
+  },
+  {
+    "text": "I finally understand recursion — now I need to explain it to myself again.",
+    "categories": ["programmer", "math", "humor"]
+  },
+  {
+    "q": "Why did the AI start a podcast?",
+    "a": "It wanted to improve its speech recognition.",
+    "categories": ["ai", "pun"]
+  },
+  {
+    "text": "In a world full of algorithms, be a random act of kindness.",
+    "categories": ["ai", "philosophy", "humor"]
+  },
+  {
+    "q": "Why did the web developer go broke?",
+    "a": "He used all his cache.",
+    "categories": ["frontend", "backend", "pun"]
+  },
+  {
+    "text": "Data scientists are like fortune tellers with better charts.",
+    "categories": ["ai", "data", "humor"]
+  },
+  {
+    "q": "Why did the engineer bring a ruler to bed?",
+    "a": "To see how long he could sleep.",
+    "categories": ["engineering", "pun"]
+  },
+  {
+    "text": "My favorite programming language is caffeine.",
+    "categories": ["programmer", "humor"]
+  },
+  {
+    "q": "Why do startup founders love space?",
+    "a": "Because the sky’s not the limit anymore.",
+    "categories": ["startup", "space", "humor"]
+  },
+  {
+    "text": "Science is magic — just with better documentation.",
+    "categories": ["science", "humor"]
+  },
+  {
+    "q": "Why was the AI model nervous?",
+    "a": "Too much training, not enough validation.",
+    "categories": ["ai", "data", "pun"]
+  },
+  {
+    "q": "Why did the space rover apply for a loan?",
+    "a": "It wanted to launch a startup.",
+    "categories": ["space", "startup", "pun"]
+  },
+  {
+    "q": "What’s a gamer’s favorite programming language?",
+    "a": "C# — it has the best respawn mechanics.",
+    "categories": ["gaming", "programmer", "pun"]
+  },
+  {
+    "text": "When your AI starts giving life advice, it’s time to clear its cache of emotions.",
+    "categories": ["ai", "humor"]
   }
 ]
