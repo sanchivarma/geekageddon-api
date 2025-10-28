@@ -2,29 +2,25 @@ import fs from "fs";
 import path from "path";
 
 function generateJokeSVG(joke, theme) {
-  const {
-    padding,
-    width,
-    lineHeight,
-    fontSize
-  } = theme;
+  const padding = 24;
+  const width = 480;
+  const lineHeight = 20;
+  const fontSize = 14;
   
   const charsPerLine = Math.floor((width - (padding * 2)) / (fontSize * 0.6));
   
-  // Handle Q&A format
-  const isQnA = joke.startsWith('Q:');
   let lines = [];
   
+  // Check if joke is Q&A format or text object
+  const isQnA = typeof joke === 'object' && joke.hasOwnProperty('q') && joke.hasOwnProperty('a');
+  const isTextObj = typeof joke === 'object' && joke.hasOwnProperty('text');
+  const jokeText = isTextObj ? joke.text : typeof joke === 'string' ? joke : '';
+  
   if (isQnA) {
-    const [question, answer] = joke.split('\n');
-    
-    // Split question and answer separately to handle wrapping
-    const qWords = question.split(' ');
-    const aWords = answer.split(' ');
-    let qLine = '';
-    let aLine = '';
-    
     // Process question
+    const qWords = joke.q.split(' ');
+    let qLine = '';
+    
     qWords.forEach(word => {
       if ((qLine + ' ' + word).length > charsPerLine) {
         lines.push({ text: qLine, type: 'q' });
@@ -33,12 +29,17 @@ function generateJokeSVG(joke, theme) {
         qLine = qLine ? `${qLine} ${word}` : word;
       }
     });
-    lines.push({ text: qLine, type: 'q' });
+    if (qLine) {
+      lines.push({ text: qLine, type: 'q' });
+    }
     
     // Add spacing line
     lines.push({ text: '', type: 'space' });
     
     // Process answer
+    const aWords = joke.a.split(' ');
+    let aLine = '';
+    
     aWords.forEach(word => {
       if ((aLine + ' ' + word).length > charsPerLine) {
         lines.push({ text: aLine, type: 'a' });
@@ -47,10 +48,12 @@ function generateJokeSVG(joke, theme) {
         aLine = aLine ? `${aLine} ${word}` : word;
       }
     });
-    lines.push({ text: aLine, type: 'a' });
+    if (aLine) {
+      lines.push({ text: aLine, type: 'a' });
+    }
   } else {
-    // Handle regular jokes
-    const words = joke.split(' ');
+    // Handle regular jokes (both string and text object)
+    const words = jokeText.split(' ');
     let currentLine = '';
     
     words.forEach(word => {
@@ -154,7 +157,9 @@ export default function handler(req, res) {
   const joke = filtered[Math.floor(Math.random() * filtered.length)];
   const customTheme = getCustomTheme(req.query, themes);
 
-  const svg = generateJokeSVG(joke.text, customTheme);
+  // Pass the entire joke object to generateJokeSVG
+  // It will handle both Q&A format (joke.q & joke.a) and text format (joke.text)
+  const svg = generateJokeSVG(joke, customTheme);
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
   res.setHeader("Access-Control-Allow-Origin", "*");
