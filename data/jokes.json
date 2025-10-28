@@ -20,435 +20,71 @@
     "categories": ["office", "humor", "team"]
   },
   {
-    "text": "Q: What's a programmer's favorite place in the house?\nA: The living ROOM!",
-    "categories": ["programmer", "qna", "pun"]
+    "q": "What's a programmer's favorite place in the house?",
+    "a": "The living ROOM!",
+    "categories": ["programmer", "pun"]
   },
   {
-    "text": "Q: Why do programmers prefer dark mode?\nA: Because light attracts bugs!",
-    "categories": ["programmer", "qna", "ui"]
-  },
-  {
-    "text": "Q: What's a frontend developer's favorite sandwich?\nA: One with lots of CSS (cheese sauce sauce)!",
-    "categories": ["programmer", "qna", "frontend", "css"]
-  },
-  {
-    "text": "Q: Why did the JavaScript developer quit his job?\nA: Because he didn't get arrays!",
-    "categories": ["programmer", "qna", "javascript"]
-  },
-  {
-    "text": "Q: How many programmers does it take to change a light bulb?\nA: None, that's a hardware problem!",
-    "categories": ["programmer", "qna", "hardware"]
-  },
-  {
-    "text": "Q: Why do Java developers wear glasses?\nA: Because they don't C#!",
-    "categories": ["programmer", "qna", "java", "csharp"]
-  },
-  {
-    "text": "Q: What's a Git expert's favorite food?\nA: Merge conflicts for breakfast!",
-    "categories": ["programmer", "qna", "git", "version-control"]
+    "q": "Why do programmers prefer dark mode?",
+    "a": "Because light attracts bugs!",
+    "categories": ["programmer", "ui"]
   },
   {
     "text": "Documentation is like true love — it exists only in fairy tales.",
     "categories": ["programmer", "documentation"]
   },
   {
-    "text": "Q: What's a developer's favorite country?\nA: DEV-mark!",
-    "categories": ["programmer", "qna", "pun"]
+    "q": "What's a frontend developer's favorite sandwich?",
+    "a": "One with lots of CSS (cheese sauce sauce)!",
+    "categories": ["programmer", "frontend", "css"]
   },
   {
     "text": "The code worked on my machine, so I'm shipping my machine.",
     "categories": ["programmer", "debugging", "deployment"]
   },
   {
-    "text": "Q: Why did the React component feel lost?\nA: Because it didn't know its state in life!",
-    "categories": ["programmer", "qna", "react", "frontend"]
+    "q": "Why did the React component feel lost?",
+    "a": "Because it didn't know its state in life!",
+    "categories": ["programmer", "react", "frontend"]
   },
   {
     "text": "My code doesn't work, I have no idea why. My code works, I have no idea why.",
     "categories": ["programmer", "debugging"]
   },
   {
-    "text": "Q: What's a programmer's favorite game?\nA: Hide and Seek - with bugs!",
-    "categories": ["programmer", "qna", "debugging"]
+    "q": "Why did the JavaScript developer quit his job?",
+    "a": "Because he didn't get arrays!",
+    "categories": ["programmer", "javascript"]
   },
   {
     "text": "The real joke is the code I wrote 6 months ago.",
     "categories": ["programmer", "humor", "code-quality"]
   },
   {
-    "text": "Q: Why was the math book sad?\nA: Because it had too many problems!",
-    "categories": ["programmer", "qna", "math"]
+    "q": "Why was the math book sad?",
+    "a": "Because it had too many problems!",
+    "categories": ["programmer", "math"]
   },
   {
     "text": "I would tell you a UDP joke, but you might not get it.",
     "categories": ["programmer", "networking", "protocols"]
   },
   {
-    "text": "Q: Why do programmers hate nature?\nA: It has too many bugs!",
-    "categories": ["programmer", "qna", "bugs"]
+    "q": "Why do programmers hate nature?",
+    "a": "It has too many bugs!",
+    "categories": ["programmer", "bugs"]
   },
   {
     "text": "Copy-Paste was programmed by programmers for programmers actually.",
     "categories": ["programmer", "humor"]
   },
   {
-    "text": "Q: What's a computer's favorite dance?\nA: Algorithm!",
-    "categories": ["programmer", "qna", "algorithms"]
+    "q": "What's a computer's favorite dance?",
+    "a": "Algorithm!",
+    "categories": ["programmer", "algorithms"]
   },
   {
     "text": "If debugging is the process of removing software bugs, then programming must be the process of putting them in.",
     "categories": ["programmer", "debugging", "bugs"]
-  },
-  {
-    "text": "Q: What do you call a developer who doesn't comment their code?\nA: A developer who won't be working here next month!",
-    "categories": ["programmer", "qna", "documentation"]
-  },
-  {
-    "text": "Q: Why did the database administrator leave his wife?\nA: He had too many commitment issues!",
-    "categories": ["programmer", "qna", "database"]
-  },
-  {
-    "text": "Real programmers count from 0.",
-    "categories": ["programmer", "humor"]
-  },
-  {
-    "text": "Q: What's a pirate's favorite programming language?\nA: R!",
-    "categories": ["programmer", "qna", "R", "pun"]
-  },
-  {
-    "text": "The best thing about a Boolean is even if you're wrong, you're only off by a bit.",
-    "categories": ["programmer", "boolean", "pun"]
-  },
-  {
-    "text": "Q: What do you call a developer who doesn't test their code?\nA: A production troubleshooter!",
-    "categories": ["programmer", "qna", "testing", "production"]
-  },
-  {
-    "text": "Q: Why did the QA engineer cross the road?\nA: To break it, obviously!",
-    "categories": ["programmer", "qna", "testing", "qa"]
-  },
-  {
-    "text": "There's no place like 127.0.0.1",
-    "categories": ["programmer", "networking"]
-  },
-  {
-    "text": "Q: Why do programmers always mix up Halloween and Christmas?\nA: Because Oct 31 equals Dec 25!",
-    "categories": ["programmer", "qna", "binary"]
-  },
-  {
-    "text": "Q: What's a frontend developer's favorite diet?\nA: CSS (Cheese Steak Sandwich)!",
-    "categories": ["programmer", "qna", "frontend", "css"]
-  },
-  {
-    "text": "Remember kids, synchronized swimming is like multithreading - it looks easy until you try it!",
-    "categories": ["programmer", "multithreading", "concurrency"]
-  },
-  {
-    "text": "Q: What's a cloud architect's favorite game?\nA: Sky-rim!",
-    "categories": ["programmer", "qna", "cloud", "gaming"]
-  },
-  {
-    "text": "Q: What do you call a developer who codes while sleeping?\nA: A REST developer!",
-    "categories": ["programmer", "qna", "api", "rest"]
-  },
-  {
-    "text": "The two hardest problems in programming: cache invalidation, naming things, and off-by-one errors.",
-    "categories": ["programmer", "humor", "cache"]
-  },
-  {
-    "text": "Q: What's a backend developer's favorite accessory?\nA: JSON chains!",
-    "categories": ["programmer", "qna", "backend", "json"]
-  },
-  {
-    "text": "Q: Why did the Python programmer get kicked out of school?\nA: Because he kept dropping classes!",
-    "categories": ["programmer", "qna", "python", "oop"]
-  },
-  {
-    "text": "Walking into a meeting without an agenda is like git pushing without testing.",
-    "categories": ["programmer", "meetings", "git"]
-  },
-  {
-    "text": "Q: What's a hacker's favorite exercise?\nA: Bit-shifting!",
-    "categories": ["programmer", "qna", "security"]
-  },
-  {
-    "text": "LISP programmers don't suffer from parenthesis, they enjoy them!",
-    "categories": ["programmer", "lisp"]
-  },
-  {
-    "text": "Q: What's a DevOps engineer's favorite movie?\nA: Con-tainer!",
-    "categories": ["programmer", "qna", "devops", "containers"]
-  },
-  {
-    "text": "Q: What did the corrupt hard drive say to its owner?\nA: I'm totally CRC!",
-    "categories": ["programmer", "qna", "hardware"]
-  },
-  {
-    "text": "When your hammer is C++, everything begins to look like a thumb.",
-    "categories": ["programmer", "C++"]
-  },
-  {
-    "text": "Q: What's a web developer's favorite tea?\nA: URL Grey!",
-    "categories": ["programmer", "qna", "web"]
-  },
-  {
-    "text": "Q: Why do programmers hate the outdoors?\nA: Too many branches!",
-    "categories": ["programmer", "qna", "git"]
-  },
-  {
-    "text": "I'd make a UDP joke but I'm not sure you'd get it.",
-    "categories": ["programmer", "networking", "protocols"]
-  },
-  {
-    "text": "Q: Why don't programmers like nature?\nA: Too many nested trees!",
-    "categories": ["programmer", "qna", "data-structures"]
-  },
-  {
-    "text": "Q: What's a DBA's favorite song?\nA: Another one bites the data!",
-    "categories": ["programmer", "qna", "database"]
-  },
-  {
-    "text": "Q: Why did the functional programmer get thrown out of school?\nA: Because they refused to take classes!",
-    "categories": ["programmer", "qna", "functional-programming"]
-  },
-  {
-    "text": "Q: What do you call a programmer from Finland?\nA: Nerdic!",
-    "categories": ["programmer", "qna", "pun"]
-  },
-  {
-    "text": "The only problem with troubleshooting is that sometimes trouble shoots back.",
-    "categories": ["programmer", "debugging"]
-  },
-  {
-    "text": "Q: Why was the JavaScript developer sad?\nA: Because they were feeling a bit TypeScript!",
-    "categories": ["programmer", "qna", "javascript", "typescript"]
-  },
-  {
-    "text": "Q: What's a tree's favorite version control system?\nA: Git branches!",
-    "categories": ["programmer", "qna", "git"]
-  },
-  {
-    "text": "Keyboard not found... Press F1 to continue",
-    "categories": ["programmer", "hardware", "error-messages"]
-  },
-  {
-    "text": "Q: Why do Java programmers have to wear glasses?\nA: Because they don't see sharp!",
-    "categories": ["programmer", "qna", "java", "csharp"]
-  },
-  {
-    "text": "Q: What's a meteorologist's favorite database?\nA: CloudSQL!",
-    "categories": ["programmer", "qna", "database", "cloud"]
-  },
-  {
-    "text": "Q: What's an astronaut's favorite join?\nA: Outer join!",
-    "categories": ["programmer", "qna", "database"]
-  },
-  {
-    "text": "Q: What did the grape say when it got stepped on?\nA: Nothing, it just let out a little wine!",
-    "categories": ["programmer", "qna", "pun", "testing"]
-  },
-  {
-    "text": "Q: What's a web developer's favorite sandwich?\nA: A REST-aurant special!",
-    "categories": ["programmer", "qna", "api", "rest"]
-  },
-  {
-    "text": "All programmers are playwrights, and all computers are lousy actors.",
-    "categories": ["programmer", "humor"]
-  },
-  {
-    "text": "Q: Why don't programmers like working from coffee shops?\nA: Too many Java beans!",
-    "categories": ["programmer", "qna", "java"]
-  },
-  {
-    "text": "Q: Why did the React developer have excellent communication skills?\nA: Because they knew how to handle state-ments!",
-    "categories": ["programmer", "qna", "react", "frontend"]
-  },
-  {
-    "text": "Q: What's a developer's favorite breakfast?\nA: JSON and eggs!",
-    "categories": ["programmer", "qna", "json"]
-  },
-  {
-    "text": "Q: What do you call a developer who's excellent at their job but never documents?\nA: Selfish!",
-    "categories": ["programmer", "qna", "documentation"]
-  },
-  {
-    "text": "A programmer walks into a bar... float Error: Cannot convert bar to integer!",
-    "categories": ["programmer", "humor", "type-error"]
-  },
-  {
-    "text": "Q: What's a frontend developer's favorite makeup?\nA: Mascara.js!",
-    "categories": ["programmer", "qna", "frontend", "javascript"]
-  },
-  {
-    "text": "Q: Why do programmers always confuse Christmas with Halloween?\nA: Because DEC 25 = OCT 31!",
-    "categories": ["programmer", "qna", "binary"]
-  },
-  {
-    "text": "Q: What's a developer's favorite place in Italy?\nA: ROM!",
-    "categories": ["programmer", "qna", "hardware"]
-  },
-  {
-    "text": "Q: Why do developers use mechanical keyboards?\nA: Because they like their code to be heard!",
-    "categories": ["programmer", "qna", "hardware"]
-  },
-  {
-    "text": "Q: What's a network engineer's favorite movie?\nA: IP Man!",
-    "categories": ["programmer", "qna", "networking"]
-  },
-  {
-    "text": "My code is like the Mona Lisa - nobody knows why it works!",
-    "categories": ["programmer", "debugging", "code-quality"]
-  },
-  {
-    "text": "Q: What do you call a programmer who doesn't use version control?\nA: Unemployed!",
-    "categories": ["programmer", "qna", "git", "version-control"]
-  },
-  {
-    "text": "Q: Why do database administrators make terrible carpenters?\nA: They keep dropping tables!",
-    "categories": ["programmer", "qna", "database", "sql"]
-  },
-  {
-    "text": "Q: What's a SSL certificate's favorite drink?\nA: CERTified tea!",
-    "categories": ["programmer", "qna", "security", "ssl"]
-  },
-  {
-    "text": "Q: What's a programmer's favorite type of music?\nA: Algorithm and blues!",
-    "categories": ["programmer", "qna", "algorithms"]
-  },
-  {
-    "text": "Q: What's a web developer's favorite dessert?\nA: Cookie storage!",
-    "categories": ["programmer", "qna", "web", "cookies"]
-  },
-  {
-    "text": "Q: What's a software architect's favorite building material?\nA: Design patterns!",
-    "categories": ["programmer", "qna", "architecture", "design-patterns"]
-  },
-  {
-    "text": "Q: What's a front-end developer's favorite hot drink?\nA: Java-script!",
-    "categories": ["programmer", "qna", "frontend", "javascript"]
-  },
-  {
-    "text": "Q: Why was the mobile developer always tired?\nA: Too many app-naps!",
-    "categories": ["programmer", "qna", "mobile"]
-  },
-  {
-    "text": "Q: What's a developer's favorite way to celebrate?\nA: With a bit-party!",
-    "categories": ["programmer", "qna", "binary"]
-  },
-  {
-    "text": "Q: What's a developer's favorite part of a joke?\nA: The punchline debugging!",
-    "categories": ["programmer", "qna", "debugging"]
-  },
-  {
-    "text": "Q: What's a programmer's favorite flower?\nA: A DAISy chain!",
-    "categories": ["programmer", "qna", "hardware"]
-  },
-  {
-    "text": "Q: What do you call a developer who codes with their eyes closed?\nA: A RESTful developer!",
-    "categories": ["programmer", "qna", "api", "rest"]
-  },
-  {
-    "text": "Q: What's an AI's favorite genre of music?\nA: Tech-no!",
-    "categories": ["programmer", "qna", "ai"]
-  },
-  {
-    "text": "Q: What's a developer's favorite fish?\nA: A C-shark!",
-    "categories": ["programmer", "qna", "csharp"]
-  },
-  {
-    "text": "Q: What's a full-stack developer's favorite meal?\nA: Stack overflow!",
-    "categories": ["programmer", "qna", "full-stack"]
-  },
-  {
-    "text": "Q: What's a web developer's favorite way to stay healthy?\nA: CSS-ercise!",
-    "categories": ["programmer", "qna", "frontend", "css"]
-  },
-  {
-    "text": "Q: What's a data scientist's favorite language?\nA: R you kidding me?",
-    "categories": ["programmer", "qna", "data-science", "R"]
-  },
-  {
-    "text": "Q: What's a frontend developer's favorite element?\nA: <style>!",
-    "categories": ["programmer", "qna", "frontend", "html"]
-  },
-  {
-    "text": "Q: What's a backend developer's favorite movie?\nA: The Server Side Story!",
-    "categories": ["programmer", "qna", "backend"]
-  },
-  {
-    "text": "Q: What's a developer's least favorite key?\nA: The panic key!",
-    "categories": ["programmer", "qna", "debugging"]
-  },
-  {
-    "text": "Q: Why was the JavaScript developer sad at the funeral?\nA: They didn't closure properly!",
-    "categories": ["programmer", "qna", "javascript"]
-  },
-  {
-    "text": "Q: What's a cybersecurity expert's favorite game?\nA: Counter Strike!",
-    "categories": ["programmer", "qna", "security"]
-  },
-  {
-    "text": "Q: What's a developer's favorite way to fix a bug?\nA: Control-Z until it works!",
-    "categories": ["programmer", "qna", "debugging"]
-  },
-  {
-    "text": "Q: What's a developer's favorite vacation spot?\nA: Data beach!",
-    "categories": ["programmer", "qna", "database"]
-  },
-  {
-    "text": "Q: Why did the software company go bankrupt?\nA: They couldn't scale their business!",
-    "categories": ["programmer", "qna", "scalability"]
-  },
-  {
-    "text": "Q: What's a database administrator's favorite game?\nA: Solitaire, because it involves sorting!",
-    "categories": ["programmer", "qna", "database"]
-  },
-  {
-    "text": "Q: What's a Python developer's favorite snack?\nA: Py-thon of cookies!",
-    "categories": ["programmer", "qna", "python"]
-  },
-  {
-    "text": "Q: Why do React developers wear glasses?\nA: Because they can't see their State clearly!",
-    "categories": ["programmer", "qna", "react", "frontend"]
-  },
-  {
-    "text": "Q: What's a Git expert's favorite dance?\nA: Push and pull!",
-    "categories": ["programmer", "qna", "git", "version-control"]
-  },
-  {
-    "text": "Q: What's a developer's favorite outdoor activity?\nA: Hiking... the memory usage!",
-    "categories": ["programmer", "qna", "memory"]
-  },
-  {
-    "text": "Q: What's a machine learning engineer's favorite drink?\nA: Test-tea!",
-    "categories": ["programmer", "qna", "machine-learning", "testing"]
-  },
-  {
-    "text": "Q: What's a developer's favorite party game?\nA: Truth or Exception!",
-    "categories": ["programmer", "qna", "error-handling"]
-  },
-  {
-    "text": "Q: Why do programmers hate meetings?\nA: Because they have too many merge conflicts!",
-    "categories": ["programmer", "qna", "meetings", "git"]
-  },
-  {
-    "text": "Q: What's a developer's favorite fast food?\nA: Bits and bytes!",
-    "categories": ["programmer", "qna", "binary"]
-  },
-  {
-    "text": "Q: What's a developer's favorite type of tree?\nA: A binary tree!",
-    "categories": ["programmer", "qna", "data-structures"]
-  },
-  {
-    "text": "Q: What's a cloud engineer's worst nightmare?\nA: The cloud has a silver lining... it's jQuery!",
-    "categories": ["programmer", "qna", "cloud", "jquery"]
-  },
-  {
-    "text": "Q: What's a developer's favorite guitar?\nA: A Fender Stack Overflow!",
-    "categories": ["programmer", "qna", "stack-overflow"]
-  },
-  {
-    "text": "Q: Why do programmers need glasses?\nA: Because they can't C++!",
-    "categories": ["programmer", "qna", "C++"]
   }
 ]
