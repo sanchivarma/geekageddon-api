@@ -25,7 +25,7 @@
   "forest":      { "bgColor": "#0B1D13", "borderColor": "#2E7D32", "textColor": "#E8F5E9", "qColor": "#A5D6A7", "aColor": "#81C784", "codeColor": "#66BB6A" },
   "candy":       { "bgColor": "#FFF0F6", "borderColor": "#FF69B4", "textColor": "#6B4E71", "qColor": "#FF8FAB", "aColor": "#7BDFF2", "codeColor": "#B28DFF" },
   "halloween":   { "bgColor": "#0B0B0B", "borderColor": "#FF7518", "textColor": "#F5F5F5", "qColor": "#FFB347", "aColor": "#7CFC00", "codeColor": "#9B59B6" },
-  "christmas":   { "bgColor": "#0A1F0A", "borderColor": "#E63946", "textColor": "#F1FAEE", "qColor": "#E63946", "aColor": "#34D399", "codeColor": "#FFD166" },
+  "christmas":   { "bgColor": "#44B04C", "borderColor": "#E63946", "textColor": "#F1FAEE", "qColor": "#E63946", "aColor": "#34D399", "codeColor": "#FFD166" },
   "vaporwave":   { "bgColor": "#2D1B64", "borderColor": "#FF71CE", "textColor": "#FDEFFF", "qColor": "#01CDFE", "aColor": "#05FFA1", "codeColor": "#B967FF" },
   "nord":        { "bgColor": "#2E3440", "borderColor": "#88C0D0", "textColor": "#ECEFF4", "qColor": "#EBCB8B", "aColor": "#A3BE8C", "codeColor": "#B48EAD" },
   "gruvbox":     { "bgColor": "#282828", "borderColor": "#FABD2F", "textColor": "#EBDBB2", "qColor": "#FE8019", "aColor": "#B8BB26", "codeColor": "#D3869B" },
