@@ -62,11 +62,28 @@ Use `?theme=themeName` to apply a predefined color scheme.
 #### Border options (`?borderAnimation=`)
 | Option | Description | Preview |
 |-------|-------------|---------|
+| `none` | Static outline (default) | ![none](https://geekageddon-api.vercel.app/api/jokes) |
 | `dash` | Animated dash | ![dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=dash) |
-| `neon` | Neon glow | ![neon](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=neon) |
+| `dots` | Marching dotted outline | ![dots](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=dots) |
 | `gradient` | Animated gradient sweep | ![gradient](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=gradient&reduceMotion=true) |
+| `neon` | Neon glow via filter | ![neon](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=neon) |
+| `gif` | Image mask border (needs `borderImage`) | ![gif](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=gif&borderImage=https://example.com/overlay.gif) |
 | `colorful-dash` | Color-cycling dashed border | ![colorful-dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=colorful-dash) |
 | `colorful-dots` | Color-cycling dotted border | ![colorful-dots](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=colorful-dots) |
+| `rainbow` | Rotating rainbow gradient stroke | ![rainbow](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=rainbow) |
+| `rainbow-ants` | Rainbow marching ants | ![rainbow-ants](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=rainbow-ants) |
+| `rainbow-dots` | Rainbow marching dots | ![rainbow-dots](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=rainbow-dots) |
+| `rainbow-pulse-dots` | Pulsating rainbow dots around border | ![rainbow-pulse-dots](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=rainbow-pulse-dots) |
+| `ants` | Marching ants (theme colors) | ![ants](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=ants) |
+| `ants-mono` | Marching ants (monochrome) | ![ants-mono](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=ants-mono) |
+| `ants-color` | Marching ants (accent mix) | ![ants-color](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=ants-color) |
+| `double` | Two dashed borders, counter-moving | ![double](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=double) |
+| `scan` | Scanning highlight segment | ![scan](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=scan) |
+| `corners` | Pulsing corner dots | ![corners](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=corners) |
+
+Notes:
+- `reduceMotion=true` disables animations for accessibility.
+- `gif` requires `borderImage` URL (ensure CORS if cross-origin).
 
 ### Theme Samples
 
@@ -117,4 +134,3 @@ Customize the card appearance using URL parameters.
 The API returns an SVG image with the joke text styled according to the theme or custom parameters.
 
 For Q&A format jokes, questions and answers are styled differently using the theme's `qColor` and `aColor` respectively.
-
