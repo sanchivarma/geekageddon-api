@@ -486,7 +486,7 @@
   {
     "q": "Why did the web developer go broke?",
     "a": "He used all his cache.",
-    "categories": ["frontend", "backend", "pun"]
+    "categories": ["frontend", "backend", "pun", "qna"]
   },
   {
     "text": "Data scientists are like fortune tellers with better charts.",

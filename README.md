@@ -67,8 +67,8 @@ Use `?theme=themeName` to apply a predefined color scheme:
 
 Here are some examples of different joke styles with various themes:
 
-#### Q&A Joke Theme
-![QA Dracula](https://geekageddon-api.vercel.app/api/jokes?theme=dracula)
+#### Q&A Joke with Dracula Theme and animated border
+![QA Dracula](https://geekageddon-api.vercel.app/api/jokes?theme=dracula?category=qna&borderAnimation=colorful-dash)
 
 #### Programming Joke with Tokyo Night Theme
 ![Programming Tokyo Night](https://geekageddon-api.vercel.app/api/jokes?theme=tokyonight&category=programmer)
