@@ -49,6 +49,32 @@ export function getBorderSVG(type = 'none', theme = {}, width = 480, height = 16
     return { defs, element: rect };
   }
 
+  // Colorful blinking dashed or dotted border (new option)
+  if (type === 'colorful' || type === 'colorful-dash' || type === 'colorful-dots') {
+    const isDots = type === 'colorful-dots';
+    // Dots use very short dash + larger gap and rounded linecaps
+    const dashArray = isDots ? '1 14' : '12 8';
+    const linecap = isDots ? 'round' : 'butt';
+
+    const defs = `
+      <style>
+        /* move the dashes/dots along the path */
+        @keyframes dashMove { to { stroke-dashoffset: -32; } }
+        /* cycle through three accent colors for a colorful blink */
+        @keyframes colorBlink {
+          0% { stroke: ${borderColor}; }
+          33% { stroke: ${accent1}; }
+          66% { stroke: ${accent2}; }
+          100% { stroke: ${borderColor}; }
+        }
+      </style>
+    `;
+
+    const animAttr = reduceMotion ? '' : 'class="anim" style="animation: dashMove 2s linear infinite, colorBlink 1.2s linear infinite;"';
+    const rect = `<rect x="${innerX}" y="${innerY}" width="${innerW}" height="${innerH}" rx="${rx}" fill="none" stroke="${borderColor}" stroke-width="${strokeW}" stroke-dasharray="${dashArray}" stroke-linecap="${linecap}" ${animAttr} />`;
+    return { defs, element: rect };
+  }
+
   if (type === 'gradient') {
     const gid = 'g_grad_border';
     const defs = `
