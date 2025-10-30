@@ -17,7 +17,16 @@ Use query params to control the output.
 
 - Basic example (Markdown-safe static preview):
   
-  ![Snake Game](https://geekageddon-api.vercel.app/api/snake-game?text=Test&size=1)
+<div style="display:inline-block; max-width:100%;">
+  <object
+    type="image/svg+xml"
+    data="https://geekageddon-api.vercel.app/api/snake-game?text=TEST&size=2"
+    style="width:100%; height:auto;"
+  >
+    <!-- Fallback text if object is blocked -->
+    Snake game requires HTML object support.
+  </object>
+</div>
 
 ### Behavior
 - Renders text as solid 5�7 pixel-block letters with a 1-cell border around the name.
@@ -27,6 +36,18 @@ Use query params to control the output.
 - When all green blocks are eaten, the text reappears and the loop restarts.
 
 ### Embedding Notes
+```md
+<div style="display:inline-block; max-width:100%;">
+  <object
+    type="image/svg+xml"
+    data="https://geekageddon-api.vercel.app/api/snake-game?text=TEST&size=2"
+    style="width:100%; height:auto;"
+  >
+    <!-- Fallback text if object is blocked -->
+    Snake game requires HTML object support.
+  </object>
+</div>
+```
 - For Markdown `<img>` (like GitHub README), use `&static=1` to render a static preview. Markdown renderers do not execute SVG scripts.
 - For live animation on web pages, embed with `<object>` or `<embed>`.
 - CORS headers are open (`Access-Control-Allow-Origin: *`).
