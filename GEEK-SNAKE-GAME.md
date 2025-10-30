@@ -16,15 +16,13 @@ Use query params to control the output.
 
 - Basic example (name + smaller blocks):
   
-  ![Snake Game](https://geekageddon-api.vercel.app/api/snake-game?text=Sanchi&size=2)
+  ![Snake Game](https://geekageddon-api.vercel.app/api/snake-game?text=Test&size=2)
 
 - Larger blocks:
   
-  ![Snake Game Large](https://geekageddon-api.vercel.app/api/snake-game?text=Sanchi&size=4)
+  ![Snake Game Large](https://geekageddon-api.vercel.app/api/snake-game?text=Test&size=4)
 
-- Different text:
-  
-  ![Snake Game Varma](https://geekageddon-api.vercel.app/api/snake-game?text=Varma&size=2)
+
 
 ### Behavior
 - Renders text as solid 5×7 pixel-block letters with a 1-cell border around the name.

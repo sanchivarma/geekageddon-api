@@ -13,11 +13,103 @@ function sanitizeText(input) {
   return cleaned.length ? cleaned : 'SNAKE';
 }
 
-function svgForText(text, sizeParam) {
-  const safe = escapeXml(text.toUpperCase());
+function svgForText(text, sizeParam, staticMode) {
+  const input = String(text || '').toUpperCase();
+  const safe = escapeXml(input);
   const size = Number.isFinite(parseInt(sizeParam, 10)) ? Math.max(1, Math.min(5, parseInt(sizeParam, 10))) : 2;
   const CELL_PX = 6 * size; // base 6px scaled by size 1..5
   const GAP_PX = Math.max(1, Math.floor(CELL_PX / 6));
+
+  // Server-side 5x7 font for static rendering
+  const FONT = {
+    'A':["01110","10001","10001","11111","10001","10001","10001"],
+    'B':["11110","10001","10001","11110","10001","10001","11110"],
+    'C':["01111","10000","10000","10000","10000","10000","01111"],
+    'D':["11110","10001","10001","10001","10001","10001","11110"],
+    'E':["11111","10000","10000","11110","10000","10000","11111"],
+    'F':["11111","10000","10000","11110","10000","10000","10000"],
+    'G':["01111","10000","10000","10111","10001","10001","01111"],
+    'H':["10001","10001","10001","11111","10001","10001","10001"],
+    'I':["11111","00100","00100","00100","00100","00100","11111"],
+    'J':["00111","00010","00010","00010","00010","10010","01100"],
+    'K':["10001","10010","10100","11000","10100","10010","10001"],
+    'L':["10000","10000","10000","10000","10000","10000","11111"],
+    'M':["10001","11011","10101","10001","10001","10001","10001"],
+    'N':["10001","11001","10101","10011","10001","10001","10001"],
+    'O':["01110","10001","10001","10001","10001","10001","01110"],
+    'P':["11110","10001","10001","11110","10000","10000","10000"],
+    'Q':["01110","10001","10001","10001","10101","10010","01101"],
+    'R':["11110","10001","10001","11110","10100","10010","10001"],
+    'S':["01111","10000","10000","01110","00001","00001","11110"],
+    'T':["11111","00100","00100","00100","00100","00100","00100"],
+    'U':["10001","10001","10001","10001","10001","10001","01110"],
+    'V':["10001","10001","10001","10001","10001","01010","00100"],
+    'W':["10001","10001","10001","10101","10101","10101","01010"],
+    'X':["10001","01010","00100","00100","00100","01010","10001"],
+    'Y':["10001","01010","00100","00100","00100","00100","00100"],
+    'Z':["11111","00001","00010","00100","01000","10000","11111"],
+    '0':["01110","10001","10011","10101","11001","10001","01110"],
+    '1':["00100","01100","00100","00100","00100","00100","01110"],
+    '2':["01110","10001","00001","00010","00100","01000","11111"],
+    '3':["11110","00001","00001","01110","00001","00001","11110"],
+    '4':["00010","00110","01010","10010","11111","00010","00010"],
+    '5':["11111","10000","11110","00001","00001","10001","01110"],
+    '6':["01110","10000","11110","10001","10001","10001","01110"],
+    '7':["11111","00001","00010","00100","01000","01000","01000"],
+    '8':["01110","10001","10001","01110","10001","10001","01110"],
+    '9':["01110","10001","10001","01111","00001","00001","01110"],
+    ' ':["00000","00000","00000","00000","00000","00000","00000"]
+  };
+
+  if (staticMode) {
+    const CHAR_W=5, CHAR_H=7, SP=1, BORDER=1;
+    let textCols = 0; for (let i=0;i<input.length;i++){ textCols += CHAR_W; if (i<input.length-1) textCols += SP; }
+    const cols = (input.length?textCols:CHAR_W) + BORDER*2;
+    const rows = CHAR_H + BORDER*2;
+    const w = cols*(CELL_PX+GAP_PX) - GAP_PX;
+    const h = rows*(CELL_PX+GAP_PX) - GAP_PX;
+
+    let grid = '';
+    for (let r=0;r<rows;r++){
+      for (let c=0;c<cols;c++){
+        const x = c*(CELL_PX+GAP_PX);
+        const y = r*(CELL_PX+GAP_PX);
+        grid += `<rect class="grid-cell" x="${x}" y="${y}" width="${CELL_PX}" height="${CELL_PX}" rx="2" ry="2" data-row="${r}" data-col="${c}"/>`;
+      }
+    }
+    let food = '';
+    let cursor = BORDER;
+    for (let i=0;i<input.length;i++){
+      const ch = input[i]; const pat = FONT[ch] || FONT[' '];
+      for (let r=0;r<CHAR_H;r++){
+        for (let c=0;c<CHAR_W;c++){
+          if (pat[r][c]==='1'){
+            const row = BORDER + r;
+            const col = cursor + c;
+            const x = col*(CELL_PX+GAP_PX);
+            const y = row*(CELL_PX+GAP_PX);
+            food += `<rect class="food-cell" x="${x}" y="${y}" width="${CELL_PX}" height="${CELL_PX}" rx="2" ry="2" data-row="${row}" data-col="${col}" data-active="1"/>`;
+          }
+        }
+      }
+      cursor += CHAR_W; if (i<input.length-1) cursor += SP;
+    }
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+  <defs></defs>
+  <rect x="0" y="0" width="100%" height="100%" fill="#0b1220"/>
+  <g id="grid" data-layer="grid">${grid}</g>
+  <g id="food" data-layer="food">${food}</g>
+  <g id="snake" data-layer="snake"></g>
+  <rect id="board-border" x="0.5" y="0.5" width="${Math.max(1,w-1)}" height="${Math.max(1,h-1)}" fill="none" stroke="#1B5E20" stroke-width="1"/>
+  <style>
+    .grid-cell { fill: #000000; }
+    .food-cell { fill: #00C853; stroke: #087F23; stroke-width: 1; }
+  </style>
+</svg>`;
+  }
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="260" viewBox="0 0 900 260">
   <defs></defs>
@@ -309,7 +401,8 @@ export default function handler(req, res) {
   try {
     const text = sanitizeText(req.query.text);
     const size = req.query.size;
-    const body = svgForText(text, size);
+    const isStatic = (String(req.query.static).toLowerCase()==='1' || String(req.query.static).toLowerCase()==='true' || String(req.query.poster).toLowerCase()==='1' || String(req.query.poster).toLowerCase()==='true');
+    const body = svgForText(text, size, isStatic);
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('Access-Control-Allow-Origin', '*');
