@@ -35,7 +35,9 @@ Use query params to control the output.
 - Grows by +1 segment after every 5 eaten blocks.
 - When all green blocks are eaten, the text reappears and the loop restarts.
 
-### Embedding Notes
+### Code to embed
+
+1) Option 1 : Using \<object>
 ```md
 <div style="display:inline-block; max-width:100%;">
   <object
@@ -48,6 +50,16 @@ Use query params to control the output.
   </object>
 </div>
 ```
+
+2. Option 2 : Using embed
+```md
+<embed
+  src="https://geekageddon-api.vercel.app/api/snake-game?text=TEST&size=2"
+  type="image/svg+xml"
+  style="width:100%; height:auto;"
+/>
+```
+
 - For Markdown `<img>` (like GitHub README), use `&static=1` to render a static preview. Markdown renderers do not execute SVG scripts.
 - For live animation on web pages, embed with `<object>` or `<embed>`.
 - CORS headers are open (`Access-Control-Allow-Origin: *`).
