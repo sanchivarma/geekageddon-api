@@ -3,5 +3,12 @@
     "api/**/*.js": {
       "maxDuration": 10
     }
-  }
+  },
+  "routes": [
+    { "src": "^/snake-game$", "dest": "/api/snake-game" },
+    { "src": "^/snake-game/$", "dest": "/api/snake-game" },
+    { "src": "^/snake-game.svg$", "dest": "/api/snake-game" },
+    { "src": "/geekseek/playground", "dest": "/playground.html" },
+    { "src": "/geekseek/playground.html", "dest": "/playground.html" }
+  ]
 }

@@ -1,0 +1,286 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Geek-Seek Location Test</title>
+    <style>
+      :root {
+        --bg: #0f1220; --panel: #171a2b; --text: #e6eaf2; --muted: #9aa3b2;
+        --accent: #7aa2f7; --ok: #38d39f; --warn: #f7c948; --err: #ff6b6b;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      h1 { font-size: 20px; font-weight: 600; margin: 0 0 16px; }
+      .card { background: var(--panel); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+      .cards { display: grid; gap: 12px; grid-template-columns: 1fr; }
+      @media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1100px) { .cards { grid-template-columns: 1fr 1fr 1fr; } }
+      .place { background: var(--panel); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; }
+      .place .head { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+      .place .muted { color: var(--muted); font-size: 12px; }
+      .badge { display: inline-block; margin: 2px 4px 0 0; padding: 3px 8px; border-radius: 999px; background: #2f3651; color: var(--text); font-size: 11px; }
+      .stars { color: #f7c948; font-size: 12px; letter-spacing: 1px; }
+      .rowline { display:flex; align-items:center; gap:8px; margin-top:6px; font-size:12px; }
+      .icon { width: 16px; height: 16px; display:inline-block; vertical-align:middle; }
+      details { margin-top: 8px; }
+      summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+      .row { display: grid; gap: 16px; grid-template-columns: 1fr; }
+      .grid-2 { display: grid; gap: 16px; grid-template-columns: 1fr; }
+      @media (min-width: 940px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+      label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; }
+      textarea { width: 100%; background: #0e1120; color: var(--text); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; outline: none; min-height: 68px; resize: vertical; }
+      .controls { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; align-items: end; }
+      .controls .span-3 { grid-column: span 3; }
+      .controls .span-6 { grid-column: span 6; }
+      @media (max-width: 760px) { .controls { grid-template-columns: 1fr 1fr; } .controls .span-3, .controls .span-6 { grid-column: span 2; } }
+      .btn { background: var(--accent); border: none; color: #0b1022; font-weight: 700; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
+      .btn.secondary { background: #2f3651; color: var(--text); }
+      .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+      .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+      .mono { font-family: var(--mono); font-size: 12px; line-height: 1.4; }
+      pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+      .status { font-size: 12px; margin-left: 8px; }
+      .status.ok { color: var(--ok); }
+      .status.warn { color: var(--warn); }
+      .status.err { color: var(--err); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Geek-Seek Location Test</h1>
+      <div class="card row" style="margin-bottom:16px;">
+        <div>
+          <label for="q">Natural language query</label>
+          <textarea id="q" placeholder="e.g., Restaurants in Berlin Lichtenberg; open restaurants near me"></textarea>
+        </div>
+        <div class="controls">
+          <div class="span-3">
+            <label><input type="checkbox" id="useGeo" /> Use browser geolocation</label>
+            <div class="note">Defaults: 100km radius, limit 50, sort distance â†’ open â†’ rating.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="fillNearMe">Fill near me</button>
+          </div>
+          <div>
+            <button class="btn" id="send">Send</button>
+          </div>
+          <div class="span-6 note">This page calls <code class="mono">/api/geekseek</code> on the same origin.</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <strong>Prompt to OpenAI</strong>
+            <span id="promptStatus" class="status"></span>
+          </div>
+          <pre id="prompt" class="mono" style="margin-top:8px;">(awaiting response...)</pre>
+        </div>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <strong>Request JSON</strong>
+            <span id="reqStatus" class="status"></span>
+          </div>
+          <pre id="req" class="mono" style="margin-top:8px;">{}</pre>
+        </div></div><div class="grid-2">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <strong>Response JSON</strong>
+            <span id="respStatus" class="status"></span>
+          </div>
+          <pre id="resp" class="mono" style="margin-top:8px;">{}</pre>
+        </div>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <strong>Prompt (raw object)</strong>
+            <span id="promptRawStatus" class="status"></span>
+          </div>
+          <pre id="promptRaw" class="mono" style="margin-top:8px;">{}</pre>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:12px;">Tip: If response has <code class="mono">action: request_client_location</code>, enable â€œUse browser geolocationâ€.</div>
+    </div>
+
+    <!-- Results cards -->
+    <div class="card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <strong>Results</strong>
+        <span id="cardsStatus" class="status"></span>
+      </div>
+      <div id="cards" class="cards" style="margin-top:10px;"></div>
+    </div>
+
+    <script>
+      const el = (id) => document.getElementById(id);
+      el('fillNearMe').addEventListener('click', () => {
+        const q = el('q');
+        q.value = q.value?.trim() ? (q.value.trim() + ' near me') : 'open restaurants near me';
+      });
+
+      el('send').addEventListener('click', async () => {
+        const reqStatus = el('reqStatus');
+        const respStatus = el('respStatus');
+        const promptStatus = el('promptStatus');
+        const promptPre = el('prompt');
+        reqStatus.textContent = '';
+        respStatus.textContent = '';
+        reqStatus.className = 'status';
+        respStatus.className = 'status';
+        promptStatus.textContent = '';
+        promptStatus.className = 'status';
+        promptPre.textContent = '(awaiting response...)';
+        
+
+        const payload = { q: el('q').value.trim(), type: 'places' };
+        console.log('[testLocation] click send', { payload });
+
+        const useGeo = el('useGeo').checked;
+        const doFetch = async (body) => {
+          el('req').textContent = JSON.stringify(body, null, 2);
+          reqStatus.textContent = 'sendingâ€¦';
+          reqStatus.className = 'status warn';
+          const started = performance.now();
+          console.log('[testLocation] sending request', body);
+          try {
+            const r = await fetch('/api/geekseek', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+            });
+            const text = await r.text();
+            let data = null; try { data = JSON.parse(text); } catch (_) { data = { raw: text }; }
+            el('resp').textContent = JSON.stringify(data, null, 2);
+            console.log('[testLocation] response', data);
+            // Show mode in note
+            try {
+              const modeNote = document.querySelector('.span-6.note');
+              if (modeNote && typeof data?.meta?.mock === 'boolean') {
+                modeNote.textContent = `This page calls /api/geekseek on the same origin. Mode: ${data.meta.mock ? 'mock' : 'live'}`;
+              }
+            } catch (e) {}
+            const promptText = data?.meta?.prompt?.text;
+            const promptObj = data?.meta?.prompt;
+            el('promptRaw').textContent = JSON.stringify(promptObj ?? data?.meta ?? {}, null, 2);
+            if (promptObj) { el('promptRawStatus').textContent = 'ok'; el('promptRawStatus').className = 'status ok'; }
+            else { el('promptRawStatus').textContent = 'no meta.prompt'; el('promptRawStatus').className = 'status warn'; }
+            if (promptText) {
+              el('prompt').textContent = promptText; el('promptStatus').textContent = 'sent'; el('promptStatus').className = 'status ok';
+              console.log('[playground] prompt (text):', promptText);
+            } else {
+              el('prompt').textContent = '(no prompt found)'; el('promptStatus').textContent = ''; el('promptStatus').className = 'status';
+              console.log('[playground] prompt missing');
+            }
+            // Render result cards
+            try { renderCards(Array.isArray(data?.body) ? data.body : []); } catch(e) { console.log('renderCards error', e); }
+            const ms = Math.round(performance.now() - started);
+            if (r.ok) { respStatus.textContent = 'OK ' + r.status + ' in ' + ms + 'ms'; respStatus.className = 'status ok'; }
+            else { respStatus.textContent = 'HTTP ' + r.status + ' in ' + ms + 'ms'; respStatus.className = 'status err'; }
+            reqStatus.textContent = 'sent'; reqStatus.className = 'status ok';
+          } catch (e) {
+            el('resp').textContent = JSON.stringify({ error: e?.message || String(e) }, null, 2);
+            respStatus.textContent = 'network error'; respStatus.className = 'status err';
+            reqStatus.textContent = 'failed'; reqStatus.className = 'status err';
+            console.log('[testLocation] request error', e);
+            // Reflect error state in the prompt panel too
+            el('prompt').textContent = '(request failed; see console)';
+            el('promptStatus').textContent = 'error';
+            el('promptStatus').className = 'status err';
+          }
+        };
+
+        if (useGeo && navigator.geolocation) {
+          reqStatus.textContent = 'locatingâ€¦'; reqStatus.className = 'status warn';
+          console.log('[testLocation] using browser geolocation');
+          navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+              const { latitude, longitude } = pos.coords || {}; console.log('[testLocation] geolocation success', { latitude, longitude });
+              await doFetch({ ...payload, lat: latitude, lng: longitude });
+            },
+            async (err) => {
+              respStatus.textContent = 'geolocation denied'; respStatus.className = 'status err';
+              console.log('[testLocation] geolocation error', err);
+              await doFetch(payload);
+            },
+            { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
+          );
+        } else {
+          console.log('[testLocation] sending without geolocation');
+          await doFetch(payload);
+        }
+      });
+  </script>
+  <script>
+    // Fix mis-encoded glyphs without touching original handlers
+    document.addEventListener('DOMContentLoaded', () => {
+      const note = document.querySelector('.controls .note');
+      if (note) note.textContent = 'Defaults: 100km radius, limit 50, sort distance -> open -> rating.';
+      const btn = document.getElementById('fillNearMe');
+      if (btn) btn.textContent = 'Fill "near me"';
+    });
+    setInterval(() => {
+      document.querySelectorAll('.status').forEach(s => {
+        if (!s || !s.textContent) return;
+        if (s.textContent.includes('locating')) s.textContent = 'locating...';
+        if (s.textContent.includes('sending')) s.textContent = 'sending...';
+        if (s.textContent.includes('�')) s.textContent = s.textContent.replace(/�/g, s.textContent.includes('HTTP')||s.textContent.includes('OK') ? ' - ' : '.');
+      });
+    }, 300);
+  </script>
+  <script>
+    function renderCards(items){
+      const wrap = document.getElementById('cards');
+      const st = document.getElementById('cardsStatus');
+      if(!wrap||!st) return;
+      wrap.innerHTML = '';
+      if (!Array.isArray(items) || !items.length) { st.textContent = 'no results'; st.className = 'status warn'; return; }
+      st.textContent = items.length + ' items'; st.className = 'status ok';
+      const svgMap = '<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="#7aa2f7" stroke-width="1.5" fill="none"/><circle cx="12" cy="11" r="2.5" stroke="#7aa2f7" stroke-width="1.5"/></svg>';
+      const toStars = (r)=>{ const v = Number(r||0); let out=''; for(let i=1;i<=5;i++){ out += i<=Math.round(v) ? '★' : '☆'; } return out; };
+      const meter = (m)=> m==null? '' : (m>=1000 ? (m/1000).toFixed(1)+' km' : Math.round(m)+' m');
+      items.forEach(p=>{
+        const href = p.googleMapsUri || p.directionsUrl || p.reviewsUrl || '#';
+        const title = p.name || '(unknown)';
+        const addr = p.address || '';
+        const dist = meter(p.distanceMeters);
+        const rating = p.rating ?? null;
+        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><div>${title}</div></div>`;
+        const addrLine = `<div class="muted">${addr}</div>`;
+        const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
+        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span class="muted">${Number(rating).toFixed(1)}</span></div>` : '';
+        const badges = [];
+        const flag = (cond,label)=>{ if(cond===true) badges.push(`<span class="badge">${label}</span>`); };
+        flag(p.isReservable,'Reservable');
+        flag(p.servesVegetarianFood,'Vegetarian');
+        flag(p.hasDineIn,'Dine-in');
+        flag(p.hasTakeout,'Takeout');
+        flag(p.hasDelivery,'Delivery');
+        flag(p.hasRestroom,'Restroom');
+        flag(p.isGoodForGroups,'Groups');
+        flag(p.isGoodForChildren,'Kids');
+        flag(p.allowsDogs,'Dogs');
+        flag(p.acceptsCards,'Cards');
+        flag(p.acceptsCash,'Cash');
+        flag(p.hasOutdoorSeating,'Outdoor');
+        flag(p.hasLiveMusic,'Live music');
+        flag(p.hasMenuForChildren,'Kids menu');
+        flag(p.servesCoffee,'Coffee');
+        flag(p.hasFreeParking,'Free parking');
+        flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
+        flag(p.hasWheelchairAccessibleRestroom,'Wheelchair restroom');
+        const phone = p.phoneNumber ? `<span class="badge">📞 ${p.phoneNumber}</span>` : '';
+        const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
+        const count = p.userRatingCount!=null ? `<span class="badge">${p.userRatingCount} reviews</span>` : '';
+        const type = p.type ? `<span class="badge">${p.type}</span>` : '';
+        const price = p.priceRange ? `<span class="badge">${p.priceRange}</span>` : '';
+        const fuels = Array.isArray(p.fuelOptions)&&p.fuelOptions.length ? `<span class="badge">Fuel: ${p.fuelOptions.join(', ')}</span>` : '';
+        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,price,count,phone,site,fuels,...badges].filter(Boolean).join(' ')}</div></details>`;
+        const html = `<div class="place">${head}${addrLine}${distLine}${rateLine}${more}</div>`;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        wrap.appendChild(div.firstChild);
+      });
+    }
+  </script>
+  </body>
+  </html>
