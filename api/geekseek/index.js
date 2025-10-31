@@ -126,6 +126,7 @@ export default async function handler(req, res) {
   if (extractedText && !input.location.text) input.location.text = extractedText;
   const lines = buildPromptLines(input);
   const promptText = buildSinglePrompt({ input, lines });
+
   const parseBool = (v) => {
     if (typeof v === "boolean") return v;
     if (v == null) return undefined;
@@ -134,11 +135,12 @@ export default async function handler(req, res) {
     if (["0","false","no","off"].includes(s)) return false;
     return undefined;
   };
+
   const envMockRaw = process.env.GEEKSEEK_TEST_MODE;
-  const mock = parseBool(rawBody.mock ?? rawQuery.mock) ?? parseBool(envMockRaw) ?? false;
+  const mock = parseBool(envMockRaw) ?? true;
   try {
     console.log("[geekseek] env.GEEKSEEK_TEST_MODE=", envMockRaw);
-    console.log("[geekseek] mock=", mock, "source=", (rawBody.mock ?? rawQuery.mock) != null ? "request" : (envMockRaw != null ? "env" : "default"));
+    console.log("[geekseek] mock=", mock, "source=", envMockRaw != null ? "env" : "default");
   } catch(_){}
   const needsClientLocation = nearbyIntent && (input.location.lat == null || input.location.lng == null);
   if (needsClientLocation) {
