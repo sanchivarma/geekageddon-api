@@ -135,7 +135,7 @@ export default async function handler(req, res) {
     return undefined;
   };
   const envMockRaw = process.env.GEEKSEEK_TEST_MODE;
-  const mock = parseBool(rawBody.mock ?? rawQuery.mock) ?? parseBool(envMockRaw) ?? true;
+  const mock = parseBool(rawBody.mock ?? rawQuery.mock) ?? parseBool(envMockRaw) ?? false;
   try {
     console.log("[geekseek] env.GEEKSEEK_TEST_MODE=", envMockRaw);
     console.log("[geekseek] mock=", mock, "source=", (rawBody.mock ?? rawQuery.mock) != null ? "request" : (envMockRaw != null ? "env" : "default"));
