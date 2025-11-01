@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Geek-Seek Location Test</title>
+    <title>AI Query Location Test</title>
     <style>
       :root {
         --bg: #0f1220; --panel: #171a2b; --text: #e6eaf2; --muted: #9aa3b2;
@@ -49,7 +49,7 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>Geek-Seek Location Test</h1>
+      <h1>AI-Seek Location Test</h1>
       <div class="card row" style="margin-bottom:16px;">
         <div>
           <label for="q">Natural language query</label>
@@ -57,8 +57,8 @@
         </div>
         <div class="controls">
           <div class="span-3">
-            <label><input type="checkbox" id="useGeo" /> Use browser geolocation</label>
-            <div class="note">Defaults: 100km radius, limit 50, sort distance â†’ open â†’ rating.</div>
+            
+            <div class="note">Defaults: 100km radius, limit 20, sort distance� open� rating.</div>
           </div>
           <div>
             <button class="btn secondary" id="fillNearMe">Fill near me</button>
@@ -70,164 +70,55 @@
         </div>
       </div>
 
-      <div class="grid-2" style="margin-bottom:16px;">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <strong>Prompt to OpenAI</strong>
-            <span id="promptStatus" class="status"></span>
-          </div>
-          <pre id="prompt" class="mono" style="margin-top:8px;">(awaiting response...)</pre>
+      <!-- Results cards (moved up) -->
+      <div class="card" style="margin-top:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <strong>Results</strong>
+          <span id="cardsStatus" class="status"></span>
         </div>
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <strong>Request JSON</strong>
-            <span id="reqStatus" class="status"></span>
-          </div>
-          <pre id="req" class="mono" style="margin-top:8px;">{}</pre>
-        </div></div><div class="grid-2">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <strong>Response JSON</strong>
-            <span id="respStatus" class="status"></span>
-          </div>
-          <pre id="resp" class="mono" style="margin-top:8px;">{}</pre>
-        </div>
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <strong>Prompt (raw object)</strong>
-            <span id="promptRawStatus" class="status"></span>
-          </div>
-          <pre id="promptRaw" class="mono" style="margin-top:8px;">{}</pre>
-        </div>
+        <div id="cards" class="cards" style="margin-top:10px;"></div>
       </div>
 
-      <div class="note" style="margin-top:12px;">Tip: If response has <code class="mono">action: request_client_location</code>, enable â€œUse browser geolocationâ€.</div>
+      <br/>
+
+      <div class="note" style="margin-top:12px;">Tip: Use “near me/nearby/around me” in your query to trigger geolocation automatically. If denied, we use default location handling.</div>
     </div>
 
-    <!-- Results cards -->
-    <div class="card" style="margin-top:16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <strong>Results</strong>
-        <span id="cardsStatus" class="status"></span>
-      </div>
-      <div id="cards" class="cards" style="margin-top:10px;"></div>
-    </div>
+    
 
+    
     <script>
       const el = (id) => document.getElementById(id);
       el('fillNearMe').addEventListener('click', () => {
         const q = el('q');
-        q.value = q.value?.trim() ? (q.value.trim() + ' near me') : 'open restaurants near me';
+        const t = (q.value || '').trim();
+        q.value = t ? (t + ' near me') : 'open restaurants near me';
       });
-
       el('send').addEventListener('click', async () => {
-        const reqStatus = el('reqStatus');
-        const respStatus = el('respStatus');
-        const promptStatus = el('promptStatus');
-        const promptPre = el('prompt');
-        reqStatus.textContent = '';
-        respStatus.textContent = '';
-        reqStatus.className = 'status';
-        respStatus.className = 'status';
-        promptStatus.textContent = '';
-        promptStatus.className = 'status';
-        promptPre.textContent = '(awaiting response...)';
-        
-
-        const payload = { q: el('q').value.trim(), type: 'places' };
-        console.log('[testLocation] click send', { payload });
-
-        const useGeo = el('useGeo').checked;
+        const qtext = (el('q').value || '').trim();
+        const payload = { q: qtext, type: 'places' };
+        const wantGeo = /\\b(near\\s*me|around\\s*me|nearby|close\\s*by|close\\s*to\\s*me)\\b/i.test(qtext);
         const doFetch = async (body) => {
-          el('req').textContent = JSON.stringify(body, null, 2);
-          reqStatus.textContent = 'sendingâ€¦';
-          reqStatus.className = 'status warn';
-          const started = performance.now();
-          console.log('[testLocation] sending request', body);
           try {
-            const r = await fetch('/api/geekseek', {
-              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-            });
-            const text = await r.text();
-            let data = null; try { data = JSON.parse(text); } catch (_) { data = { raw: text }; }
-            el('resp').textContent = JSON.stringify(data, null, 2);
-            console.log('[testLocation] response', data);
-            // Show mode in note
-            try {
-              const modeNote = document.querySelector('.span-6.note');
-              if (modeNote && typeof data?.meta?.mock === 'boolean') {
-                modeNote.textContent = `This page calls /api/geekseek on the same origin. Mode: ${data.meta.mock ? 'mock' : 'live'}`;
-              }
-            } catch (e) {}
-            const promptText = data?.meta?.prompt?.text;
-            const promptObj = data?.meta?.prompt;
-            el('promptRaw').textContent = JSON.stringify(promptObj ?? data?.meta ?? {}, null, 2);
-            if (promptObj) { el('promptRawStatus').textContent = 'ok'; el('promptRawStatus').className = 'status ok'; }
-            else { el('promptRawStatus').textContent = 'no meta.prompt'; el('promptRawStatus').className = 'status warn'; }
-            if (promptText) {
-              el('prompt').textContent = promptText; el('promptStatus').textContent = 'sent'; el('promptStatus').className = 'status ok';
-              console.log('[playground] prompt (text):', promptText);
-            } else {
-              el('prompt').textContent = '(no prompt found)'; el('promptStatus').textContent = ''; el('promptStatus').className = 'status';
-              console.log('[playground] prompt missing');
-            }
-            // Render result cards
-            try { renderCards(Array.isArray(data?.body) ? data.body : []); } catch(e) { console.log('renderCards error', e); }
-            const ms = Math.round(performance.now() - started);
-            if (r.ok) { respStatus.textContent = 'OK ' + r.status + ' in ' + ms + 'ms'; respStatus.className = 'status ok'; }
-            else { respStatus.textContent = 'HTTP ' + r.status + ' in ' + ms + 'ms'; respStatus.className = 'status err'; }
-            reqStatus.textContent = 'sent'; reqStatus.className = 'status ok';
-          } catch (e) {
-            el('resp').textContent = JSON.stringify({ error: e?.message || String(e) }, null, 2);
-            respStatus.textContent = 'network error'; respStatus.className = 'status err';
-            reqStatus.textContent = 'failed'; reqStatus.className = 'status err';
-            console.log('[testLocation] request error', e);
-            // Reflect error state in the prompt panel too
-            el('prompt').textContent = '(request failed; see console)';
-            el('promptStatus').textContent = 'error';
-            el('promptStatus').className = 'status err';
-          }
+            const r = await fetch('/api/geekseek', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            const data = await r.json().catch(() => ({}));
+            renderCards(Array.isArray(data?.body) ? data.body : []);
+          } catch (e) { console.log('[playground] request error', e); }
         };
-
-        if (useGeo && navigator.geolocation) {
-          reqStatus.textContent = 'locatingâ€¦'; reqStatus.className = 'status warn';
-          console.log('[testLocation] using browser geolocation');
+        if (wantGeo && navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            async (pos) => {
-              const { latitude, longitude } = pos.coords || {}; console.log('[testLocation] geolocation success', { latitude, longitude });
-              await doFetch({ ...payload, lat: latitude, lng: longitude });
-            },
-            async (err) => {
-              respStatus.textContent = 'geolocation denied'; respStatus.className = 'status err';
-              console.log('[testLocation] geolocation error', err);
-              await doFetch(payload);
-            },
+            async (pos) => { const { latitude, longitude } = pos.coords || {}; await doFetch({ ...payload, lat: latitude, lng: longitude }); },
+            async () => { await doFetch(payload); },
             { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
           );
         } else {
-          console.log('[testLocation] sending without geolocation');
           await doFetch(payload);
         }
       });
-  </script>
+    </script>
+
   <script>
-    // Fix mis-encoded glyphs without touching original handlers
-    document.addEventListener('DOMContentLoaded', () => {
-      const note = document.querySelector('.controls .note');
-      if (note) note.textContent = 'Defaults: 100km radius, limit 50, sort distance -> open -> rating.';
-      const btn = document.getElementById('fillNearMe');
-      if (btn) btn.textContent = 'Fill "near me"';
-    });
-    setInterval(() => {
-      document.querySelectorAll('.status').forEach(s => {
-        if (!s || !s.textContent) return;
-        if (s.textContent.includes('locating')) s.textContent = 'locating...';
-        if (s.textContent.includes('sending')) s.textContent = 'sending...';
-        if (s.textContent.includes('�')) s.textContent = s.textContent.replace(/�/g, s.textContent.includes('HTTP')||s.textContent.includes('OK') ? ' - ' : '.');
-      });
-    }, 300);
-  </script>
-  <script>
+    // Final override to ensure correct card layout regardless of earlier scripts
     function renderCards(items){
       const wrap = document.getElementById('cards');
       const st = document.getElementById('cardsStatus');
@@ -238,16 +129,28 @@
       const svgMap = '<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="#7aa2f7" stroke-width="1.5" fill="none"/><circle cx="12" cy="11" r="2.5" stroke="#7aa2f7" stroke-width="1.5"/></svg>';
       const toStars = (r)=>{ const v = Number(r||0); let out=''; for(let i=1;i<=5;i++){ out += i<=Math.round(v) ? '★' : '☆'; } return out; };
       const meter = (m)=> m==null? '' : (m>=1000 ? (m/1000).toFixed(1)+' km' : Math.round(m)+' m');
+      const priceRangeRow = (pr) => {
+        const n = Number(pr); if(!Number.isFinite(n)) return '';
+        const filled = Math.max(0, Math.min(5, Math.round(n)));
+        const row = Array.from({length:5}).map((_,i)=> `<span style="color:${i<filled?'#e6eaf2':'#555'}">$</span>`).join('');
+        return `<div class="rowline"><span class="muted">Price</span><span>${row}</span></div>`;
+      };
       items.forEach(p=>{
         const href = p.googleMapsUri || p.directionsUrl || p.reviewsUrl || '#';
+        const dirHref = p.directionsUrl || p.googleMapsUri || '#';
         const title = p.name || '(unknown)';
-        const addr = p.address || '';
+        const addr = typeof p.address === 'string' ? p.address : (p.address || '');
         const dist = meter(p.distanceMeters);
         const rating = p.rating ?? null;
-        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><div>${title}</div></div>`;
-        const addrLine = `<div class="muted">${addr}</div>`;
+        const openNow = (p.isOpenNow === true);
+        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow?'#38d39f':'#ff6b6b'};display:inline-block"></span><span class="muted">${openNow?'Open':'Closed'}</span></span>`;
+        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
+        const addrLine = addr ? `<div class="rowline"><a class="muted" href="${dirHref}" target="_blank" rel="noopener" title="Directions" style="color:var(--muted);">${addr}</a></div>` : '';
+        const phoneLine = p.phoneNumber ? `<div class="rowline"><span class="muted">Phone</span><a href="tel:${p.phoneNumber}" style="color:var(--muted);text-decoration:none;">${p.phoneNumber}</a></div>` : '';
         const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
-        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span class="muted">${Number(rating).toFixed(1)}</span></div>` : '';
+        const count = p.userRatingCount!=null ? ` (<span class="muted">${p.userRatingCount}</span>)` : '';
+        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span>${Number(rating).toFixed(1)}${count}</span></div>` : '';
+        const priceLine = priceRangeRow(p.priceRange);
         const badges = [];
         const flag = (cond,label)=>{ if(cond===true) badges.push(`<span class="badge">${label}</span>`); };
         flag(p.isReservable,'Reservable');
@@ -268,9 +171,85 @@
         flag(p.hasFreeParking,'Free parking');
         flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
         flag(p.hasWheelchairAccessibleRestroom,'Wheelchair restroom');
-        const phone = p.phoneNumber ? `<span class="badge">📞 ${p.phoneNumber}</span>` : '';
         const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
-        const count = p.userRatingCount!=null ? `<span class="badge">${p.userRatingCount} reviews</span>` : '';
+        const type = p.type ? `<span class="badge">${p.type}</span>` : '';
+        const fuels = Array.isArray(p.fuelOptions)&&p.fuelOptions.length ? `<span class="badge">Fuel: ${p.fuelOptions.join(', ')}</span>` : '';
+        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,site,fuels,...badges].filter(Boolean).join(' ')}</div></details>`;
+        const html = `<div class="place">${head}${addrLine}${phoneLine}${distLine}${rateLine}${priceLine}${more}</div>`;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        wrap.appendChild(div.firstChild);
+      });
+    }
+  </script>
+  <script>
+    // Fix mis-encoded glyphs without touching original handlers
+    document.addEventListener('DOMContentLoaded', () => {
+      const note = document.querySelector('.controls .note');
+      if (note) note.textContent = 'Defaults: 100km radius, limit 20, sort distance -> open -> rating.';
+      const btn = document.getElementById('fillNearMe');
+      if (btn) btn.textContent = 'Fill "near me"';
+    });
+    setInterval(() => {
+      document.querySelectorAll('.status').forEach(s => {
+        if (!s || !s.textContent) return;
+        if (s.textContent.includes('locating')) s.textContent = 'locating...';
+        if (s.textContent.includes('sending')) s.textContent = 'sending...';
+        if (s.textContent) {
+          s.textContent = s.textContent.replace(/ /g, 
+            s.textContent.includes('HTTP') || s.textContent.includes('OK') ? ' - ' : '.'
+          );
+        }      });
+    }, 300);
+  </script>
+  <!-- <script>
+    function renderCards(items){
+      const wrap = document.getElementById('cards');
+      const st = document.getElementById('cardsStatus');
+      if(!wrap||!st) return;
+      wrap.innerHTML = '';
+      if (!Array.isArray(items) || !items.length) { st.textContent = 'no results'; st.className = 'status warn'; return; }
+      st.textContent = items.length + ' items'; st.className = 'status ok';
+      const svgMap = '<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="#7aa2f7" stroke-width="1.5" fill="none"/><circle cx="12" cy="11" r="2.5" stroke="#7aa2f7" stroke-width="1.5"/></svg>';
+      const toStars = (r)=>{ const v = Number(r||0); let out=''; for(let i=1;i<=5;i++){ out += i<=Math.round(v) ? '' : ''; } return out; };
+      const meter = (m)=> m==null ? '' : (m>=1000 ? (m/1000).toFixed(1)+' km' : Math.round(m)+' m');
+      items.forEach(p=>{
+        const href = p.googleMapsUri || p.directionsUrl || p.reviewsUrl || '#';
+        const title = p.name || '(unknown)';
+        const addr = p.address || '';
+        const dist = meter(p.distanceMeters);
+        const rating = p.rating ?? null;
+        const openNow = (p.isOpenNow === true);
+        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow ? '#38d39f':'#ff6b6b'};display:inline-block"></span><span class="muted">${openNow ? 'Open':'Closed'}</span></span>`;
+        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
+        const addrLine = addr ? `<div class="rowline"><a class="muted" href="${href}" target="_blank" rel="noopener" title="Map" style="color:var(--muted);">${addr}</a></div>` : '';
+        const phoneLine = p.phoneNumber ? `<div class="rowline"><span class="muted">Phone</span><a href="tel:${p.phoneNumber}" style="color:var(--muted);text-decoration:none;">${p.phoneNumber}</a></div>` : '';
+        const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
+        const count = p.userRatingCount!=null ? ` (<span class="muted">${p.userRatingCount}</span>)` : '';
+        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span>${Number(rating).toFixed(1)}${count}</span></div>` : '';
+        const badges = [];
+        const flag = (cond,label)=>{ if(cond===true) badges.push(`<span class="badge">${label}</span>`); };
+        flag(p.isReservable,'Reservable');
+        flag(p.servesVegetarianFood,'Vegetarian');
+        flag(p.hasDineIn,'Dine-in');
+        flag(p.hasTakeout,'Takeout');
+        flag(p.hasDelivery,'Delivery');
+        flag(p.hasRestroom,'Restroom');
+        flag(p.isGoodForGroups,'Groups');
+        flag(p.isGoodForChildren,'Kids');
+        flag(p.allowsDogs,'Dogs');
+        flag(p.acceptsCards,'Cards');
+        flag(p.acceptsCash,'Cash');
+        flag(p.hasOutdoorSeating,'Outdoor');
+        flag(p.hasLiveMusic,'Live music');
+        flag(p.hasMenuForChildren,'Kids menu');
+        flag(p.servesCoffee,'Coffee');
+        flag(p.hasFreeParking,'Free parking');
+        flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
+        flag(p.hasWheelchairAccessibleRestroom,'Wheelchair restroom');
+        const phone = p.phoneNumber ? `<span class="badge"> ${p.phoneNumber}</span>` : '';
+        const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
+        //const count = p.userRatingCount!=null  `<span class="badge">${p.userRatingCount} reviews</span>` : '';
         const type = p.type ? `<span class="badge">${p.type}</span>` : '';
         const price = p.priceRange ? `<span class="badge">${p.priceRange}</span>` : '';
         const fuels = Array.isArray(p.fuelOptions)&&p.fuelOptions.length ? `<span class="badge">Fuel: ${p.fuelOptions.join(', ')}</span>` : '';
@@ -281,6 +260,104 @@
         wrap.appendChild(div.firstChild);
       });
     }
+  </script> -->
+  <script>
+    function renderCards(items) {
+      const wrap = document.getElementById('cards');
+      const st = document.getElementById('cardsStatus');
+      if (!wrap || !st) return;
+      wrap.innerHTML = '';
+      if (!Array.isArray(items) || !items.length) {
+        st.textContent = 'no results'; st.className = 'status warn'; return;
+      }
+      st.textContent = items.length + ' items'; st.className = 'status ok';
+
+      const meter = (m) => m == null ? '' : (m >= 1000 ? (m / 1000).toFixed(1) + ' km' : Math.round(m) + ' m');
+      const currencySymbol = () => {
+        try {
+          const lang = String(navigator.language || 'en-US').toUpperCase();
+          if (/US|CA|AU|NZ/.test(lang)) return '$';
+          if (/GB|UK/.test(lang)) return '£';
+          if (/DE|FR|ES|IT|NL|PT|IE|BE|AT|FI|GR|SK|SI|LV|LT|EE|LU|CY|MT|EU/.test(lang)) return '€';
+          if (/IN/.test(lang)) return '₹';
+          if (/JP/.test(lang)) return '¥';
+        } catch (_) {}
+        return '$';
+      };
+      const buildStars = (r) => {
+        const v = Math.max(0, Math.min(5, Number(r || 0)));
+        let out = '';
+        for (let i = 1; i <= 5; i++) {
+          const fill = Math.max(0, Math.min(1, v - (i - 1)));
+          const pct = fill >= 1 ? 100 : (fill >= 0.5 ? 50 : 0);
+          if (pct === 0) out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span></span>';
+          else if (pct === 100) out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span><span style="position:absolute;left:0;top:0;width:100%;overflow:hidden;color:#f7c948">★</span></span>';
+          else out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span><span style="position:absolute;left:0;top:0;width:50%;overflow:hidden;color:#f7c948">★</span></span>';
+        }
+        return out;
+      };
+
+      const usedKeys = new Set(['id','name','isOpenNow','address','phoneNumber','distanceMeters','rating','userRatingCount','priceRange','googleMapsUri','websiteUri','reviewsUrl','directionsUrl','mapsUrl','location']);
+
+      items.forEach((p) => {
+        const name = p?.name || '(unknown)';
+        const addr = typeof p?.address === 'string' ? p.address : (p?.address || '');
+        const mapsHref = p?.googleMapsUri || p?.reviewsUrl || (addr ? ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr)) : '#');
+        const dirHref = p?.directionsUrl || mapsHref;
+        const phone = p?.phoneNumber || '';
+        const dist = meter(p?.distanceMeters);
+        const rating = (typeof p?.rating === 'number') ? p.rating : null;
+        const count = (typeof p?.userRatingCount === 'number') ? p.userRatingCount : null;
+        const cur = currencySymbol();
+        const pr = Number(p?.priceRange);
+        const openNow = p?.isOpenNow === true;
+
+        // Line 1: Name + Open/Closed dot on right
+        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow ? '#38d39f' : '#ff6b6b'};display:inline-block"></span><span style="color:#9aa3b2;">${openNow ? 'Open' : 'Closed'}</span></span>`;
+        const line1 = `<div style="display:flex;align-items:center;gap:8px;font-weight:700;">${name}${statusDot}</div>`;
+
+        // Line 2: Address link to Google + copy
+        const line2 = addr ? `<div class="rowline"><a href="${dirHref}" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:none;">${addr}</a><button type="button" title="Copy address" style="background:none;border:none;color:#9aa3b2;cursor:pointer;margin-left:6px;" onclick="navigator.clipboard.writeText('${String(addr).replace(/'/g,'&#39;')}')">📋</button></div>` : '';
+
+        // Line 3: Phone tel: + copy
+        const line3 = phone ? `<div class="rowline"><span style="color:var(--muted);">☎</span><a href="tel:${phone}" style="color:var(--muted);text-decoration:none;margin-left:4px;">${phone}</a><button type="button" title="Copy phone" style="background:none;border:none;color:#9aa3b2;cursor:pointer;margin-left:6px;" onclick="navigator.clipboard.writeText('${String(phone).replace(/'/g,'&#39;')}')">📋</button></div>` : '';
+
+        // Line 4: Distance
+        const line4 = dist ? `<div class="rowline"><span style="color:var(--muted);">Distance</span><span>${dist}</span></div>` : '';
+
+        // Line 5: Stars + rating + (count)
+        const stars = rating != null ? buildStars(rating) : '';
+        const line5 = rating != null ? `<div class="rowline"><span class="stars" aria-label="rating">${stars}</span><span>${rating.toFixed(1)}${count!=null?` (${count})`:''}</span></div>` : '';
+
+        // Line 6: Price row with locale symbol
+        let line6 = '';
+        if (Number.isFinite(pr)) {
+          const filled = Math.max(0, Math.min(5, Math.round(pr)));
+          const row = Array.from({length:5}).map((_,i)=> `<span style="color:${i<filled ? '#e6eaf2' : '#555'}">${cur}</span>`).join('');
+          line6 = `<div class="rowline"><span style="color:var(--muted);">Price</span><span>${row}</span></div>`;
+        }
+
+        // Line 7: More details badges for remaining non-null/true scalars
+        const extras = [];
+        try {
+          Object.keys(p || {}).forEach((k) => {
+            if (usedKeys.has(k)) return;
+            const v = p[k];
+            if (v === true) extras.push(`<span class="badge">${k}</span>`);
+            else if (v != null && v !== false && v !== '' && !(Array.isArray(v) && v.length === 0) && typeof v !== 'object') {
+              extras.push(`<span class="badge">${k}: ${String(v)}</span>`);
+            }
+          });
+        } catch(_) {}
+        const line7 = extras.length ? `<details><summary>More details</summary><div style="margin-top:6px;">${extras.join(' ')}</div></details>` : '';
+
+        const html = `<div class="place">${line1}${line2}${line3}${line4}${line5}${line6}${line7}</div>`;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        wrap.appendChild(div.firstChild);
+      });
+    }
   </script>
   </body>
   </html>
+  

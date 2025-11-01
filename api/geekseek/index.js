@@ -136,10 +136,9 @@ export default async function handler(req, res) {
     return undefined;
   };
 
-  const envMockRaw = process.env.GEEKSEEK_TEST_MODE;
-  const mock = parseBool(envMockRaw) ?? true;
+  const mock = parseBool(process.env.GEEKSEEK_TEST_MODE) ?? false;
   try {
-    console.log("[geekseek] env.GEEKSEEK_TEST_MODE=", envMockRaw);
+    //console.log("[geekseek] env.GEEKSEEK_TEST_MODE=", envMockRaw);
     console.log("[geekseek] mock=", mock, "source=", envMockRaw != null ? "env" : "default");
   } catch(_){}
   const needsClientLocation = nearbyIntent && (input.location.lat == null || input.location.lng == null);
@@ -215,15 +214,15 @@ export default async function handler(req, res) {
       results = results.filter((r) => r.priceLevel == null || allowed.has(Number(r.priceLevel)));
     }
     results.sort((a, b) => {
-      const da = a.distanceMeters ?? 1e12,
-        db = b.distanceMeters ?? 1e12;
-      if (da !== db) return da - db;
-      const oa = a.openNow === true ? 1 : 0,
-        ob = b.openNow === true ? 1 : 0;
-      if (oa !== ob) return ob - oa;
-      const ra = typeof a.rating === "number" ? a.rating : -1,
-        rb = typeof b.rating === "number" ? b.rating : -1;
-      return rb - ra;
+      const oa = a.openNow === true ? 1 : 0;
+      const ob = b.openNow === true ? 1 : 0;
+      if (oa !== ob) return ob - oa; // open first
+      const da = a.distanceMeters ?? 1e12;
+      const db = b.distanceMeters ?? 1e12;
+      if (da !== db) return da - db; // nearest first
+      const ra = typeof a.rating === "number" ? a.rating : -1;
+      const rb = typeof b.rating === "number" ? b.rating : -1;
+      return rb - ra; // highest rating first
     });
 
     const limited = results.slice(0, input.limit);
@@ -241,7 +240,7 @@ export default async function handler(req, res) {
         address: addr ?? null,
         userRatingCount: r.userRatingCount ?? r.reviewCount ?? null,
         type: r.type ?? (Array.isArray(r.categories) ? r.categories[0] : null),
-        priceRange: r.priceRange ?? null,
+        priceRange: (r.priceRange != null ? r.priceRange : (typeof r.priceLevel === "number" ? (r.priceLevel + 1) : null)),
         phoneNumber: r.phoneNumber ?? r.phone ?? null,
         location: { latitude: loc.lat ?? loc.latitude ?? null, longitude: loc.lng ?? loc.longitude ?? null },
         googleMapsUri: r.googleMapsUri ?? r.mapsUrl ?? null,
