@@ -84,9 +84,6 @@
       <div class="note" style="margin-top:12px;">Tip: Use “near me/nearby/around me” in your query to trigger geolocation automatically. If denied, we use default location handling.</div>
     </div>
 
-    
-
-    
     <script>
       const el = (id) => document.getElementById(id);
       el('fillNearMe').addEventListener('click', () => {
@@ -97,11 +94,20 @@
       el('send').addEventListener('click', async () => {
         const qtext = (el('q').value || '').trim();
         const payload = { q: qtext, type: 'places' };
-        const wantGeo = /\\b(near\\s*me|around\\s*me|nearby|close\\s*by|close\\s*to\\s*me)\\b/i.test(qtext);
-        const doFetch = async (body) => {
+        const wantGeo = /\b(near\s*me|around\s*me|nearby|close\s*by|close\s*to\s*me)\b/i.test(qtext);
+        const doFetch = async (body, tried = false) => {
           try {
             const r = await fetch('/api/geekseek', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
             const data = await r.json().catch(() => ({}));
+            if (data && data.action === 'request_client_location' && !tried && navigator.geolocation) {
+              return navigator.geolocation.getCurrentPosition(
+                async (pos) => {
+                  const { latitude, longitude } = pos.coords || {};
+                  await doFetch({ ...body, lat: latitude, lng: longitude }, true);
+                },
+                async () => { renderCards(Array.isArray(data?.body) ? data.body : []); }
+              );
+            }
             renderCards(Array.isArray(data?.body) ? data.body : []);
           } catch (e) { console.log('[playground] request error', e); }
         };
