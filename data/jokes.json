@@ -8,21 +8,16 @@
     "categories": ["programmer", "database", "sql"]
   },
   {
-    "text": "HR called — they said you need to attend the 'mandatory fun' meeting.",
+    "text": "HR called, they said you need to attend the 'mandatory fun' meeting.",
     "categories": ["hr", "office", "meetings"]
   },
   {
-    "text": "C++ developers never die — they just go out of scope.",
+    "text": "C++ developers never die, they just go out of scope.",
     "categories": ["programmer", "C++"]
   },
   {
-    "text": "Our team runs like a well-oiled machine — mostly leaking and full of noise.",
+    "text": "Our team runs like a well-oiled machine, mostly leaking and full of noise.",
     "categories": ["office", "humor", "team"]
-  },
-  {
-    "q": "What's a programmer's favorite place in the house?",
-    "a": "The living ROOM!",
-    "categories": ["programmer", "pun"]
   },
   {
     "q": "Why do programmers prefer dark mode?",
@@ -30,7 +25,7 @@
     "categories": ["programmer", "ui"]
   },
   {
-    "text": "Documentation is like true love — it exists only in fairy tales.",
+    "text": "Documentation is like true love, it exists only in fairy tales.",
     "categories": ["programmer", "documentation"]
   },
   {
@@ -142,7 +137,7 @@
     "categories": ["hardware", "cybersecurity", "pun"]
   },
   {
-    "text": "Gamers don’t age — they just respawn slower.",
+    "text": "Gamers don’t age, they just respawn slower.",
     "categories": ["gaming", "humor"]
   },
   {
@@ -151,7 +146,7 @@
     "categories": ["programmer", "hardware", "pun"]
   },
   {
-    "text": "Space engineers have stellar careers — but sometimes they need more space.",
+    "text": "Space engineers have stellar careers, but sometimes they need more space.",
     "categories": ["space", "pun", "science"]
   },
   {
@@ -232,7 +227,7 @@
     "categories": ["hardware", "pun"]
   },
   {
-    "text": "A good commit message is like a good joke — if you have to explain it, it’s bad.",
+    "text": "A good commit message is like a good joke, if you have to explain it, it’s bad.",
     "categories": ["programmer", "git", "humor"]
   },
   {
@@ -250,7 +245,7 @@
     "categories": ["database", "pun"]
   },
   {
-    "text": "Every startup has a mascot — it’s usually an overworked developer.",
+    "text": "Every startup has a mascot, it’s usually an overworked developer.",
     "categories": ["startup", "office", "humor"]
   },
   {
@@ -313,7 +308,7 @@
     "categories": ["startup", "frontend", "pun"]
   },
   {
-    "text": "Some people dream of success — developers dream of 0 errors.",
+    "text": "Some people dream of success, developers dream of 0 errors.",
     "categories": ["programmer", "humor"]
   },
   {
@@ -340,7 +335,7 @@
     "categories": ["cybersecurity", "ui"]
   },
   {
-    "text": "Being a full-stack developer means you fix everything — including the coffee machine.",
+    "text": "Being a full-stack developer means you fix everything, including the coffee machine.",
     "categories": ["programmer", "office", "humor"]
   },
   {
@@ -367,7 +362,7 @@
     "categories": ["space", "pun"]
   },
   {
-    "text": "I once dated a UI designer — but it just didn’t feel right.",
+    "text": "I once dated a UI designer, but it just didn’t feel right.",
     "categories": ["ui", "frontend", "pun"]
   },
   {
@@ -403,7 +398,7 @@
     "categories": ["hardware", "music", "pun"]
   },
   {
-    "text": "AI may never replace humans — it still can’t explain project deadlines.",
+    "text": "AI may never replace humans, it still can’t explain project deadlines.",
     "categories": ["ai", "office", "humor"]
   },
   {
@@ -435,7 +430,7 @@
     "categories": ["ai", "humor"]
   },
   {
-    "text": "Frontend developers live in CSS hell — where divs never align and margins betray.",
+    "text": "Frontend developers live in CSS hell, where divs never align and margins betray.",
     "categories": ["frontend", "humor"]
   },
   {
@@ -444,7 +439,7 @@
     "categories": ["science", "pun"]
   },
   {
-    "text": "My boss said to think outside the box — so I quit Slack.",
+    "text": "My boss said to think outside the box, so I quit Slack.",
     "categories": ["office", "startup", "humor"]
   },
   {
@@ -471,7 +466,7 @@
     "categories": ["space", "pun"]
   },
   {
-    "text": "I finally understand recursion — now I need to explain it to myself again.",
+    "text": "I finally understand recursion, now I need to explain it to myself again.",
     "categories": ["programmer", "math", "humor"]
   },
   {
@@ -507,7 +502,7 @@
     "categories": ["startup", "space", "humor"]
   },
   {
-    "text": "Science is magic — just with better documentation.",
+    "text": "Science is magic, just with better documentation.",
     "categories": ["science", "humor"]
   },
   {
@@ -522,7 +517,7 @@
   },
   {
     "q": "What’s a gamer’s favorite programming language?",
-    "a": "C# — it has the best respawn mechanics.",
+    "a": "C#, it has the best respawn mechanics.",
     "categories": ["gaming", "programmer", "pun"]
   },
   {
