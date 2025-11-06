@@ -31,24 +31,16 @@ function buildPromptLines(input) {
   if (input.filters?.servesVegetarianFood === true) lines.push(`- Serves vegetarian food`);
   if (input.filters?.hasTakeout === true) lines.push(`- Has takeout`);
   if (input.filters?.hasDelivery === true) lines.push(`- Has delivery`);
-  if (input.filters?.hasRestroom === true) lines.push(`- Has restroom`);
-  if (input.filters?.isGoodForGroups === true) lines.push(`- Good for groups`);
-  if (input.filters?.isGoodForChildren === true) lines.push(`- Good for children`);
-  if (input.filters?.allowsDogs === true) lines.push(`- Allows dogs`);
   if (input.filters?.hasDineIn === true) lines.push(`- Has dine-in`);
   if (input.filters?.hasOutdoorSeating === true) lines.push(`- Has outdoor seating`);
-  if (input.filters?.hasLiveMusic === true) lines.push(`- Has live music`);
-  if (input.filters?.hasMenuForChildren === true) lines.push(`- Has menu for children`);
-  if (input.filters?.servesCoffee === true) lines.push(`- Serves coffee`);
   if (input.filters?.hasFreeParking === true) lines.push(`- Has free parking`);
   if (input.filters?.hasPaidParking === true) lines.push(`- Has paid parking`);
   if (input.filters?.hasWheelchairAccessibleParking === true) lines.push(`- Wheelchair accessible parking`);
-  if (input.filters?.hasWheelchairAccessibleRestroom === true) lines.push(`- Wheelchair accessible restroom`);
   if (Array.isArray(input.filters?.cuisines) && input.filters.cuisines.length) lines.push(`- That offer cuisines: ${input.filters.cuisines.join(", ")}`);
   if (input.category) lines.push(`- Category: ${input.category}`);
   const saidParking = /\bparking\b/i.test(qText);
   if (input.filters?.amenities?.parking?.available === true || saidParking) lines.push(`- Which offer car parking`);
-  lines.push(`- Return at least ${input.limit ?? 50} distinct venues when possible`);
+  lines.push(`- Return at least ${input.limit ?? 20} distinct venues when possible`);
   lines.push(`- Sort by distance ascending; if distance ties, prefer open venues, otherwise higher rating`);
   return lines;
 }
@@ -78,10 +70,10 @@ function buildSinglePrompt({ input, lines }) {
     "- amenities: include wheelchairAccessible, parking{available,valet,street,lot}, wifi{available,free}, etc.",
     "- Include address, phone, website, google-mapsUrl if available; else null.",
     "- Include categories and cuisines when applicable; else [] or null.",
-    "- Include location {lat,lng} and distanceMeters (approximate allowed).",
+    "- Include distanceMeters when available (approximate allowed).",
     "- Include a feature photo in photos array if available; else [].",
     "- Provide source {provider,url} and set confidence 0..1 for the match quality.",
-    "- Each Place MUST include keys: id, name, isOpenNow, address (string), userRatingCount, type, priceRange, phoneNumber, location{latitude,longitude}, googleMapsUri, websiteUri, isReservable, servesVegetarianFood, hasDineIn, hasTakeout, hasDelivery, hasRestroom, isGoodForGroups, isGoodForChildren, allowsDogs, rating, acceptsCards, acceptsCash, hasOutdoorSeating, hasLiveMusic, hasMenuForChildren, servesCoffee, directionsUrl, reviewsUrl, hasFreeParking, hasWheelchairAccessibleParking, hasWheelchairAccessibleRestroom, fuelOptions[]. Missing -> null.",
+    "- Each Place MUST include keys: id, name, isOpenNow, address (string), userRatingCount, type, priceRange, phoneNumber, googleMapsUri, websiteUri, isReservable, servesVegetarianFood, hasDineIn, hasTakeout, hasDelivery, rating, acceptsCards, acceptsCash, hasOutdoorSeating, directionsUrl, reviewsUrl, hasFreeParking, hasWheelchairAccessibleParking. Missing -> null.",
   ].join("\n");
   const body = [
     "",
@@ -98,7 +90,7 @@ async function callOpenAIAPI({ promptText }) {
   const apiKey = process.env.OPENAI_API_KEY;
   const url = "https://api.openai.com/v1/chat/completions";
   const body = {
-    model: process.env.OPENAI_MODEL || "gpt-4o-mini-high",
+    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
     messages: [ { role: "user", content: promptText } ],
     response_format: { type: "json_object" }
   };
@@ -209,30 +201,22 @@ export default async function handler(req, res) {
       p.distanceMeters = (i + 1) * 450;
       p.rating = 4.6;
       p.reviewCount = 1234 + i * 11;
-      // Flattened fields to ensure truthy badges
-      p.isReservable = true;
-      p.servesVegetarianFood = true;
-      p.hasDineIn = true;
-      p.hasTakeout = true;
-      p.hasDelivery = true;
-      p.hasRestroom = true;
-      p.isGoodForGroups = true;
-      p.isGoodForChildren = true;
-      p.allowsDogs = true;
-      p.acceptsCards = true;
-      p.acceptsCash = true;
-      p.hasOutdoorSeating = true;
-      p.hasLiveMusic = (i % 2 === 0);
-      p.hasMenuForChildren = true;
-      p.servesCoffee = true;
-      p.hasFreeParking = true;
-      p.hasWheelchairAccessibleParking = true;
-      p.hasWheelchairAccessibleRestroom = true;
+      // Flattened fields with diversity
+      if (p.isReservable == null) p.isReservable = i % 3 !== 0;
+      if (p.servesVegetarianFood == null) p.servesVegetarianFood = i % 2 === 0;
+      if (p.hasDineIn == null) p.hasDineIn = true;
+      if (p.hasTakeout == null) p.hasTakeout = i % 4 !== 0;
+      if (p.hasDelivery == null) p.hasDelivery = i % 3 !== 2;
+      if (p.acceptsCards == null) p.acceptsCards = true;
+      if (p.acceptsCash == null) p.acceptsCash = i % 2 === 1;
+      if (p.hasOutdoorSeating == null) p.hasOutdoorSeating = i % 2 === 0;
+      if (p.hasFreeParking == null) p.hasFreeParking = i % 3 === 0;
+      if (p.hasWheelchairAccessibleParking == null) p.hasWheelchairAccessibleParking = i % 2 === 0;
       // URLs
-      p.googleMapsUri = p.mapsUrl || "https://maps.google.com";
-      p.website = p.website || "https://example.com";
-      p.directionsUrl = p.directionsUrl || p.googleMapsUri;
-      p.reviewsUrl = p.reviewsUrl || p.googleMapsUri;
+      if (!p.googleMapsUri && p.mapsUrl) p.googleMapsUri = p.mapsUrl;
+      if (!p.googleMapsUri) p.googleMapsUri = `https://maps.google.com/?q=${encodeURIComponent(p.name || `Place ${i + 1}`)}`;
+      if (!p.directionsUrl) p.directionsUrl = p.googleMapsUri;
+      if (!p.reviewsUrl) p.reviewsUrl = p.googleMapsUri;
       return p;
     });
   } else if (!Array.isArray(results)) {
@@ -245,28 +229,21 @@ export default async function handler(req, res) {
       p.reviewCount = 420 + i * 7;
       // Alternate open/closed to show both states
       p.openNow = (i % 3 !== 0);
-      // Flattened truthy flags
-      p.isReservable = true;
-      p.servesVegetarianFood = true;
-      p.hasDineIn = true;
-      p.hasTakeout = true;
-      p.hasDelivery = true;
-      p.hasRestroom = true;
-      p.isGoodForGroups = true;
-      p.isGoodForChildren = true;
-      p.allowsDogs = (i % 2 === 0);
-      p.acceptsCards = true;
-      p.acceptsCash = true;
-      p.hasOutdoorSeating = (i % 2 === 1);
-      p.hasLiveMusic = (i % 4 === 0);
-      p.servesCoffee = true;
-      p.hasFreeParking = (i % 3 === 0);
-      p.hasWheelchairAccessibleParking = true;
-      p.hasWheelchairAccessibleRestroom = true;
-      p.googleMapsUri = p.mapsUrl || "https://maps.google.com";
-      p.website = p.website || "https://example.com";
-      p.directionsUrl = p.directionsUrl || p.googleMapsUri;
-      p.reviewsUrl = p.reviewsUrl || p.googleMapsUri;
+      // Flattened truthy flags with diversity
+      if (p.isReservable == null) p.isReservable = i % 2 === 0;
+      if (p.servesVegetarianFood == null) p.servesVegetarianFood = i % 3 !== 0;
+      if (p.hasDineIn == null) p.hasDineIn = true;
+      if (p.hasTakeout == null) p.hasTakeout = i % 4 !== 1;
+      if (p.hasDelivery == null) p.hasDelivery = i % 3 === 0;
+      if (p.acceptsCards == null) p.acceptsCards = true;
+      if (p.acceptsCash == null) p.acceptsCash = i % 2 !== 0;
+      if (p.hasOutdoorSeating == null) p.hasOutdoorSeating = i % 2 === 0;
+      if (p.hasFreeParking == null) p.hasFreeParking = i % 3 === 0;
+      if (p.hasWheelchairAccessibleParking == null) p.hasWheelchairAccessibleParking = i % 2 === 1;
+      if (!p.googleMapsUri && p.mapsUrl) p.googleMapsUri = p.mapsUrl;
+      if (!p.googleMapsUri) p.googleMapsUri = `https://maps.google.com/?q=${encodeURIComponent(p.name || `Place ${i + 1}`)}`;
+      if (!p.directionsUrl) p.directionsUrl = p.googleMapsUri;
+      if (!p.reviewsUrl) p.reviewsUrl = p.googleMapsUri;
       return p;
     });
   }
@@ -296,7 +273,6 @@ export default async function handler(req, res) {
     // Normalize to requested output keys
     const norm = (r) => {
       const addr = typeof r.address === "string" ? r.address : (r.address ? [r.address.street, r.address.city, r.address.region, r.address.postalCode, r.address.country].filter(Boolean).join(", ") : null);
-      const loc = r.location || {};
       const payments = r.payments || {};
       const am = r.amenities || {};
       const parking = (am.parking || {});
@@ -309,7 +285,6 @@ export default async function handler(req, res) {
         type: r.type ?? (Array.isArray(r.categories) ? r.categories[0] : null),
         priceRange: (r.priceRange != null ? r.priceRange : (typeof r.priceLevel === "number" ? (r.priceLevel + 1) : null)),
         phoneNumber: r.phoneNumber ?? r.phone ?? null,
-        location: { latitude: loc.lat ?? loc.latitude ?? null, longitude: loc.lng ?? loc.longitude ?? null },
         googleMapsUri: r.googleMapsUri ?? r.mapsUrl ?? null,
         websiteUri: r.websiteUri ?? r.website ?? null,
         distanceMeters: r.distanceMeters ?? null,
@@ -318,23 +293,14 @@ export default async function handler(req, res) {
         hasDineIn: r.hasDineIn ?? am.dineIn ?? null,
         hasTakeout: r.hasTakeout ?? r.takeout ?? am.takeout ?? null,
         hasDelivery: r.hasDelivery ?? r.delivery ?? am.delivery ?? null,
-        hasRestroom: r.hasRestroom ?? am.restroom ?? null,
-        isGoodForGroups: r.isGoodForGroups ?? null,
-        isGoodForChildren: r.isGoodForChildren ?? (am.familyFriendly ?? null),
-        allowsDogs: r.allowsDogs ?? am.petFriendly ?? null,
         rating: r.rating ?? null,
         acceptsCards: r.acceptsCards ?? payments.cards ?? null,
         acceptsCash: r.acceptsCash ?? payments.cash ?? null,
         hasOutdoorSeating: r.hasOutdoorSeating ?? am.outdoorSeating ?? null,
-        hasLiveMusic: r.hasLiveMusic ?? null,
-        hasMenuForChildren: r.hasMenuForChildren ?? null,
-        servesCoffee: r.servesCoffee ?? null,
         directionsUrl: r.directionsUrl ?? null,
         reviewsUrl: r.reviewsUrl ?? null,
         hasFreeParking: r.hasFreeParking ?? null,
         hasWheelchairAccessibleParking: r.hasWheelchairAccessibleParking ?? null,
-        hasWheelchairAccessibleRestroom: r.hasWheelchairAccessibleRestroom ?? null,
-        fuelOptions: Array.isArray(r.fuelOptions) ? r.fuelOptions : [],
       };
     };
     results = limited.map(norm);

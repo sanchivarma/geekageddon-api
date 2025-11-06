@@ -150,7 +150,8 @@
         const rating = p.rating ?? null;
         const openNow = (p.isOpenNow === true);
         const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow?'#38d39f':'#ff6b6b'};display:inline-block"></span><span class="muted">${openNow?'Open':'Closed'}</span></span>`;
-        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
+        const globe = p.websiteUri ? `<a href="${p.websiteUri}" target="_blank" rel="noopener" title="Open website" style="display:inline-flex;"><svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#7aa2f7" stroke-width="1.5"/><path d="M12 3c2.5 3 2.5 15 0 18M4.5 9h15M4.5 15h15" stroke="#7aa2f7" stroke-width="1.5" stroke-linecap="round"/></svg></a>` : '';
+        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a>${globe}<a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
         const addrLine = addr ? `<div class="rowline"><a class="muted" href="${dirHref}" target="_blank" rel="noopener" title="Directions" style="color:var(--muted);">${addr}</a></div>` : '';
         const phoneLine = p.phoneNumber ? `<div class="rowline"><span class="muted">Phone</span><a href="tel:${p.phoneNumber}" style="color:var(--muted);text-decoration:none;">${p.phoneNumber}</a></div>` : '';
         const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
@@ -162,25 +163,16 @@
         flag(p.isReservable,'Reservable');
         flag(p.servesVegetarianFood,'Vegetarian');
         flag(p.hasDineIn,'Dine-in');
-        flag(p.hasTakeout,'Takeout');
-        flag(p.hasDelivery,'Delivery');
-        flag(p.hasRestroom,'Restroom');
-        flag(p.isGoodForGroups,'Groups');
-        flag(p.isGoodForChildren,'Kids');
-        flag(p.allowsDogs,'Dogs');
-        flag(p.acceptsCards,'Cards');
-        flag(p.acceptsCash,'Cash');
-        flag(p.hasOutdoorSeating,'Outdoor');
-        flag(p.hasLiveMusic,'Live music');
-        flag(p.hasMenuForChildren,'Kids menu');
-        flag(p.servesCoffee,'Coffee');
-        flag(p.hasFreeParking,'Free parking');
-        flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
-        flag(p.hasWheelchairAccessibleRestroom,'Wheelchair restroom');
+        flag(p.hasTakeout,'Has-Takeout');
+        flag(p.hasDelivery,'Delivery Available');
+        flag(p.acceptsCards,'Accepts Cards');
+        flag(p.acceptsCash,'Accepts Cash');
+        flag(p.hasOutdoorSeating,'Outdoor Seating Available');
+        flag(p.hasFreeParking,'Free Parking');
+        flag(p.hasWheelchairAccessibleParking,'Wheelchair Parking Available');
         const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
         const type = p.type ? `<span class="badge">${p.type}</span>` : '';
-        const fuels = Array.isArray(p.fuelOptions)&&p.fuelOptions.length ? `<span class="badge">Fuel: ${p.fuelOptions.join(', ')}</span>` : '';
-        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,site,fuels,...badges].filter(Boolean).join(' ')}</div></details>`;
+        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,site,...badges].filter(Boolean).join(' ')}</div></details>`;
         const html = `<div class="place">${head}${addrLine}${phoneLine}${distLine}${rateLine}${priceLine}${more}</div>`;
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -192,7 +184,7 @@
     // Fix mis-encoded glyphs without touching original handlers
     document.addEventListener('DOMContentLoaded', () => {
       const note = document.querySelector('.controls .note');
-      if (note) note.textContent = 'Defaults: 100km radius, limit 50, sort distance -> open -> rating.';
+      if (note) note.textContent = 'Defaults: 100km radius, limit 20, sort distance -> open -> rating.';
       const btn = document.getElementById('fillNearMe');
       if (btn) btn.textContent = 'Fill "near me"';
     });
@@ -240,26 +232,17 @@
         flag(p.hasDineIn,'Dine-in');
         flag(p.hasTakeout,'Takeout');
         flag(p.hasDelivery,'Delivery');
-        flag(p.hasRestroom,'Restroom');
-        flag(p.isGoodForGroups,'Groups');
-        flag(p.isGoodForChildren,'Kids');
-        flag(p.allowsDogs,'Dogs');
         flag(p.acceptsCards,'Cards');
         flag(p.acceptsCash,'Cash');
         flag(p.hasOutdoorSeating,'Outdoor');
-        flag(p.hasLiveMusic,'Live music');
-        flag(p.hasMenuForChildren,'Kids menu');
-        flag(p.servesCoffee,'Coffee');
         flag(p.hasFreeParking,'Free parking');
         flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
-        flag(p.hasWheelchairAccessibleRestroom,'Wheelchair restroom');
         const phone = p.phoneNumber ? `<span class="badge"> ${p.phoneNumber}</span>` : '';
         const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
         //const count = p.userRatingCount!=null  `<span class="badge">${p.userRatingCount} reviews</span>` : '';
         const type = p.type ? `<span class="badge">${p.type}</span>` : '';
         const price = p.priceRange ? `<span class="badge">${p.priceRange}</span>` : '';
-        const fuels = Array.isArray(p.fuelOptions)&&p.fuelOptions.length ? `<span class="badge">Fuel: ${p.fuelOptions.join(', ')}</span>` : '';
-        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,price,count,phone,site,fuels,...badges].filter(Boolean).join(' ')}</div></details>`;
+        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,price,count,phone,site,...badges].filter(Boolean).join(' ')}</div></details>`;
         const html = `<div class="place">${head}${addrLine}${distLine}${rateLine}${more}</div>`;
         const div = document.createElement('div');
         div.innerHTML = html;
@@ -303,7 +286,7 @@
         return out;
       };
 
-      const usedKeys = new Set(['id','name','isOpenNow','address','phoneNumber','distanceMeters','rating','userRatingCount','priceRange','googleMapsUri','websiteUri','reviewsUrl','directionsUrl','mapsUrl','location']);
+      const usedKeys = new Set(['id','name','isOpenNow','address','phoneNumber','distanceMeters','rating','userRatingCount','priceRange','googleMapsUri','websiteUri','reviewsUrl','directionsUrl','mapsUrl']);
 
       items.forEach((p) => {
         const name = p?.name || '(unknown)';
