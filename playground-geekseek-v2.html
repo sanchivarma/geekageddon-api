@@ -58,7 +58,7 @@
         <div class="controls">
           <div class="span-3">
             
-            <div class="note">Defaults: 100km radius, limit 20, sort distance� open� rating.</div>
+            <div class="note">Defaults: 50km radius, limit 20, sort distance. open. rating.</div>
           </div>
           <div>
             <button class="btn secondary" id="fillNearMe">Fill near me</button>
@@ -66,7 +66,7 @@
           <div>
             <button class="btn" id="send">Send</button>
           </div>
-          <div class="span-6 note">This page calls <code class="mono">/api/geekseek</code> on the same origin.</div>
+          <div class="span-6 note">This page calls <code class="mono">/api/geek-seek-v2</code> on the same origin.</div>
         </div>
       </div>
 
@@ -81,11 +81,76 @@
 
       <br/>
 
-      <div class="note" style="margin-top:12px;">Tip: Use “near me/nearby/around me” in your query to trigger geolocation automatically. If denied, we use default location handling.</div>
+      <div class="note" style="margin-top:12px;">Tip: Use "near me/nearby/around me" in your query to trigger geolocation automatically. This playground calls <code class="mono">/api/geek-seek-v2</code>.</div>
     </div>
 
     <script>
+      const API_URL = '/api/geek-seek-v2';
       const el = (id) => document.getElementById(id);
+      const GEO_STATE = { status: 'unknown', coords: null };
+      let pendingGeoPromise = null;
+
+      const storeCoords = (coords) => {
+        if (!coords) return null;
+        const normalized = {
+          latitude: Number(coords.latitude),
+          longitude: Number(coords.longitude),
+        };
+        if ([normalized.latitude, normalized.longitude].every(Number.isFinite)) {
+          GEO_STATE.coords = normalized;
+          return normalized;
+        }
+        return null;
+      };
+
+      const requestBrowserLocation = ({ forcePrompt = false } = {}) => {
+        if (!navigator.geolocation) return Promise.resolve(null);
+        if (GEO_STATE.coords && (!forcePrompt || GEO_STATE.status === 'granted')) {
+          return Promise.resolve(GEO_STATE.coords);
+        }
+        if (!forcePrompt && GEO_STATE.status !== 'granted') {
+          return Promise.resolve(GEO_STATE.coords);
+        }
+        if (pendingGeoPromise) return pendingGeoPromise;
+        pendingGeoPromise = new Promise((resolve) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              GEO_STATE.status = 'granted';
+              pendingGeoPromise = null;
+              resolve(storeCoords(pos.coords));
+            },
+            (err) => {
+              pendingGeoPromise = null;
+              if (err && err.code === err.PERMISSION_DENIED) GEO_STATE.status = 'denied';
+              resolve(null);
+            },
+            { enableHighAccuracy: true, timeout: 8000, maximumAge: forcePrompt ? 0 : 60000 }
+          );
+        });
+        return pendingGeoPromise;
+      };
+
+      const initPermissionListener = () => {
+        if (!navigator.permissions || !navigator.permissions.query) return;
+        try {
+          navigator.permissions
+            .query({ name: 'geolocation' })
+            .then((status) => {
+              GEO_STATE.status = status.state;
+              if (status.state === 'granted') requestBrowserLocation({ forcePrompt: false });
+              const handler = () => {
+                GEO_STATE.status = status.state;
+                if (status.state === 'granted') requestBrowserLocation({ forcePrompt: false });
+                if (status.state === 'denied') GEO_STATE.coords = null;
+              };
+              if (typeof status.addEventListener === 'function') status.addEventListener('change', handler);
+              else status.onchange = handler;
+            })
+            .catch(() => {});
+        } catch (_) {}
+      };
+
+      initPermissionListener();
       el('fillNearMe').addEventListener('click', () => {
         const q = el('q');
         const t = (q.value || '').trim();
@@ -93,32 +158,30 @@
       });
       el('send').addEventListener('click', async () => {
         const qtext = (el('q').value || '').trim();
-        const payload = { q: qtext, type: 'places' };
         const wantGeo = /\b(near\s*me|around\s*me|nearby|close\s*by|close\s*to\s*me)\b/i.test(qtext);
-        const doFetch = async (body, tried = false) => {
-          try {
-            const r = await fetch('/api/geekseek', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const data = await r.json().catch(() => ({}));
-            if (data && data.action === 'request_client_location' && !tried && navigator.geolocation) {
-              return navigator.geolocation.getCurrentPosition(
-                async (pos) => {
-                  const { latitude, longitude } = pos.coords || {};
-                  await doFetch({ ...body, lat: latitude, lng: longitude }, true);
-                },
-                async () => { renderCards(Array.isArray(data?.body) ? data.body : []); }
-              );
-            }
-            renderCards(Array.isArray(data?.body) ? data.body : []);
-          } catch (e) { console.log('[playground] request error', e); }
-        };
-        if (wantGeo && navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (pos) => { const { latitude, longitude } = pos.coords || {}; await doFetch({ ...payload, lat: latitude, lng: longitude }); },
-            async () => { await doFetch(payload); },
-            { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
-          );
-        } else {
-          await doFetch(payload);
+        const coords = await requestBrowserLocation({ forcePrompt: wantGeo });
+        const params = new URLSearchParams();
+        if (qtext) params.set('query', qtext);
+        if (coords) {
+          params.set('lat', coords.latitude);
+          params.set('lng', coords.longitude);
+        }
+        params.set('limit', '20');
+        params.set('type', 'pharmacy');
+        params.set('languageCode', (navigator.language || 'de').slice(0, 2));
+        try {
+          const url = `${API_URL}?${params.toString()}`;
+          const r = await fetch(url);
+          const data = await r.json().catch(() => ({}));
+          const items = Array.isArray(data?.items)
+            ? data.items
+            : Array.isArray(data?.results)
+            ? data.results
+            : [];
+          renderCards(items);
+        } catch (e) {
+          console.log('[playground-v2] request error', e);
+          renderCards([]);
         }
       });
     </script>
@@ -184,7 +247,7 @@
     // Fix mis-encoded glyphs without touching original handlers
     document.addEventListener('DOMContentLoaded', () => {
       const note = document.querySelector('.controls .note');
-      if (note) note.textContent = 'Defaults: 100km radius, limit 20, sort distance -> open -> rating.';
+      if (note) note.textContent = 'Defaults: 50km radius, limit 20, sort distance -> open -> rating.';
       const btn = document.getElementById('fillNearMe');
       if (btn) btn.textContent = 'Fill "near me"';
     });
@@ -350,3 +413,7 @@
   </body>
   </html>
   
+
+
+
+

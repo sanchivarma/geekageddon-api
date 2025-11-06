@@ -1,4 +1,4 @@
-import { OPENAI_MODEL } from "../config.js";
+ï»¿import { OPENAI_MODEL } from "../config.js";
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 
@@ -81,10 +81,10 @@ const buildPrompt = ({ userIntent, origin, places, details, limit }) => {
     "- Do NOT invent records or fields; only use provided inputs.",
     "- Output { \"results\": Place[] } with exactly the keys listed.",
     "- If unknown -> null. Arrays may be [].",
-    "- Distances: compute from user_origin and each place’s geometry; include as distanceMeters (rounded).",
+    "- Distances: compute from user_origin and each placeâ€™s geometry; include as distanceMeters (rounded).",
     "- Sorting: distance asc; if equal, open now first; then rating desc.",
     "- Prefer googleMapsUri from details; otherwise build Maps URL using place_id.",
-    "- priceRange: map Google price_level (0–4) to 0–3 by min(price_level, 3).",
+    "- priceRange: map Google price_level (0â€“4) to 0â€“3 by min(price_level, 3).",
     "- openingHours.periods format: [{ \"day\":\"mon|tue|...\", \"open\":\"HH:MM\", \"close\":\"HH:MM\" }].",
     "- payments/amenities: set only if explicitly present; else null.",
     "- Provide source {provider: 'google-places', url: googleMapsUri, confidence: number between 0 and 1}.",
@@ -95,20 +95,28 @@ const buildPrompt = ({ userIntent, origin, places, details, limit }) => {
 export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, places, details, limit }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
   const prompt = buildPrompt({ userIntent, origin, places, details, limit });
-  const response = await fetch(OPENAI_URL, {
-    method: "POST",
+  console.log('[geek-seek-v2] openai.normalize request', {
+    model: OPENAI_MODEL,
+    limit,
+    placesCount: Array.isArray(places) ? places.length : 0,
+    detailsCount: details ? Object.keys(details).length : 0,
+  });  const response = await fetch(OPENAI_URL, {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      Authorization: Bearer ,
     },
     body: JSON.stringify({
       model: OPENAI_MODEL,
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
       temperature: 0,
     }),
   });
-  if (!response.ok) {
+  console.log('[geek-seek-v2] openai.normalize response', {
+    status: response.status,
+    ok: response.ok,
+  });  if (!response.ok) {
     const text = await response.text();
     const error = new Error(`OpenAI request failed with status ${response.status}`);
     error.status = response.status;
@@ -127,7 +135,7 @@ export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, pl
     throw err;
   }
   const results = Array.isArray(parsed?.results) ? parsed.results : [];
-  const sanitized = results.map((item) => sanitizePlace(item));
+  console.log('[geek-seek-v2] openai.normalize results', { count: results.length });  const sanitized = results.map((item) => sanitizePlace(item));
   return sanitized;
 }
 
@@ -147,3 +155,5 @@ const sanitizePlace = (place) => {
   }
   return normalized;
 };
+
+
