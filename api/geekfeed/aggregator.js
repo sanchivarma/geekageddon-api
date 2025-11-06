@@ -11,7 +11,6 @@ import { fetchAnthropicBlog } from "./sources/anthropicBlog.js";
 import { fetchCncfBlog } from "./sources/cncfBlog.js";
 import { fetchReactBlog } from "./sources/reactBlog.js";
 import { fetchNextJsBlog } from "./sources/nextjsBlog.js";
-import { fetchNodeJsBlog } from "./sources/nodeReleases.js";
 import { fetchTypeScriptBlog } from "./sources/typescriptBlog.js";
 import { mergeAndDedupe, sortByRecency } from "./utils/normalize.js";
 import { dedupeStrings } from "./utils/text.js";
@@ -30,7 +29,6 @@ export const SOURCE_CATALOG = [
   { id: "cncf-blog", name: "CNCF Blog", type: "rss", url: "https://www.cncf.io/blog", fetch: fetchCncfBlog },
   { id: "react-blog", name: "React Blog", type: "rss", url: "https://react.dev/blog", fetch: fetchReactBlog },
   { id: "nextjs-blog", name: "Next.js Blog", type: "rss", url: "https://nextjs.org/blog", fetch: fetchNextJsBlog },
-  { id: "nodejs-releases", name: "Node.js Blog", type: "rss", url: "https://nodejs.org", fetch: fetchNodeJsBlog },
   { id: "typescript-blog", name: "TypeScript Blog", type: "rss", url: "https://devblogs.microsoft.com/typescript", fetch: fetchTypeScriptBlog },
 ];
 
@@ -52,6 +50,13 @@ const summarizeSources = (results) => {
     errorMessages: errors.map((item) => item.error?.message).filter(Boolean),
     skippedMessages: skipped.map((item) => item.error?.message).filter(Boolean),
   };
+};
+
+const truncateSummary = (text, limitWords = 100) => {
+  if (!text) return text ?? null;
+  const words = text.trim().split(/\s+/);
+  if (words.length <= limitWords) return text;
+  return `${words.slice(0, limitWords).join(" ")}...`;
 };
 
 export async function aggregateTechNews({ limitPerSource = 10, sourceIds } = {}) {
@@ -99,19 +104,23 @@ export async function aggregateTechNews({ limitPerSource = 10, sourceIds } = {})
 
   const perSource = await Promise.all(tasks);
   const combined = sortByRecency(mergeAndDedupe(perSource.flatMap((entry) => entry.items)));
-  const tags = dedupeStrings(combined.flatMap((item) => item.tags ?? []));
-  const badges = dedupeStrings(combined.flatMap((item) => item.badges ?? []));
-  const categories = dedupeStrings(combined.flatMap((item) => item.categories ?? []));
+  const truncated = combined.map((item) => ({
+    ...item,
+    summary: truncateSummary(item.summary),
+  }));
+  const tags = dedupeStrings(truncated.flatMap((item) => item.tags ?? []));
+  const badges = dedupeStrings(truncated.flatMap((item) => item.badges ?? []));
+  const categories = dedupeStrings(truncated.flatMap((item) => item.categories ?? []));
   const summary = summarizeSources(perSource);
 
   return {
     success: summary.ok > 0,
     fetchedAt: new Date().toISOString(),
     limitPerSource,
-    totalItems: combined.length,
+    totalItems: truncated.length,
     taxonomy: { tags, badges, categories },
     summary,
     sources: perSource.map(({ items, ...meta }) => meta),
-    items: combined,
+    items: truncated,
   };
 }
