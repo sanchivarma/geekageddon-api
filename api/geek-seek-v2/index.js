@@ -47,8 +47,8 @@ export default async function handler(req, res) {
   const parsedTypes = parseArray(req.query.type ?? DEFAULT_TYPE);
   const includedTypes = parsedTypes.slice(0, 5);
   const userIntent = req.query.q ?? req.query.intent ?? `Pharmacies near Berlin`; // default
-  const googleApiKey = 'AIzaSyAem4GVpE9gI1Lj_f1AhuXRyMPB8kTW7zk';
-  const openAIApiKey = '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';
+  const googleApiKey = process.env.GOOGLE_PLACES_API_KEY;
+  const openAIApiKey = process.env.OPENAI_API_KEY;
 
   if (!googleApiKey) {
     return res.status(500).json({
