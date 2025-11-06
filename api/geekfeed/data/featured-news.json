@@ -1,0 +1,57 @@
+[
+  {
+    "id": "feat-1",
+    "title": "Quantum Breakthrough at Geekageddon Labs",
+    "summary": "Geekageddon Labs has demonstrated a fault-tolerant qubit array that stays stable for 24 hours, paving the way for practical quantum services.",
+    "url": "https://geekageddon.com/featured/quantum-breakthrough",
+    "publishedAt": "2025-11-06T09:00:00Z",
+    "author": "Geekageddon Research",
+    "imageUrl": "https://geekageddon.com/images/quantum.jpg",
+    "categories": ["featured", "research"],
+    "tags": ["quantum", "research", "geekageddon"]
+  },
+  {
+    "id": "feat-2",
+    "title": "Geekageddon Launches AI Safety Playbook",
+    "summary": "A comprehensive open-source checklist helps teams audit AI products for bias, hallucinations, and privacy regressions.",
+    "url": "https://geekageddon.com/featured/ai-safety-playbook",
+    "publishedAt": "2025-11-05T14:30:00Z",
+    "author": "Geekageddon Editorial",
+    "imageUrl": "https://geekageddon.com/images/ai-playbook.jpg",
+    "categories": ["featured", "ai"],
+    "tags": ["ai", "safety", "compliance"]
+  },
+  {
+    "id": "feat-3",
+    "title": "State of DevRel 2025",
+    "summary": "Geekageddon surveyed 5,000 developer advocates to understand shifting priorities in a post-genAI world.",
+    "url": "https://geekageddon.com/featured/devrel-2025",
+    "publishedAt": "2025-11-04T08:15:00Z",
+    "author": "Geekageddon Insights",
+    "imageUrl": "https://geekageddon.com/images/devrel.jpg",
+    "categories": ["featured", "community"],
+    "tags": ["devrel", "survey", "community"]
+  },
+  {
+    "id": "feat-4",
+    "title": "Inside Geekageddon’s Infra Overhaul",
+    "summary": "We walk through the migration from legacy VMs to a planet-scale edge mesh built on WebAssembly components.",
+    "url": "https://geekageddon.com/featured/infra-overhaul",
+    "publishedAt": "2025-11-03T17:45:00Z",
+    "author": "Geekageddon Platform Team",
+    "imageUrl": "https://geekageddon.com/images/infra.jpg",
+    "categories": ["featured", "infrastructure"],
+    "tags": ["wasm", "edge", "platform"]
+  },
+  {
+    "id": "feat-5",
+    "title": "Geekageddon Design System v3",
+    "summary": "Our design system now ships with AI-generated accessibility annotations and code-native tokens.",
+    "url": "https://geekageddon.com/featured/design-system-v3",
+    "publishedAt": "2025-11-02T11:20:00Z",
+    "author": "Geekageddon Design",
+    "imageUrl": "https://geekageddon.com/images/design-system.jpg",
+    "categories": ["featured", "design"],
+    "tags": ["design", "a11y", "tokens"]
+  }
+]

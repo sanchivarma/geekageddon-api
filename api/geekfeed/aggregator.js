@@ -22,6 +22,8 @@ import { fetchWebkitBlog } from "./sources/webkitBlog.js";
 import { fetchAwsComputeBlog } from "./sources/awsCompute.js";
 import { fetchGcpDeveloperBlog } from "./sources/gcpDeveloper.js";
 import { fetchAzureDeveloperBlog } from "./sources/azureDeveloper.js";
+import { fetchGeekageddonFeatured } from "./sources/geekageddonFeat.js";
+import { fetchGeekageddonLocal } from "./sources/geekageddonLocal.js";
 import { mergeAndDedupe, sortByRecency } from "./utils/normalize.js";
 import { dedupeStrings } from "./utils/text.js";
 
@@ -50,6 +52,8 @@ export const SOURCE_CATALOG = [
   { id: "aws-compute-blog", name: "AWS Compute Blog", type: "rss", url: "https://aws.amazon.com/blogs/compute", fetch: fetchAwsComputeBlog },
   { id: "gcp-developer-blog", name: "Google Cloud Developers", type: "rss", url: "https://cloud.google.com/blog/topics/developers-practitioners", fetch: fetchGcpDeveloperBlog },
   { id: "azure-developer-blog", name: "Azure Developer Blog", type: "rss", url: "https://devblogs.microsoft.com/azure", fetch: fetchAzureDeveloperBlog },
+  { id: "geekageddon-featured", name: "Geekageddon Featured", type: "local", url: "https://geekageddon.com", fetch: fetchGeekageddonFeatured },
+  { id: "geekageddon-local", name: "Geekageddon Local", type: "local", url: "https://geekageddon.com", fetch: fetchGeekageddonLocal },
 ];
 
 export const SOURCE_IDS = SOURCE_CATALOG.map((source) => source.id);
@@ -128,6 +132,8 @@ export async function aggregateTechNews({ limitPerSource = 10, sourceIds } = {})
     ...item,
     summary: truncateSummary(item.summary),
   }));
+  const featuredNews = truncated.filter((item) => item.source?.id === "geekageddon-featured");
+  const localNews = truncated.filter((item) => item.source?.id === "geekageddon-local");
   const tags = dedupeStrings(truncated.flatMap((item) => item.tags ?? []));
   const badges = dedupeStrings(truncated.flatMap((item) => item.badges ?? []));
   const categories = dedupeStrings(truncated.flatMap((item) => item.categories ?? []));
@@ -141,6 +147,8 @@ export async function aggregateTechNews({ limitPerSource = 10, sourceIds } = {})
     taxonomy: { tags, badges, categories },
     summary,
     sources: perSource.map(({ items, ...meta }) => meta),
+    featuredNews,
+    localNews,
     items: truncated,
   };
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "local-1",
+    "title": "Geekageddon Café Opens in Berlin",
+    "summary": "A new café inside the Berlin R&D hub offers live coding stations, unlimited cold brew, and quantum-safe Wi-Fi.",
+    "url": "https://geekageddon.com/local/berlin-cafe",
+    "publishedAt": "2025-11-05T09:10:00Z",
+    "author": "Geekageddon Local",
+    "location": "Berlin",
+    "categories": ["local", "culture"],
+    "tags": ["berlin", "community"],
+    "imageUrl": "https://geekageddon.com/images/berlin-cafe.jpg"
+  },
+  {
+    "id": "local-2",
+    "title": "Hackathon Winners Build Wearable IDE",
+    "summary": "Students at Geekageddon Montreal prototyped a gesture-powered IDE that runs entirely on AR glasses.",
+    "url": "https://geekageddon.com/local/hackathon-winners",
+    "publishedAt": "2025-11-04T19:45:00Z",
+    "author": "Geekageddon Campus",
+    "location": "Montreal",
+    "categories": ["local", "hackathon"],
+    "tags": ["ar", "education"],
+    "imageUrl": "https://geekageddon.com/images/hackathon.jpg"
+  },
+  {
+    "id": "local-3",
+    "title": "Robotics Guild ships Open-Source Drone Stack",
+    "summary": "Geekageddon Robotics Guild members in Bangalore released a drone autopilot that speaks ROS 3.0 natively.",
+    "url": "https://geekageddon.com/local/robotics-guild",
+    "publishedAt": "2025-11-03T13:00:00Z",
+    "author": "Geekageddon Robotics",
+    "location": "Bangalore",
+    "categories": ["local", "robotics"],
+    "tags": ["drones", "ros"],
+    "imageUrl": "https://geekageddon.com/images/robotics.jpg"
+  },
+  {
+    "id": "local-4",
+    "title": "Geekageddon Nairobi Spins Up Climate Lab",
+    "summary": "A new climate tech residency pairs local scientists with Geekageddon ML mentors to monitor urban heat islands.",
+    "url": "https://geekageddon.com/local/nairobi-climate-lab",
+    "publishedAt": "2025-11-02T07:30:00Z",
+    "author": "Geekageddon Labs",
+    "location": "Nairobi",
+    "categories": ["local", "climate"],
+    "tags": ["climate", "ml"],
+    "imageUrl": "https://geekageddon.com/images/nairobi.jpg"
+  },
+  {
+    "id": "local-5",
+    "title": "Community Spotlight: Accessibility Guild",
+    "summary": "The Accessibility Guild in Austin shipped 25 open-source components for screen-reader-first dashboards.",
+    "url": "https://geekageddon.com/local/a11y-guild",
+    "publishedAt": "2025-11-01T16:05:00Z",
+    "author": "Geekageddon Community",
+    "location": "Austin",
+    "categories": ["local", "accessibility"],
+    "tags": ["a11y", "components"],
+    "imageUrl": "https://geekageddon.com/images/a11y.jpg"
+  }
+]

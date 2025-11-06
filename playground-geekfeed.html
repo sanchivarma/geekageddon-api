@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,6 +18,93 @@
       header h1 {
         margin: 0 0 0.5rem;
         font-size: 2rem;
+      }
+      .highlight-section {
+        margin-bottom: 1.5rem;
+      }
+      .highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+      }
+      .highlight-card {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        border-radius: 0.75rem;
+        padding: 1rem;
+      }
+      .local-card {
+        background: rgba(52, 211, 153, 0.1);
+        border: 1px solid rgba(52, 211, 153, 0.3);
+      }
+      .highlight-card h3 {
+        margin: 0 0 0.4rem;
+        font-size: 1rem;
+      }
+      .highlight-card p {
+        margin: 0;
+        color: #cbd5f5;
+        font-size: 0.9rem;
+      }
+      .card-section {
+        margin: 2rem 0;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+      }
+      @media (min-width: 1200px) {
+        .card-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+      .merged-card {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .merged-card h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      .merged-card a {
+        color: #38bdf8;
+        text-decoration: none;
+      }
+      .merged-card a:hover {
+        text-decoration: underline;
+      }
+      .merged-source {
+        font-size: 0.85rem;
+        color: #94a3b8;
+      }
+      .badge-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.35rem;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+      }
+      .badge-category {
+        background: rgba(252, 211, 77, 0.2);
+        color: #fde68a;
+      }
+      .badge-tag {
+        background: rgba(110, 231, 183, 0.2);
+        color: #a7f3d0;
+      }
+      details.merged-details {
+        margin-top: 0.4rem;
       }
       .source-grid {
         display: grid;
@@ -117,12 +204,28 @@
   <body>
     <header>
       <h1>GeekFeed Preview</h1>
-      <p>Top news fetched from each configured tech source.</p>
+      <p>Top 10 items from each configured tech source.</p>
       <button id="refresh">Refresh</button>
       <div id="status"></div>
     </header>
 
+    <section id="featured-section" class="highlight-section" hidden>
+      <h2>Featured News</h2>
+      <div id="featured-items" class="highlight-grid"></div>
+    </section>
+
+    <section id="local-section" class="highlight-section" hidden>
+      <h2>Local News</h2>
+      <div id="local-items" class="highlight-grid"></div>
+    </section>
+
     <section id="taxonomy"></section>
+
+    <section id="card-section" class="card-section" hidden>
+      <h2>Card View</h2>
+      <div id="card-grid" class="card-grid"></div>
+    </section>
+
     <section class="source-grid" id="sources"></section>
 
     <footer>
@@ -137,15 +240,140 @@
       const sourcesEl = document.getElementById("sources");
       const taxonomyEl = document.getElementById("taxonomy");
       const refreshBtn = document.getElementById("refresh");
+      const featuredSection = document.getElementById("featured-section");
+      const featuredItemsEl = document.getElementById("featured-items");
+      const localSection = document.getElementById("local-section");
+      const localItemsEl = document.getElementById("local-items");
+      const cardSection = document.getElementById("card-section");
+      const cardGrid = document.getElementById("card-grid");
+
+      let sourceNameCache = null;
+
+      const loadSourceNames = async () => {
+        if (sourceNameCache) return sourceNameCache;
+        try {
+          const response = await fetch("/geekfeed/constants.json");
+          if (!response.ok) throw new Error("Failed to load constants");
+          sourceNameCache = await response.json();
+        } catch (_) {
+          sourceNameCache = {};
+        }
+        return sourceNameCache;
+      };
+
+      const fetchFeed = async () => {
+        const response = await fetch("/api/geekfeed?limit=10");
+        if (!response.ok) throw new Error(`Feed request failed with ${response.status}`);
+        return response.json();
+      };
+
+      const renderHighlights = (items, container, wrapper, variant) => {
+        if (!Array.isArray(items) || !items.length) {
+          container.hidden = true;
+          wrapper.innerHTML = "";
+          return;
+        }
+        container.hidden = false;
+        wrapper.innerHTML = "";
+        items.slice(0, 6).forEach((item) => {
+          const card = document.createElement("article");
+          card.className = `highlight-card ${variant === 'local' ? 'local-card' : ''}`;
+          card.innerHTML = `
+            <h3><a href="${item.url}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${item.title ?? "Untitled"}</a></h3>
+            <p>${item.summary ?? ""}</p>
+          `;
+          wrapper.appendChild(card);
+        });
+      };
+
+      const limitWords = (text, maxWords = 50) => {
+        if (!text) return "";
+        const words = text.trim().split(/\s+/);
+        if (words.length <= maxWords) return text;
+        return `${words.slice(0, maxWords).join(" ")}...`;
+      };
+
+      const parseDate = (value) => {
+        if (!value) return 0;
+        const ts = Date.parse(value);
+        return Number.isFinite(ts) ? ts : 0;
+      };
+
+      const takeUnique = (list, seen) =>
+        list.filter((item) => {
+          const key = item?.id ?? `${item?.source?.id ?? "unknown"}-${item?.title ?? Math.random()}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+
+      const renderCards = (payload, sourceNames) => {
+        const failedIds = new Set(
+          (payload.sources || [])
+            .filter((src) => src.status === "error")
+            .map((src) => src.id)
+        );
+
+        const featured = Array.isArray(payload.featuredNews) ? payload.featuredNews : [];
+        const local = Array.isArray(payload.localNews) ? payload.localNews : [];
+        const allItems = Array.isArray(payload.items) ? payload.items.slice() : [];
+
+        const seen = new Set();
+        const localFirst = takeUnique(local, seen);
+        const rest = takeUnique(
+          allItems
+            .filter((item) => item.source?.id !== "geekageddon-featured")
+            .filter((item) => !failedIds.has(item.source?.id))
+            .sort((a, b) => parseDate(b.publishedAt) - parseDate(a.publishedAt)),
+          seen
+        );
+        const merged = [...localFirst, ...rest];
+        if (!merged.length) {
+          cardSection.hidden = true;
+          cardGrid.innerHTML = "";
+          return;
+        }
+
+        cardSection.hidden = false;
+        cardGrid.innerHTML = "";
+        merged.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "merged-card";
+          const sourceId = item.source?.id;
+          const sourceName = sourceNames[sourceId] ?? item.source?.name ?? "GeekFeed Source";
+          const categories = (item.categories || []).filter(Boolean);
+          const tags = (item.tags || []).filter(Boolean);
+          const showDetails = categories.length || tags.length;
+          card.innerHTML = `
+            <h3>${item.title ?? "Untitled"}</h3>
+            <a href="${item.url}" target="_blank" rel="noopener">Open article</a>
+            <div class="merged-source">Source: ${sourceName}</div>
+            <p>${limitWords(item.summary ?? "", 50)}</p>
+            ${
+              showDetails
+                ? `<details class="merged-details"><summary>More details</summary><div class="badge-wrapper">
+                    ${categories.map((c) => `<span class="badge badge-category">${c}</span>`).join("")}
+                    ${tags.map((t) => `<span class="badge badge-tag">${t}</span>`).join("")}
+                  </div></details>`
+                : ""
+            }
+          `;
+          cardGrid.appendChild(card);
+        });
+      };
 
       async function loadFeed() {
         statusEl.textContent = "Loading...";
         sourcesEl.innerHTML = "";
         taxonomyEl.innerHTML = "";
+        cardGrid.innerHTML = "";
         try {
-          const response = await fetch("/api/geekfeed");
-          const payload = await response.json();
+          const [sourceNames, payload] = await Promise.all([loadSourceNames(), fetchFeed()]);
           statusEl.textContent = `Fetched ${payload.totalItems ?? 0} items from ${payload.sources?.length ?? 0} sources at ${payload.fetchedAt}`;
+
+          renderHighlights(payload.featuredNews, featuredSection, featuredItemsEl, "featured");
+          renderHighlights(payload.localNews, localSection, localItemsEl, "local");
+          renderCards(payload, sourceNames);
 
           if (payload.taxonomy) {
             const { tags = [], badges = [], categories = [] } = payload.taxonomy;
@@ -170,7 +398,7 @@
               <h2>${source.name}</h2>
               <div class="source-meta">
                 <a href="${source.url}" target="_blank" rel="noopener">${source.url}</a><br />
-                took ${source.durationMs ?? 0}ms � ${source.count ?? 0} items
+                took ${source.durationMs ?? 0}ms • ${source.count ?? 0} items
                 ${source.error ? `<br /><em>${source.error.message}</em>` : ""}
               </div>
             `;
@@ -183,19 +411,19 @@
                 entry.className = "article";
                 entry.innerHTML = `
                   <a href="${item.url}" target="_blank" rel="noopener">${item.title ?? "Untitled"}</a>
-                  <div class="source-meta">${item.publishedAt ?? ""} � ${item.author ?? "Unknown"}</div>
+                  <div class="source-meta">${item.publishedAt ?? ""} • ${item.author ?? "Unknown"}</div>
                   <p>${item.summary ?? ""}</p>
                 `;
                 if (Array.isArray(item.tags) && item.tags.length) {
-                  const tags = document.createElement("div");
-                  tags.className = "tags";
+                  const tagsEl = document.createElement("div");
+                  tagsEl.className = "tags";
                   item.tags.slice(0, 6).forEach((tag) => {
                     const pill = document.createElement("span");
                     pill.className = "tag";
                     pill.textContent = tag;
-                    tags.appendChild(pill);
+                    tagsEl.appendChild(pill);
                   });
-                  entry.appendChild(tags);
+                  entry.appendChild(tagsEl);
                 }
                 card.appendChild(entry);
               });
@@ -203,6 +431,9 @@
           });
         } catch (error) {
           statusEl.textContent = `Failed to load feed: ${error.message}`;
+          featuredSection.hidden = true;
+          localSection.hidden = true;
+          cardSection.hidden = true;
         }
       }
 
