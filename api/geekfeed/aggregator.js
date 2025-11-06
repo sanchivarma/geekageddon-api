@@ -12,6 +12,16 @@ import { fetchCncfBlog } from "./sources/cncfBlog.js";
 import { fetchReactBlog } from "./sources/reactBlog.js";
 import { fetchNextJsBlog } from "./sources/nextjsBlog.js";
 import { fetchTypeScriptBlog } from "./sources/typescriptBlog.js";
+import { fetchGuardianTech } from "./sources/guardianTech.js";
+import { fetchNewsApiTechnology } from "./sources/newsapiTech.js";
+import { fetchMediastackTech } from "./sources/mediastackTech.js";
+import { fetchTheVerge } from "./sources/verge.js";
+import { fetchArsTechnica } from "./sources/arsTechnica.js";
+import { fetchMozillaHacks } from "./sources/mozillaHacks.js";
+import { fetchWebkitBlog } from "./sources/webkitBlog.js";
+import { fetchAwsComputeBlog } from "./sources/awsCompute.js";
+import { fetchGcpDeveloperBlog } from "./sources/gcpDeveloper.js";
+import { fetchAzureDeveloperBlog } from "./sources/azureDeveloper.js";
 import { mergeAndDedupe, sortByRecency } from "./utils/normalize.js";
 import { dedupeStrings } from "./utils/text.js";
 
@@ -19,6 +29,9 @@ export const SOURCE_CATALOG = [
   { id: "gdelt", name: "GDELT 2.0", type: "news-api", url: "https://www.gdeltproject.org", fetch: fetchGdeltTechNews },
   { id: "hacker-news-search", name: "Hacker News (Algolia)", type: "news-api", url: "https://hn.algolia.com", fetch: fetchHackerNewsSearch },
   { id: "product-hunt", name: "Product Hunt", type: "graphql", url: "https://www.producthunt.com", fetch: fetchProductHunt },
+  { id: "guardian-tech", name: "The Guardian Tech", type: "news-api", url: "https://www.theguardian.com/technology", fetch: fetchGuardianTech },
+  { id: "newsapi-tech", name: "NewsAPI Technology", type: "news-api", url: "https://newsapi.org", fetch: fetchNewsApiTechnology },
+  { id: "mediastack-tech", name: "mediastack Technology", type: "news-api", url: "https://mediastack.com", fetch: fetchMediastackTech },
   { id: "techcrunch", name: "TechCrunch", type: "rss", url: "https://techcrunch.com", fetch: fetchTechCrunch },
   { id: "hacker-news-rss", name: "Hacker News RSS", type: "rss", url: "https://news.ycombinator.com", fetch: fetchHackerNewsRss },
   { id: "google-developers", name: "Google Developers Blog", type: "rss", url: "https://developers.googleblog.com", fetch: fetchGoogleDevelopersBlog },
@@ -30,6 +43,13 @@ export const SOURCE_CATALOG = [
   { id: "react-blog", name: "React Blog", type: "rss", url: "https://react.dev/blog", fetch: fetchReactBlog },
   { id: "nextjs-blog", name: "Next.js Blog", type: "rss", url: "https://nextjs.org/blog", fetch: fetchNextJsBlog },
   { id: "typescript-blog", name: "TypeScript Blog", type: "rss", url: "https://devblogs.microsoft.com/typescript", fetch: fetchTypeScriptBlog },
+  { id: "the-verge", name: "The Verge", type: "rss", url: "https://www.theverge.com", fetch: fetchTheVerge },
+  { id: "ars-technica", name: "Ars Technica", type: "rss", url: "https://arstechnica.com", fetch: fetchArsTechnica },
+  { id: "mozilla-hacks", name: "Mozilla Hacks", type: "rss", url: "https://hacks.mozilla.org", fetch: fetchMozillaHacks },
+  { id: "webkit-blog", name: "WebKit Blog", type: "rss", url: "https://webkit.org/blog", fetch: fetchWebkitBlog },
+  { id: "aws-compute-blog", name: "AWS Compute Blog", type: "rss", url: "https://aws.amazon.com/blogs/compute", fetch: fetchAwsComputeBlog },
+  { id: "gcp-developer-blog", name: "Google Cloud Developers", type: "rss", url: "https://cloud.google.com/blog/topics/developers-practitioners", fetch: fetchGcpDeveloperBlog },
+  { id: "azure-developer-blog", name: "Azure Developer Blog", type: "rss", url: "https://devblogs.microsoft.com/azure", fetch: fetchAzureDeveloperBlog },
 ];
 
 export const SOURCE_IDS = SOURCE_CATALOG.map((source) => source.id);
