@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeekFeed Preview</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 1.5rem;
+        background: #0b1120;
+        color: #e2e8f0;
+      }
+      header {
+        margin-bottom: 1.5rem;
+      }
+      header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+      .source-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
+      .source-card {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
+      }
+      .source-card h2 {
+        margin: 0 0 0.25rem;
+        font-size: 1.1rem;
+      }
+      .source-meta {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin-bottom: 0.75rem;
+      }
+      .article {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .article:last-of-type {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .article a {
+        color: #38bdf8;
+        text-decoration: none;
+      }
+      .article a:hover {
+        text-decoration: underline;
+      }
+      .tags {
+        margin-top: 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .tag {
+        background: rgba(56, 189, 248, 0.15);
+        color: #bae6fd;
+        border-radius: 999px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.75rem;
+      }
+      .status {
+        padding: 0.35rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.15);
+        color: #cbd5f5;
+        font-size: 0.75rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+      }
+      .status.ok {
+        background: rgba(74, 222, 128, 0.15);
+        color: #bbf7d0;
+      }
+      .status.error {
+        background: rgba(248, 113, 113, 0.2);
+        color: #fecaca;
+      }
+      .status.skipped {
+        background: rgba(250, 204, 21, 0.15);
+        color: #fef08a;
+      }
+      footer {
+        margin-top: 2rem;
+        color: #64748b;
+        font-size: 0.85rem;
+      }
+      .taxonomy {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .taxonomy div {
+        background: rgba(148, 163, 184, 0.1);
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+      }
+      code {
+        background: rgba(148, 163, 184, 0.15);
+        padding: 0.1rem 0.35rem;
+        border-radius: 0.35rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>GeekFeed Preview</h1>
+      <p>Top 10 items from each configured tech source.</p>
+      <button id="refresh">Refresh</button>
+      <div id="status"></div>
+    </header>
+
+    <section id="taxonomy"></section>
+    <section class="source-grid" id="sources"></section>
+
+    <footer>
+      <p>
+        Served from <code>/api/geekfeed</code>. Use query parameters like
+        <code>?source=gdelt,techcrunch&amp;limit=5</code> to filter.
+      </p>
+    </footer>
+
+    <script>
+      const statusEl = document.getElementById("status");
+      const sourcesEl = document.getElementById("sources");
+      const taxonomyEl = document.getElementById("taxonomy");
+      const refreshBtn = document.getElementById("refresh");
+
+      async function loadFeed() {
+        statusEl.textContent = "Loading...";
+        sourcesEl.innerHTML = "";
+        taxonomyEl.innerHTML = "";
+        try {
+          const response = await fetch("/api/geekfeed?limit=10");
+          const payload = await response.json();
+          statusEl.textContent = `Fetched ${payload.totalItems ?? 0} items from ${payload.sources?.length ?? 0} sources at ${payload.fetchedAt}`;
+
+          if (payload.taxonomy) {
+            const { tags = [], badges = [], categories = [] } = payload.taxonomy;
+            const createGroup = (label, items) => {
+              if (!items.length) return;
+              const group = document.createElement("div");
+              group.innerHTML = `<strong>${label}</strong>: ${items.slice(0, 12).join(", ")}`;
+              taxonomyEl.appendChild(group);
+            };
+            taxonomyEl.classList.add("taxonomy");
+            createGroup("Tags", tags);
+            createGroup("Badges", badges);
+            createGroup("Categories", categories);
+          }
+
+          (payload.sources || []).forEach((source) => {
+            const card = document.createElement("article");
+            card.className = "source-card";
+            const statusClass = `status ${source.status}`;
+            card.innerHTML = `
+              <span class="${statusClass}">${source.status}</span>
+              <h2>${source.name}</h2>
+              <div class="source-meta">
+                <a href="${source.url}" target="_blank" rel="noopener">${source.url}</a><br />
+                took ${source.durationMs ?? 0}ms • ${source.count ?? 0} items
+                ${source.error ? `<br /><em>${source.error.message}</em>` : ""}
+              </div>
+            `;
+
+            (payload.items || [])
+              .filter((item) => item.source?.id === source.id)
+              .slice(0, 10)
+              .forEach((item) => {
+                const entry = document.createElement("div");
+                entry.className = "article";
+                entry.innerHTML = `
+                  <a href="${item.url}" target="_blank" rel="noopener">${item.title ?? "Untitled"}</a>
+                  <div class="source-meta">${item.publishedAt ?? ""} • ${item.author ?? "Unknown"}</div>
+                  <p>${item.summary ?? ""}</p>
+                `;
+                if (Array.isArray(item.tags) && item.tags.length) {
+                  const tags = document.createElement("div");
+                  tags.className = "tags";
+                  item.tags.slice(0, 6).forEach((tag) => {
+                    const pill = document.createElement("span");
+                    pill.className = "tag";
+                    pill.textContent = tag;
+                    tags.appendChild(pill);
+                  });
+                  entry.appendChild(tags);
+                }
+                card.appendChild(entry);
+              });
+            sourcesEl.appendChild(card);
+          });
+        } catch (error) {
+          statusEl.textContent = `Failed to load feed: ${error.message}`;
+        }
+      }
+
+      refreshBtn.addEventListener("click", loadFeed);
+      loadFeed();
+    </script>
+  </body>
+</html>
