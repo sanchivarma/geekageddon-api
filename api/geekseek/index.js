@@ -17,7 +17,9 @@ function buildPromptLines(input) {
   else if (input.location?.text) lines.push(`- Search within ${km}km of ${input.location.text}`);
   else lines.push(`- Search within ${km}km of my current city`);
   const saidOpen = /\bopen\b/i.test(qText);
-  if (input.filters?.openNow === true || saidOpen) lines.push(`- Which are currently open`);
+  if (input.filters?.openNow === true) lines.push(`- Must be currently open`);
+  else if (saidOpen) lines.push(`- Prefer venues that are open now, but include relevant closed ones`);
+  else lines.push(`- Include venues regardless of open status; mark their current status`);
   if (typeof input.filters?.ratingMin === "number") lines.push(`- With rating >= ${input.filters.ratingMin}`);
   if (input.filters?.isReservable === true) lines.push(`- Reservable`);
   const saidCard = /\bcard(s)?\b/i.test(qText);
@@ -46,29 +48,38 @@ function buildPromptLines(input) {
   if (input.category) lines.push(`- Category: ${input.category}`);
   const saidParking = /\bparking\b/i.test(qText);
   if (input.filters?.amenities?.parking?.available === true || saidParking) lines.push(`- Which offer car parking`);
-  lines.push(`- Limit results to ${input.limit ?? 50}`);
-  lines.push(`- Sort by distance ascending, then currently open first, then rating descending`);
+  lines.push(`- Return at least ${input.limit ?? 50} distinct venues when possible`);
+  lines.push(`- Sort by distance ascending; if distance ties, prefer open venues, otherwise higher rating`);
   return lines;
 }
 
 function buildSinglePrompt({ input, lines }) {
   const header = [
-    "You are a precise local search aggregator.",
+    "You are an expert assistant that helps users find nearby places based on their requests.",
+    "You are a data normalizer. Return ONLY strict JSON matching the provided JSON Schema.",
     "Return only strict JSON. No markdown. No prose.",
-    "Task: Produce a results array of nearby places that match the user intent.",
-    "Rules:",
-    "- Output top N items (N provided) as { \"results\": Place[] } only.",
-    "- Use realistic, publicly verifiable data style; never invent specific facts.",
+    "Task: Produce an array of nearby places that match the user request.",
+    "CRITICAL RULES (READ CAREFULLY):",
+    "- Output up to the requested limit as { \"results\": Place[] } only.",
+    "- Only include places that are well-known, established, and verifiably real",
+    "- If unsure a venue exists, omit it instead of fabricating.",
     "- If a field is unknown, use null, do not guess.",
-    "- Respect location and radius; prioritize distance ascending, then currently open first, then rating descending.",
+    "Map URL (IMPORTANT):",
+    "- googleMapsUri MUST follow this exact format:",
+    "ttps://www.google.com/maps/search/?api=1&query=<ENCODED_NAME>",
+    "- where <ID> is the place id you assign. Do NOT create fake place IDs.",
+    "- Do NOT create fake URLs.",
+    "- If unsure → googleMapsUri = null.",
+    "Place object requirements:",
+    "- Respect location; prioritize distance ascending, then currently open first, then rating descending.",
     "- rating is 0-5 (float), priceLevel is 0-4, reviewCount is integer.",
     "- openingHours.periods: [{ day:mon|tue|..., open:HH:MM, close:HH:MM }] and set currentStatusText when possible.",
     "- payments: include cash/cards/applePay/googlePay when known; else null.",
     "- amenities: include wheelchairAccessible, parking{available,valet,street,lot}, wifi{available,free}, etc.",
-    "- Include address, phone, website, mapsUrl if available; else null.",
+    "- Include address, phone, website, google-mapsUrl if available; else null.",
     "- Include categories and cuisines when applicable; else [] or null.",
     "- Include location {lat,lng} and distanceMeters (approximate allowed).",
-    "- Include a photos array if available; else [].",
+    "- Include a feature photo in photos array if available; else [].",
     "- Provide source {provider,url} and set confidence 0..1 for the match quality.",
     "- Each Place MUST include keys: id, name, isOpenNow, address (string), userRatingCount, type, priceRange, phoneNumber, location{latitude,longitude}, googleMapsUri, websiteUri, isReservable, servesVegetarianFood, hasDineIn, hasTakeout, hasDelivery, hasRestroom, isGoodForGroups, isGoodForChildren, allowsDogs, rating, acceptsCards, acceptsCash, hasOutdoorSeating, hasLiveMusic, hasMenuForChildren, servesCoffee, directionsUrl, reviewsUrl, hasFreeParking, hasWheelchairAccessibleParking, hasWheelchairAccessibleRestroom, fuelOptions[]. Missing -> null.",
   ].join("\n");
@@ -87,7 +98,7 @@ async function callOpenAIAPI({ promptText }) {
   const apiKey = process.env.OPENAI_API_KEY;
   const url = "https://api.openai.com/v1/chat/completions";
   const body = {
-    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+    model: process.env.OPENAI_MODEL || "gpt-4o-mini-high",
     messages: [ { role: "user", content: promptText } ],
     response_format: { type: "json_object" }
   };
@@ -160,6 +171,22 @@ export default async function handler(req, res) {
     ai = { provider: "mock", model: null, results: null, reason: "mock_mode", prompt: { text: promptText } };
   } else {
     ai = await callOpenAIAPI({ promptText });
+  }
+
+  if (!mock && ai.provider === "stub" && ai.reason === "missing_openai_key") {
+    return res.status(503).json({
+      success: false,
+      count: 0,
+      message: "Missing OpenAI API key; set OPENAI_API_KEY to enable live results.",
+      error: "missing_openai_key",
+      body: [],
+      meta: {
+        provider: ai.provider,
+        reason: ai.reason,
+        prompt: ai.prompt ?? { text: promptText },
+        mock,
+      },
+    });
   }
 
   let results = ai.results;
@@ -246,13 +273,13 @@ export default async function handler(req, res) {
 
   if (Array.isArray(results)) {
     // Apply filters and sorting to real or mock results
-    if (typeof input.filters?.openNow === "boolean") {
+    /* if (typeof input.filters?.openNow === "boolean") {
       results = results.filter((r) => r.openNow === input.filters.openNow);
-    }
-    if (Array.isArray(input.filters?.priceLevels) && input.filters.priceLevels.length) {
+    } if (Array.isArray(input.filters?.priceLevels) && input.filters.priceLevels.length) {
       const allowed = new Set(input.filters.priceLevels.map((x) => Number(x)));
       results = results.filter((r) => r.priceLevel == null || allowed.has(Number(r.priceLevel)));
-    }
+    }*/
+    
     results.sort((a, b) => {
       const oa = a.openNow === true ? 1 : 0;
       const ob = b.openNow === true ? 1 : 0;

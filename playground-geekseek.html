@@ -192,7 +192,7 @@
     // Fix mis-encoded glyphs without touching original handlers
     document.addEventListener('DOMContentLoaded', () => {
       const note = document.querySelector('.controls .note');
-      if (note) note.textContent = 'Defaults: 100km radius, limit 20, sort distance -> open -> rating.';
+      if (note) note.textContent = 'Defaults: 100km radius, limit 50, sort distance -> open -> rating.';
       const btn = document.getElementById('fillNearMe');
       if (btn) btn.textContent = 'Fill "near me"';
     });
@@ -320,7 +320,7 @@
 
         // Line 1: Name + Open/Closed dot on right
         const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow ? '#38d39f' : '#ff6b6b'};display:inline-block"></span><span style="color:#9aa3b2;">${openNow ? 'Open' : 'Closed'}</span></span>`;
-        const line1 = `<div style="display:flex;align-items:center;gap:8px;font-weight:700;">${name}${statusDot}</div>`;
+        const line1 = `<div style="display:flex;align-items:center;gap:8px;font-weight:700;"><a href="${mapsHref}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${name}</a>${statusDot}</div>`;
 
         // Line 2: Address link to Google + copy
         const line2 = addr ? `<div class="rowline"><a href="${dirHref}" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:none;">${addr}</a><button type="button" title="Copy address" style="background:none;border:none;color:#9aa3b2;cursor:pointer;margin-left:6px;" onclick="navigator.clipboard.writeText('${String(addr).replace(/'/g,'&#39;')}')">📋</button></div>` : '';
