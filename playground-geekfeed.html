@@ -117,7 +117,7 @@
   <body>
     <header>
       <h1>GeekFeed Preview</h1>
-      <p>Top 10 items from each configured tech source.</p>
+      <p>Top news fetched from each configured tech source.</p>
       <button id="refresh">Refresh</button>
       <div id="status"></div>
     </header>
@@ -143,7 +143,7 @@
         sourcesEl.innerHTML = "";
         taxonomyEl.innerHTML = "";
         try {
-          const response = await fetch("/api/geekfeed?limit=10");
+          const response = await fetch("/api/geekfeed");
           const payload = await response.json();
           statusEl.textContent = `Fetched ${payload.totalItems ?? 0} items from ${payload.sources?.length ?? 0} sources at ${payload.fetchedAt}`;
 
@@ -170,7 +170,7 @@
               <h2>${source.name}</h2>
               <div class="source-meta">
                 <a href="${source.url}" target="_blank" rel="noopener">${source.url}</a><br />
-                took ${source.durationMs ?? 0}ms • ${source.count ?? 0} items
+                took ${source.durationMs ?? 0}ms ï¿½ ${source.count ?? 0} items
                 ${source.error ? `<br /><em>${source.error.message}</em>` : ""}
               </div>
             `;
@@ -183,7 +183,7 @@
                 entry.className = "article";
                 entry.innerHTML = `
                   <a href="${item.url}" target="_blank" rel="noopener">${item.title ?? "Untitled"}</a>
-                  <div class="source-meta">${item.publishedAt ?? ""} • ${item.author ?? "Unknown"}</div>
+                  <div class="source-meta">${item.publishedAt ?? ""} ï¿½ ${item.author ?? "Unknown"}</div>
                   <p>${item.summary ?? ""}</p>
                 `;
                 if (Array.isArray(item.tags) && item.tags.length) {
