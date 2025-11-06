@@ -2,7 +2,7 @@ import { loadLocalNews } from "../utils/localData.js";
 import { normalizeItem } from "../utils/normalize.js";
 
 const SOURCE_ID = "geekageddon-local";
-const SOURCE_NAME = "Geekageddon Local";
+const SOURCE_NAME = "Geek Feed";
 const SOURCE_URL = "https://geekageddon.com";
 
 export async function fetchGeekageddonLocal(limit = 10) {

@@ -45,8 +45,9 @@ export default async function handler(req, res) {
 
   const limit = parseLimit(req.query?.limit);
   const sourceIds = parseSourceIds(req.query?.source);
+  const enabledToggles = parseSourceIds(req.query?.enable);
   try {
-    const result = await aggregateTechNews({ limitPerSource: limit, sourceIds });
+    const result = await aggregateTechNews({ limitPerSource: limit, sourceIds, enabledToggles });
     const hasErrors = result.sources?.some((s) => s.status === "error");
     const status = hasErrors && result.success ? 207 : result.success ? 200 : 503;
     res.setHeader("Cache-Control", "s-maxage=900, stale-while-revalidate=300");

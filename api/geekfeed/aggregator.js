@@ -53,15 +53,37 @@ export const SOURCE_CATALOG = [
   { id: "gcp-developer-blog", name: "Google Cloud Developers", type: "rss", url: "https://cloud.google.com/blog/topics/developers-practitioners", fetch: fetchGcpDeveloperBlog },
   { id: "azure-developer-blog", name: "Azure Developer Blog", type: "rss", url: "https://devblogs.microsoft.com/azure", fetch: fetchAzureDeveloperBlog },
   { id: "geekageddon-featured", name: "Geekageddon Featured", type: "local", url: "https://geekageddon.com", fetch: fetchGeekageddonFeatured },
-  { id: "geekageddon-local", name: "Geekageddon Local", type: "local", url: "https://geekageddon.com", fetch: fetchGeekageddonLocal },
+  { id: "geekageddon-local", name: "Geekageddon Feed", type: "local", url: "https://geekageddon.com", fetch: fetchGeekageddonLocal },
 ];
 
 export const SOURCE_IDS = SOURCE_CATALOG.map((source) => source.id);
 
-const filterSources = (ids) => {
-  if (!ids || ids.length === 0) return SOURCE_CATALOG;
-  const set = new Set(ids);
-  return SOURCE_CATALOG.filter((source) => set.has(source.id));
+const TOGGLED_SOURCE_IDS = new Set([
+  "gdelt",
+  "product-hunt",
+  "openai-blog",
+  "meta-ai-blog",
+  "anthropic-blog",
+  "react-blog",
+  "gcp-developer-blog",
+  "azure-developer-blog",
+  "aws-compute-blog",
+  "mediastack-tech",
+  "newsapi-tech",
+  "guardian-tech"
+]);
+
+const filterSources = (ids, enabledToggles) => {
+  const requestedSet = new Set(ids ?? []);
+  const enabledSet = new Set(enabledToggles ?? []);
+  const base = SOURCE_CATALOG.filter((source) => {
+    if (!TOGGLED_SOURCE_IDS.has(source.id)) return true;
+    if (enabledSet.has(source.id)) return true;
+    if (requestedSet.has(source.id)) return true;
+    return false;
+  });
+  if (!ids || ids.length === 0) return base;
+  return base.filter((source) => requestedSet.has(source.id));
 };
 
 const summarizeSources = (results) => {
@@ -83,8 +105,8 @@ const truncateSummary = (text, limitWords = 100) => {
   return `${words.slice(0, limitWords).join(" ")}...`;
 };
 
-export async function aggregateTechNews({ limitPerSource = 10, sourceIds } = {}) {
-  const selectedSources = filterSources(sourceIds);
+export async function aggregateTechNews({ limitPerSource = 10, sourceIds, enabledToggles } = {}) {
+  const selectedSources = filterSources(sourceIds, enabledToggles);
   if (selectedSources.length === 0) {
     return {
       success: false,

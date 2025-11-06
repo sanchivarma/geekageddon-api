@@ -23,6 +23,6 @@
   "aws-compute-blog": "AWS Compute Blog",
   "gcp-developer-blog": "Google Cloud Developers",
   "azure-developer-blog": "Azure Developer Blog",
-  "geekageddon-featured": "Gg Featured Post",
-  "geekageddon-local": "Geekageddon Blog"
+  "geekageddon-featured": "Geekageddon Featured Post",
+  "geekageddon-local": "Geekageddon Feed"
 }
