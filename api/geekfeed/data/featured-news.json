@@ -6,7 +6,7 @@
     "url": "https://geekageddon.com/featured/quantum-breakthrough",
     "publishedAt": "2025-11-06T09:00:00Z",
     "author": "Geekageddon Research",
-    "imageUrl": "https://geekageddon.com/images/quantum.jpg",
+    "imageUrl": "",
     "categories": ["featured", "research"],
     "tags": ["quantum", "research", "geekageddon"]
   },
@@ -34,7 +34,7 @@
   },
   {
     "id": "feat-4",
-    "title": "Inside Geekageddon’s Infra Overhaul",
+    "title": "Inside Geekageddonï¿½s Infra Overhaul",
     "summary": "We walk through the migration from legacy VMs to a planet-scale edge mesh built on WebAssembly components.",
     "url": "https://geekageddon.com/featured/infra-overhaul",
     "publishedAt": "2025-11-03T17:45:00Z",
