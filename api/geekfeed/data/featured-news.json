@@ -17,7 +17,7 @@
     "url": "https://geekageddon.com/featured/ai-safety-playbook",
     "publishedAt": "2025-11-05T14:30:00Z",
     "author": "Geekageddon Editorial",
-    "imageUrl": "https://geekageddon.com/images/ai-playbook.jpg",
+    "imageUrl": "",
     "categories": ["featured", "ai"],
     "tags": ["ai", "safety", "compliance"]
   },
@@ -28,7 +28,7 @@
     "url": "https://geekageddon.com/featured/devrel-2025",
     "publishedAt": "2025-11-04T08:15:00Z",
     "author": "Geekageddon Insights",
-    "imageUrl": "https://geekageddon.com/images/devrel.jpg",
+    "imageUrl": "",
     "categories": ["featured", "community"],
     "tags": ["devrel", "survey", "community"]
   },
