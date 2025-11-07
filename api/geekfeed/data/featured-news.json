@@ -1,6 +1,7 @@
 [
   {
     "id": "feat-1",
+    "sourceName": "Reuters",
     "title": "Google to Build Massive Infrastructure Investment in Germany",
     "summary": "Google plans its largest-ever investment in Germany including data centres, renewable energy and frontier infrastructure in Munich, Frankfurt and Berlin.",
     "url": "https://www.reuters.com/business/google-announce-largest-ever-investment-plan-germany-handelsblatt-reports-2025-11-06/",
@@ -12,6 +13,7 @@
   },
   {
     "id": "feat-2",
+    "sourceName": "TechCrunch",
     "title": "Sora for Android saw nearly half a million installs on its first day",
     "summary": "The Android launch of the Sora app from OpenAI broke 470,000 installs in one day across multiple markets, signalling strong momentum for consumer-video AI tools.",
     "url": "https://techcrunch.com/2025/11/06/sora-for-android-saw-nearly-half-a-million-installs-on-its-first-day/",
@@ -23,6 +25,7 @@
   },
   {
     "id": "feat-3",
+    "sourceName": "The Guardian",
     "title": "EU Could Delay Key Parts of Landmark AI Act Amid Pressure from Big Tech",
     "summary": "European Commission is considering postponing enforcement of parts of the AI Act, shifting deadlines and easing registration requirements for high-risk AI systems under pressure from industry and U.S. policy actors.",
     "url": "https://www.theguardian.com/world/2025/nov/07/european-commission-ai-artificial-intelligence-act-trump-administration-tech-business",
@@ -34,6 +37,7 @@
   },
   {
     "id": "feat-4",
+    "sourceName": "OpenAI",
     "title": "OpenAI Introduces ChatGPT Atlas",
     "summary": "With Atlas, ChatGPT can come with you anywhere across the web—helping you in the window right where you are, understanding what you’re trying to do, and completing tasks for you, all without copying and pasting or leaving the page.",
     "url": "https://openai.com/index/introducing-chatgpt-atlas/",
@@ -45,6 +49,7 @@
   },
   {
     "id": "feat-5",
+    "sourceName": "TechCrunch",
     "title": "Meta has an AI product problem",
     "summary": "Meta Platforms’s aggressive spending on AI talent and data-infrastructure has yet to deliver clear revenue results, raising concerns among investors about its heavy costs.",
     "url": "https://techcrunch.com/2025/11/02/meta-has-an-ai-product-problem/",

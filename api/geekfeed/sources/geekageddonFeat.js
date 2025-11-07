@@ -10,7 +10,7 @@ export async function fetchGeekageddonFeatured(limit = 10) {
   return items.slice(0, limit).map((item, index) =>
     normalizeItem({
       sourceId: SOURCE_ID,
-      sourceName: item.source?.name ?? SOURCE_NAME,
+      sourceName: item.sourceName ?? SOURCE_NAME,
       sourceUrl: SOURCE_URL,
       sourceType: "local",
       id: item.id ?? `feat-${index}`,
