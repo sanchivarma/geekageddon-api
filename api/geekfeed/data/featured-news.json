@@ -1,57 +1,57 @@
 [
   {
     "id": "feat-1",
-    "title": "NVIDIA Unveils Next-Generation Blackwell GPU Architecture",
-    "summary": "NVIDIA introduced its Blackwell GPU architecture designed for large-scale AI training and inference, promising higher efficiency and lower cost per token.",
-    "url": "https://www.nvidia.com/en-us/data-center/blackwell/",
-    "publishedAt": "2024-03-18T09:00:00Z",
-    "author": "NVIDIA Newsroom",
-    "imageUrl": "https://www.nvidia.com/content/dam/en-zz/Solutions/data-center/blackwell-og-image.jpg",
-    "categories": ["ai", "hardware", "datacenter"],
-    "tags": ["nvidia", "blackwell", "gpu", "ai"]
+    "title": "Google to Build Massive Infrastructure Investment in Germany",
+    "summary": "Google plans its largest-ever investment in Germany including data centres, renewable energy and frontier infrastructure in Munich, Frankfurt and Berlin.",
+    "url": "https://www.reuters.com/business/google-announce-largest-ever-investment-plan-germany-handelsblatt-reports-2025-11-06/",
+    "publishedAt": "2025-11-06T00:00:00Z",
+    "author": "Reuters",
+    "imageUrl": "https://www.reuters.com/resizer/v2/IDFDQ3YY3ZMHBCJDF6FXNAH2QA.jpg?auth=0654e3942eafd64725d33bc0f39f98682e66748e63b14ed25e88e22d363b82ef&width=720&quality=80",
+    "categories": ["infrastructure", "cloud", "investment"],
+    "tags": ["google", "data centres", "renewable energy", "germany"]
   },
   {
     "id": "feat-2",
-    "title": "OpenAI Introduces GPT-5 Preview with Improved Reasoning Capabilities",
-    "summary": "OpenAI announced GPT-5 preview, focusing on reliability, reasoning depth, and multi-step toolchain execution for enterprise workloads.",
-    "url": "https://openai.com/blog",
-    "publishedAt": "2024-09-12T14:30:00Z",
+    "title": "Sora for Android saw nearly half a million installs on its first day",
+    "summary": "The Android launch of the Sora app from OpenAI broke 470,000 installs in one day across multiple markets, signalling strong momentum for consumer-video AI tools.",
+    "url": "https://techcrunch.com/2025/11/06/sora-for-android-saw-nearly-half-a-million-installs-on-its-first-day/",
+    "publishedAt": "2025-11-06T11:48:00Z",
+    "author": "Sarah Perez (TechCrunch)",
+    "imageUrl": "https://techcrunch.com/wp-content/uploads/2025/10/sora-app-GettyImages-2240278671.jpeg?resize=1280,853",
+    "categories": ["ai", "apps", "consumer"],
+    "tags": ["openai", "sora", "android", "video ai"]
+  },
+  {
+    "id": "feat-3",
+    "title": "EU Could Delay Key Parts of Landmark AI Act Amid Pressure from Big Tech",
+    "summary": "European Commission is considering postponing enforcement of parts of the AI Act, shifting deadlines and easing registration requirements for high-risk AI systems under pressure from industry and U.S. policy actors.",
+    "url": "https://www.theguardian.com/world/2025/nov/07/european-commission-ai-artificial-intelligence-act-trump-administration-tech-business",
+    "publishedAt": "2025-11-07T14:54:00Z",
+    "author": "The Guardian",
+    "imageUrl": "https://i.guim.co.uk/img/media/eacd1d1af30f8b9721168a25049ec459957c733d/663_0_7103_5682/master/7103.jpg?width=1900&dpr=2&s=none&crop=none",
+    "categories": ["policy", "ai", "regulation"],
+    "tags": ["eu", "ai act", "regulation", "big tech"]
+  },
+  {
+    "id": "feat-4",
+    "title": "OpenAI Introduces ChatGPT Atlas",
+    "summary": "With Atlas, ChatGPT can come with you anywhere across the web—helping you in the window right where you are, understanding what you’re trying to do, and completing tasks for you, all without copying and pasting or leaving the page.",
+    "url": "https://openai.com/index/introducing-chatgpt-atlas/",
+    "publishedAt": "2025-10-21T14:30:00Z",
     "author": "OpenAI",
-    "imageUrl": "https://openai.com/content/images/2024/04/openai-default.png",
+    "imageUrl": "https://images.ctfassets.net/kftzwdyauwt9/7saYDwdsN5rfcrScPjtR7p/3f820ca3c9ad23a138c037a17248ab75/Homepage.png",
     "categories": ["ai", "models"],
     "tags": ["openai", "gpt5", "reasoning", "llm"]
   },
   {
-    "id": "feat-3",
-    "title": "Apple Launches M3, M3 Pro, and M3 Max Chips",
-    "summary": "Apple revealed its M3 family of chips built on a 3nm process, offering substantial GPU improvements and hardware-accelerated ray tracing.",
-    "url": "https://www.apple.com/newsroom/2023/10/apple-unveils-m3-m3-pro-and-m3-max/",
-    "publishedAt": "2023-10-30T10:00:00Z",
-    "author": "Apple Newsroom",
-    "imageUrl": "https://www.apple.com/newsroom/images/product/mac/standard/Apple-MacBook-Pro-M3-hero-2up-231030_big.jpg",
-    "categories": ["hardware", "apple", "silicon"],
-    "tags": ["apple", "m3", "chips", "performance"]
-  },
-  {
-    "id": "feat-4",
-    "title": "SpaceX Starship Completes Fully Integrated Flight Test",
-    "summary": "SpaceX successfully completed a full ascent, reentry, and splashdown test of its Starship launch system, advancing plans for lunar and Mars missions.",
-    "url": "https://www.spacex.com/updates/",
-    "publishedAt": "2024-06-06T17:45:00Z",
-    "author": "SpaceX",
-    "imageUrl": "https://www.spacex.com/static/images/share.jpg",
-    "categories": ["space", "engineering"],
-    "tags": ["spacex", "starship", "launch", "mars"]
-  },
-  {
     "id": "feat-5",
-    "title": "EU Officially Passes the AI Act",
-    "summary": "The European Union approved the AI Act, creating the world’s first comprehensive legal framework governing AI use, transparency, and safety.",
-    "url": "https://www.europarl.europa.eu/news/en/press-room/20240307IPR19030/artificial-intelligence-act-parliament-adopts-new-rules",
-    "publishedAt": "2024-03-13T11:20:00Z",
-    "author": "European Parliament",
-    "imageUrl": "https://www.europarl.europa.eu/resources/library/images/20240307PHT19034/20240307PHT19034-cl.jpg",
-    "categories": ["policy", "regulation", "ai"],
-    "tags": ["eu", "ai act", "regulation", "compliance"]
+    "title": "Meta has an AI product problem",
+    "summary": "Meta Platforms’s aggressive spending on AI talent and data-infrastructure has yet to deliver clear revenue results, raising concerns among investors about its heavy costs.",
+    "url": "https://techcrunch.com/2025/11/02/meta-has-an-ai-product-problem/",
+    "publishedAt": "2025-11-02T08:00:00Z",
+    "author": "Russell Brandom (TechCrunch)",
+    "imageUrl": "https://techcrunch.com/wp-content/uploads/2024/09/GettyImages-2173579243.jpg?resize=1280,852",
+    "categories": ["ai", "business", "infrastructure"],
+    "tags": ["meta", "ai", "investors", "infrastructure"]
   }
 ]
