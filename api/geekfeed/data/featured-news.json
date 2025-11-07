@@ -1,57 +1,57 @@
 [
   {
     "id": "feat-1",
-    "title": "Quantum Breakthrough at Geekageddon Labs",
-    "summary": "Geekageddon Labs has demonstrated a fault-tolerant qubit array that stays stable for 24 hours, paving the way for practical quantum services.",
-    "url": "https://geekageddon.com/featured/quantum-breakthrough",
-    "publishedAt": "2025-11-06T09:00:00Z",
-    "author": "Geekageddon Research",
-    "imageUrl": "",
-    "categories": ["featured", "research"],
-    "tags": ["quantum", "research", "geekageddon"]
+    "title": "NVIDIA Unveils Next-Generation Blackwell GPU Architecture",
+    "summary": "NVIDIA introduced its Blackwell GPU architecture designed for large-scale AI training and inference, promising higher efficiency and lower cost per token.",
+    "url": "https://www.nvidia.com/en-us/data-center/blackwell/",
+    "publishedAt": "2024-03-18T09:00:00Z",
+    "author": "NVIDIA Newsroom",
+    "imageUrl": "https://www.nvidia.com/content/dam/en-zz/Solutions/data-center/blackwell-og-image.jpg",
+    "categories": ["ai", "hardware", "datacenter"],
+    "tags": ["nvidia", "blackwell", "gpu", "ai"]
   },
   {
     "id": "feat-2",
-    "title": "Geekageddon Launches AI Safety Playbook",
-    "summary": "A comprehensive open-source checklist helps teams audit AI products for bias, hallucinations, and privacy regressions.",
-    "url": "https://geekageddon.com/featured/ai-safety-playbook",
-    "publishedAt": "2025-11-05T14:30:00Z",
-    "author": "Geekageddon Editorial",
-    "imageUrl": "",
-    "categories": ["featured", "ai"],
-    "tags": ["ai", "safety", "compliance"]
+    "title": "OpenAI Introduces GPT-5 Preview with Improved Reasoning Capabilities",
+    "summary": "OpenAI announced GPT-5 preview, focusing on reliability, reasoning depth, and multi-step toolchain execution for enterprise workloads.",
+    "url": "https://openai.com/blog",
+    "publishedAt": "2024-09-12T14:30:00Z",
+    "author": "OpenAI",
+    "imageUrl": "https://openai.com/content/images/2024/04/openai-default.png",
+    "categories": ["ai", "models"],
+    "tags": ["openai", "gpt5", "reasoning", "llm"]
   },
   {
     "id": "feat-3",
-    "title": "State of DevRel 2025",
-    "summary": "Geekageddon surveyed 5,000 developer advocates to understand shifting priorities in a post-genAI world.",
-    "url": "https://geekageddon.com/featured/devrel-2025",
-    "publishedAt": "2025-11-04T08:15:00Z",
-    "author": "Geekageddon Insights",
-    "imageUrl": "",
-    "categories": ["featured", "community"],
-    "tags": ["devrel", "survey", "community"]
+    "title": "Apple Launches M3, M3 Pro, and M3 Max Chips",
+    "summary": "Apple revealed its M3 family of chips built on a 3nm process, offering substantial GPU improvements and hardware-accelerated ray tracing.",
+    "url": "https://www.apple.com/newsroom/2023/10/apple-unveils-m3-m3-pro-and-m3-max/",
+    "publishedAt": "2023-10-30T10:00:00Z",
+    "author": "Apple Newsroom",
+    "imageUrl": "https://www.apple.com/newsroom/images/product/mac/standard/Apple-MacBook-Pro-M3-hero-2up-231030_big.jpg",
+    "categories": ["hardware", "apple", "silicon"],
+    "tags": ["apple", "m3", "chips", "performance"]
   },
   {
     "id": "feat-4",
-    "title": "Inside Geekageddon�s Infra Overhaul",
-    "summary": "We walk through the migration from legacy VMs to a planet-scale edge mesh built on WebAssembly components.",
-    "url": "https://geekageddon.com/featured/infra-overhaul",
-    "publishedAt": "2025-11-03T17:45:00Z",
-    "author": "Geekageddon Platform Team",
-    "imageUrl": "https://geekageddon.com/images/infra.jpg",
-    "categories": ["featured", "infrastructure"],
-    "tags": ["wasm", "edge", "platform"]
+    "title": "SpaceX Starship Completes Fully Integrated Flight Test",
+    "summary": "SpaceX successfully completed a full ascent, reentry, and splashdown test of its Starship launch system, advancing plans for lunar and Mars missions.",
+    "url": "https://www.spacex.com/updates/",
+    "publishedAt": "2024-06-06T17:45:00Z",
+    "author": "SpaceX",
+    "imageUrl": "https://www.spacex.com/static/images/share.jpg",
+    "categories": ["space", "engineering"],
+    "tags": ["spacex", "starship", "launch", "mars"]
   },
   {
     "id": "feat-5",
-    "title": "Geekageddon Design System v3",
-    "summary": "Our design system now ships with AI-generated accessibility annotations and code-native tokens.",
-    "url": "https://geekageddon.com/featured/design-system-v3",
-    "publishedAt": "2025-11-02T11:20:00Z",
-    "author": "Geekageddon Design",
-    "imageUrl": "https://geekageddon.com/images/design-system.jpg",
-    "categories": ["featured", "design"],
-    "tags": ["design", "a11y", "tokens"]
+    "title": "EU Officially Passes the AI Act",
+    "summary": "The European Union approved the AI Act, creating the world’s first comprehensive legal framework governing AI use, transparency, and safety.",
+    "url": "https://www.europarl.europa.eu/news/en/press-room/20240307IPR19030/artificial-intelligence-act-parliament-adopts-new-rules",
+    "publishedAt": "2024-03-13T11:20:00Z",
+    "author": "European Parliament",
+    "imageUrl": "https://www.europarl.europa.eu/resources/library/images/20240307PHT19034/20240307PHT19034-cl.jpg",
+    "categories": ["policy", "regulation", "ai"],
+    "tags": ["eu", "ai act", "regulation", "compliance"]
   }
 ]
