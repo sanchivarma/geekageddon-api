@@ -95,28 +95,30 @@ const buildPrompt = ({ userIntent, origin, places, details, limit }) => {
 export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, places, details, limit }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
   const prompt = buildPrompt({ userIntent, origin, places, details, limit });
-  console.log('[geek-seek-v2] openai.normalize request', {
+  console.log("[geekseek] openai.normalize request", {
     model: OPENAI_MODEL,
     limit,
     placesCount: Array.isArray(places) ? places.length : 0,
     detailsCount: details ? Object.keys(details).length : 0,
-  });  const response = await fetch(OPENAI_URL, {
-    method: 'POST',
+  });
+  const response = await fetch(OPENAI_URL, {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: Bearer ,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       model: OPENAI_MODEL,
-      messages: [{ role: 'user', content: prompt }],
-      response_format: { type: 'json_object' },
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
       temperature: 0,
     }),
   });
-  console.log('[geek-seek-v2] openai.normalize response', {
+  console.log("[geekseek] openai.normalize response", {
     status: response.status,
     ok: response.ok,
-  });  if (!response.ok) {
+  });
+  if (!response.ok) {
     const text = await response.text();
     const error = new Error(`OpenAI request failed with status ${response.status}`);
     error.status = response.status;
@@ -135,7 +137,8 @@ export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, pl
     throw err;
   }
   const results = Array.isArray(parsed?.results) ? parsed.results : [];
-  console.log('[geek-seek-v2] openai.normalize results', { count: results.length });  const sanitized = results.map((item) => sanitizePlace(item));
+  console.log("[geekseek] openai.normalize results", { count: results.length });
+  const sanitized = results.map((item) => sanitizePlace(item));
   return sanitized;
 }
 
@@ -155,6 +158,4 @@ const sanitizePlace = (place) => {
   }
   return normalized;
 };
-
-
 

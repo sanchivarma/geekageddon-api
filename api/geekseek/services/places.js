@@ -49,7 +49,7 @@ export async function fetchNormalizedPlaces({
     languageCode,
     regionCode,
     includedTypes,
-    maxResultCount: Math.min(Math.max(limit * 2, limit), 20),
+    maxResultCount: Math.min(Math.max(limit, 20), 50),
   });
 
   const merged = places.map((place) =>
@@ -82,7 +82,7 @@ export async function fetchNormalizedPlaces({
     const validated = validateNormalized(normalized).slice(0, limit);
     return { results: validated, source: { usedLLM: true, fallback: false } };
   } catch (error) {
-    console.error("[geek-seek-v2] OpenAI normalization failed", error);
+    console.error("[geekseek] OpenAI normalization failed", error);
     return { results: sorted.map(fillRequiredKeys), source: { usedLLM: false, fallback: true, error: error.message } };
   }
 }

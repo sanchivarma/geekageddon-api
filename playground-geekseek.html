@@ -1,352 +1,396 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Query Location Test</title>
+    <title>Geekseek Playground</title>
     <style>
       :root {
-        --bg: #0f1220; --panel: #171a2b; --text: #e6eaf2; --muted: #9aa3b2;
-        --accent: #7aa2f7; --ok: #38d39f; --warn: #f7c948; --err: #ff6b6b;
+        --bg: #0f1220;
+        --panel: #161a2e;
+        --panel-soft: #1f2440;
+        --text: #e6eaf2;
+        --muted: #919abc;
+        --accent: #7aa2f7;
+        --accent-soft: rgba(122, 162, 247, 0.15);
+        --ok: #38d39f;
+        --warn: #f7c948;
+        --err: #ff6b6b;
         --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       }
-      html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-      .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
-      h1 { font-size: 20px; font-weight: 600; margin: 0 0 16px; }
-      .card { background: var(--panel); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
-      .cards { display: grid; gap: 12px; grid-template-columns: 1fr; }
-      @media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 1100px) { .cards { grid-template-columns: 1fr 1fr 1fr; } }
-      .place { background: var(--panel); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; }
-      .place .head { display: flex; align-items: center; gap: 8px; font-weight: 700; }
-      .place .muted { color: var(--muted); font-size: 12px; }
-      .badge { display: inline-block; margin: 2px 4px 0 0; padding: 3px 8px; border-radius: 999px; background: #2f3651; color: var(--text); font-size: 11px; }
-      .stars { color: #f7c948; font-size: 12px; letter-spacing: 1px; }
-      .rowline { display:flex; align-items:center; gap:8px; margin-top:6px; font-size:12px; }
-      .icon { width: 16px; height: 16px; display:inline-block; vertical-align:middle; }
-      details { margin-top: 8px; }
-      summary { cursor: pointer; color: var(--muted); font-size: 12px; }
-      .row { display: grid; gap: 16px; grid-template-columns: 1fr; }
-      .grid-2 { display: grid; gap: 16px; grid-template-columns: 1fr; }
-      @media (min-width: 940px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-      label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; }
-      textarea { width: 100%; background: #0e1120; color: var(--text); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; outline: none; min-height: 68px; resize: vertical; }
-      .controls { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; align-items: end; }
-      .controls .span-3 { grid-column: span 3; }
-      .controls .span-6 { grid-column: span 6; }
-      @media (max-width: 760px) { .controls { grid-template-columns: 1fr 1fr; } .controls .span-3, .controls .span-6 { grid-column: span 2; } }
-      .btn { background: var(--accent); border: none; color: #0b1022; font-weight: 700; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
-      .btn.secondary { background: #2f3651; color: var(--text); }
-      .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-      .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
-      .mono { font-family: var(--mono); font-size: 12px; line-height: 1.4; }
-      pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
-      .status { font-size: 12px; margin-left: 8px; }
-      .status.ok { color: var(--ok); }
-      .status.warn { color: var(--warn); }
-      .status.err { color: var(--err); }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, rgba(122, 162, 247, 0.2), transparent 45%), var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 16px 64px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 26px;
+      }
+      p.lead {
+        margin: 0 0 20px;
+        color: var(--muted);
+      }
+      .panel {
+        background: var(--panel);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        padding: 20px;
+        margin-bottom: 18px;
+      }
+      .tab-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .tab-bar button {
+        flex: 1 1 140px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--panel-soft);
+        color: var(--muted);
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .tab-bar button.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--text);
+      }
+      .mode-panel {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .mode-panel.active {
+        display: flex;
+      }
+      label {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      textarea {
+        width: 100%;
+        min-height: 100px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #0d1121;
+        color: var(--text);
+        font-size: 14px;
+        padding: 12px;
+        resize: vertical;
+        outline: none;
+      }
+      button.primary {
+        border: none;
+        border-radius: 12px;
+        background: var(--accent);
+        color: #060916;
+        padding: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+      button.primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .results-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .status {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .status.ok {
+        color: var(--ok);
+      }
+      .status.warn {
+        color: var(--warn);
+      }
+      .status.err {
+        color: var(--err);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .card-entry {
+        background: var(--panel-soft);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 14px;
+      }
+      .card-entry h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .card-entry .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      table.compare {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 13px;
+      }
+      table.compare th,
+      table.compare td {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 8px;
+        text-align: left;
+      }
+      table.compare th {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .links {
+        display: grid;
+        gap: 6px;
+        margin-top: 12px;
+      }
+      .links a {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 13px;
+      }
+      pre#rawOut {
+        margin-top: 16px;
+        border-radius: 12px;
+        background: #0d1121;
+        color: var(--muted);
+        padding: 12px;
+        font-size: 12px;
+        overflow-x: auto;
+      }
     </style>
   </head>
   <body>
     <div class="wrap">
-      <h1>AI-Seek Location Test</h1>
-      <div class="card row" style="margin-bottom:16px;">
-        <div>
-          <label for="q">Natural language query</label>
-          <textarea id="q" placeholder="e.g., Restaurants in Berlin Lichtenberg; open restaurants near me"></textarea>
+      <h1>Geekseek Playground</h1>
+      <p class="lead">Quickly exercise every Geekseek mode using only plain text prompts.</p>
+
+      <div class="panel">
+        <div class="tab-bar">
+          <button type="button" class="active" data-tab="places">Places</button>
+          <button type="button" data-tab="compare.tech">Compare Tech</button>
+          <button type="button" data-tab="compare.product">Compare Product</button>
         </div>
-        <div class="controls">
-          <div class="span-3">
-            
-            <div class="note">Defaults: 100km radius, limit 20, sort distance� open� rating.</div>
-          </div>
+
+        <form id="form-places" class="mode-panel active">
           <div>
-            <button class="btn secondary" id="fillNearMe">Fill near me</button>
+            <label for="input-places">Places query</label>
+            <textarea id="input-places" placeholder="Example: quiet coffee shops with Wi-Fi near Mitte" required></textarea>
+            <div class="note">Calls <code>/api/geekseek</code> with the query as-is.</div>
           </div>
+          <button type="submit" class="primary">Search Places</button>
+        </form>
+
+        <form id="form-tech" class="mode-panel">
           <div>
-            <button class="btn" id="send">Send</button>
+            <label for="input-tech">Tech comparison prompt</label>
+            <textarea
+              id="input-tech"
+              placeholder="Example: Compare Pinecone, Weaviate, Milvus for realtime RAG workloads"
+              required
+            ></textarea>
+            <div class="note">Calls <code>/api/geekseek?type=compare.tech</code>. Mention items inline or comma separated.</div>
           </div>
-          <div class="span-6 note">This page calls <code class="mono">/api/geekseek</code> on the same origin.</div>
-        </div>
+          <button type="submit" class="primary">Compare Tech</button>
+        </form>
+
+        <form id="form-product" class="mode-panel">
+          <div>
+            <label for="input-product">Product comparison prompt</label>
+            <textarea
+              id="input-product"
+              placeholder="Example: Compare the latest flagship noise-cancelling headphones for remote work"
+              required
+            ></textarea>
+            <div class="note">Calls <code>/api/geekseek?type=compare.product</code>.</div>
+          </div>
+          <button type="submit" class="primary">Compare Products</button>
+        </form>
       </div>
 
-      <!-- Results cards (moved up) -->
-      <div class="card" style="margin-top:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="panel">
+        <div class="results-header">
           <strong>Results</strong>
-          <span id="cardsStatus" class="status"></span>
+          <span id="status" class="status">idle</span>
         </div>
-        <div id="cards" class="cards" style="margin-top:10px;"></div>
+        <div id="cards" class="cards"></div>
+        <pre id="rawOut"></pre>
       </div>
-
-      <br/>
-
-      <div class="note" style="margin-top:12px;">Tip: Use “near me/nearby/around me” in your query to trigger geolocation automatically. If denied, we use default location handling.</div>
     </div>
 
     <script>
-      const el = (id) => document.getElementById(id);
-      el('fillNearMe').addEventListener('click', () => {
-        const q = el('q');
-        const t = (q.value || '').trim();
-        q.value = t ? (t + ' near me') : 'open restaurants near me';
-      });
-      el('send').addEventListener('click', async () => {
-        const qtext = (el('q').value || '').trim();
-        const payload = { q: qtext, type: 'places' };
-        const wantGeo = /\b(near\s*me|around\s*me|nearby|close\s*by|close\s*to\s*me)\b/i.test(qtext);
-        const doFetch = async (body, tried = false) => {
-          try {
-            const r = await fetch('/api/geekseek', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const data = await r.json().catch(() => ({}));
-            if (data && data.action === 'request_client_location' && !tried && navigator.geolocation) {
-              return navigator.geolocation.getCurrentPosition(
-                async (pos) => {
-                  const { latitude, longitude } = pos.coords || {};
-                  await doFetch({ ...body, lat: latitude, lng: longitude }, true);
-                },
-                async () => { renderCards(Array.isArray(data?.body) ? data.body : []); }
-              );
-            }
-            renderCards(Array.isArray(data?.body) ? data.body : []);
-          } catch (e) { console.log('[playground] request error', e); }
-        };
-        if (wantGeo && navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (pos) => { const { latitude, longitude } = pos.coords || {}; await doFetch({ ...payload, lat: latitude, lng: longitude }); },
-            async () => { await doFetch(payload); },
-            { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
-          );
-        } else {
-          await doFetch(payload);
-        }
-      });
-    </script>
+      const API_URL = "/api/geekseek";
+      const tabs = document.querySelectorAll("[data-tab]");
+      const panels = document.querySelectorAll(".mode-panel");
+      const statusEl = document.getElementById("status");
+      const cardsEl = document.getElementById("cards");
+      const rawEl = document.getElementById("rawOut");
 
-  <script>
-    // Final override to ensure correct card layout regardless of earlier scripts
-    function renderCards(items){
-      const wrap = document.getElementById('cards');
-      const st = document.getElementById('cardsStatus');
-      if(!wrap||!st) return;
-      wrap.innerHTML = '';
-      if (!Array.isArray(items) || !items.length) { st.textContent = 'no results'; st.className = 'status warn'; return; }
-      st.textContent = items.length + ' items'; st.className = 'status ok';
-      const svgMap = '<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="#7aa2f7" stroke-width="1.5" fill="none"/><circle cx="12" cy="11" r="2.5" stroke="#7aa2f7" stroke-width="1.5"/></svg>';
-      const toStars = (r)=>{ const v = Number(r||0); let out=''; for(let i=1;i<=5;i++){ out += i<=Math.round(v) ? '★' : '☆'; } return out; };
-      const meter = (m)=> m==null? '' : (m>=1000 ? (m/1000).toFixed(1)+' km' : Math.round(m)+' m');
-      const priceRangeRow = (pr) => {
-        const n = Number(pr); if(!Number.isFinite(n)) return '';
-        const filled = Math.max(0, Math.min(5, Math.round(n)));
-        const row = Array.from({length:5}).map((_,i)=> `<span style="color:${i<filled?'#e6eaf2':'#555'}">$</span>`).join('');
-        return `<div class="rowline"><span class="muted">Price</span><span>${row}</span></div>`;
-      };
-      items.forEach(p=>{
-        const href = p.googleMapsUri || p.directionsUrl || p.reviewsUrl || '#';
-        const dirHref = p.directionsUrl || p.googleMapsUri || '#';
-        const title = p.name || '(unknown)';
-        const addr = typeof p.address === 'string' ? p.address : (p.address || '');
-        const dist = meter(p.distanceMeters);
-        const rating = p.rating ?? null;
-        const openNow = (p.isOpenNow === true);
-        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow?'#38d39f':'#ff6b6b'};display:inline-block"></span><span class="muted">${openNow?'Open':'Closed'}</span></span>`;
-        const globe = p.websiteUri ? `<a href="${p.websiteUri}" target="_blank" rel="noopener" title="Open website" style="display:inline-flex;"><svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#7aa2f7" stroke-width="1.5"/><path d="M12 3c2.5 3 2.5 15 0 18M4.5 9h15M4.5 15h15" stroke="#7aa2f7" stroke-width="1.5" stroke-linecap="round"/></svg></a>` : '';
-        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a>${globe}<a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
-        const addrLine = addr ? `<div class="rowline"><a class="muted" href="${dirHref}" target="_blank" rel="noopener" title="Directions" style="color:var(--muted);">${addr}</a></div>` : '';
-        const phoneLine = p.phoneNumber ? `<div class="rowline"><span class="muted">Phone</span><a href="tel:${p.phoneNumber}" style="color:var(--muted);text-decoration:none;">${p.phoneNumber}</a></div>` : '';
-        const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
-        const count = p.userRatingCount!=null ? ` (<span class="muted">${p.userRatingCount}</span>)` : '';
-        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span>${Number(rating).toFixed(1)}${count}</span></div>` : '';
-        const priceLine = priceRangeRow(p.priceRange);
-        const badges = [];
-        const flag = (cond,label)=>{ if(cond===true) badges.push(`<span class="badge">${label}</span>`); };
-        flag(p.isReservable,'Reservable');
-        flag(p.servesVegetarianFood,'Vegetarian');
-        flag(p.hasDineIn,'Dine-in');
-        flag(p.hasTakeout,'Has-Takeout');
-        flag(p.hasDelivery,'Delivery Available');
-        flag(p.acceptsCards,'Accepts Cards');
-        flag(p.acceptsCash,'Accepts Cash');
-        flag(p.hasOutdoorSeating,'Outdoor Seating Available');
-        flag(p.hasFreeParking,'Free Parking');
-        flag(p.hasWheelchairAccessibleParking,'Wheelchair Parking Available');
-        const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
-        const type = p.type ? `<span class="badge">${p.type}</span>` : '';
-        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,site,...badges].filter(Boolean).join(' ')}</div></details>`;
-        const html = `<div class="place">${head}${addrLine}${phoneLine}${distLine}${rateLine}${priceLine}${more}</div>`;
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        wrap.appendChild(div.firstChild);
-      });
-    }
-  </script>
-  <script>
-    // Fix mis-encoded glyphs without touching original handlers
-    document.addEventListener('DOMContentLoaded', () => {
-      const note = document.querySelector('.controls .note');
-      if (note) note.textContent = 'Defaults: 100km radius, limit 20, sort distance -> open -> rating.';
-      const btn = document.getElementById('fillNearMe');
-      if (btn) btn.textContent = 'Fill "near me"';
-    });
-    setInterval(() => {
-      document.querySelectorAll('.status').forEach(s => {
-        if (!s || !s.textContent) return;
-        if (s.textContent.includes('locating')) s.textContent = 'locating...';
-        if (s.textContent.includes('sending')) s.textContent = 'sending...';
-        if (s.textContent) {
-          s.textContent = s.textContent.replace(/ /g, 
-            s.textContent.includes('HTTP') || s.textContent.includes('OK') ? ' - ' : '.'
-          );
-        }      });
-    }, 300);
-  </script>
-  <!-- <script>
-    function renderCards(items){
-      const wrap = document.getElementById('cards');
-      const st = document.getElementById('cardsStatus');
-      if(!wrap||!st) return;
-      wrap.innerHTML = '';
-      if (!Array.isArray(items) || !items.length) { st.textContent = 'no results'; st.className = 'status warn'; return; }
-      st.textContent = items.length + ' items'; st.className = 'status ok';
-      const svgMap = '<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="#7aa2f7" stroke-width="1.5" fill="none"/><circle cx="12" cy="11" r="2.5" stroke="#7aa2f7" stroke-width="1.5"/></svg>';
-      const toStars = (r)=>{ const v = Number(r||0); let out=''; for(let i=1;i<=5;i++){ out += i<=Math.round(v) ? '' : ''; } return out; };
-      const meter = (m)=> m==null ? '' : (m>=1000 ? (m/1000).toFixed(1)+' km' : Math.round(m)+' m');
-      items.forEach(p=>{
-        const href = p.googleMapsUri || p.directionsUrl || p.reviewsUrl || '#';
-        const title = p.name || '(unknown)';
-        const addr = p.address || '';
-        const dist = meter(p.distanceMeters);
-        const rating = p.rating ?? null;
-        const openNow = (p.isOpenNow === true);
-        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow ? '#38d39f':'#ff6b6b'};display:inline-block"></span><span class="muted">${openNow ? 'Open':'Closed'}</span></span>`;
-        const head = `<div class="head"><a href="${href}" target="_blank" rel="noopener" title="Open map">${svgMap}</a><a href="${href}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${title}</a>${statusDot}</div>`;
-        const addrLine = addr ? `<div class="rowline"><a class="muted" href="${href}" target="_blank" rel="noopener" title="Map" style="color:var(--muted);">${addr}</a></div>` : '';
-        const phoneLine = p.phoneNumber ? `<div class="rowline"><span class="muted">Phone</span><a href="tel:${p.phoneNumber}" style="color:var(--muted);text-decoration:none;">${p.phoneNumber}</a></div>` : '';
-        const distLine = dist ? `<div class="rowline"><span class="muted">Distance</span><span>${dist}</span></div>` : '';
-        const count = p.userRatingCount!=null ? ` (<span class="muted">${p.userRatingCount}</span>)` : '';
-        const rateLine = rating!=null ? `<div class="rowline"><span class="stars" aria-label="rating">${toStars(rating)}</span><span>${Number(rating).toFixed(1)}${count}</span></div>` : '';
-        const badges = [];
-        const flag = (cond,label)=>{ if(cond===true) badges.push(`<span class="badge">${label}</span>`); };
-        flag(p.isReservable,'Reservable');
-        flag(p.servesVegetarianFood,'Vegetarian');
-        flag(p.hasDineIn,'Dine-in');
-        flag(p.hasTakeout,'Takeout');
-        flag(p.hasDelivery,'Delivery');
-        flag(p.acceptsCards,'Cards');
-        flag(p.acceptsCash,'Cash');
-        flag(p.hasOutdoorSeating,'Outdoor');
-        flag(p.hasFreeParking,'Free parking');
-        flag(p.hasWheelchairAccessibleParking,'Wheelchair parking');
-        const phone = p.phoneNumber ? `<span class="badge"> ${p.phoneNumber}</span>` : '';
-        const site = p.websiteUri ? `<a class="badge" href="${p.websiteUri}" target="_blank" rel="noopener">Website</a>` : '';
-        //const count = p.userRatingCount!=null  `<span class="badge">${p.userRatingCount} reviews</span>` : '';
-        const type = p.type ? `<span class="badge">${p.type}</span>` : '';
-        const price = p.priceRange ? `<span class="badge">${p.priceRange}</span>` : '';
-        const more = `<details><summary>more details</summary><div style="margin-top:6px;">${[type,price,count,phone,site,...badges].filter(Boolean).join(' ')}</div></details>`;
-        const html = `<div class="place">${head}${addrLine}${distLine}${rateLine}${more}</div>`;
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        wrap.appendChild(div.firstChild);
-      });
-    }
-  </script> -->
-  <script>
-    function renderCards(items) {
-      const wrap = document.getElementById('cards');
-      const st = document.getElementById('cardsStatus');
-      if (!wrap || !st) return;
-      wrap.innerHTML = '';
-      if (!Array.isArray(items) || !items.length) {
-        st.textContent = 'no results'; st.className = 'status warn'; return;
+      function setStatus(text, tone = "") {
+        statusEl.textContent = text;
+        statusEl.className = `status ${tone}`.trim();
       }
-      st.textContent = items.length + ' items'; st.className = 'status ok';
 
-      const meter = (m) => m == null ? '' : (m >= 1000 ? (m / 1000).toFixed(1) + ' km' : Math.round(m) + ' m');
-      const currencySymbol = () => {
-        try {
-          const lang = String(navigator.language || 'en-US').toUpperCase();
-          if (/US|CA|AU|NZ/.test(lang)) return '$';
-          if (/GB|UK/.test(lang)) return '£';
-          if (/DE|FR|ES|IT|NL|PT|IE|BE|AT|FI|GR|SK|SI|LV|LT|EE|LU|CY|MT|EU/.test(lang)) return '€';
-          if (/IN/.test(lang)) return '₹';
-          if (/JP/.test(lang)) return '¥';
-        } catch (_) {}
-        return '$';
-      };
-      const buildStars = (r) => {
-        const v = Math.max(0, Math.min(5, Number(r || 0)));
-        let out = '';
-        for (let i = 1; i <= 5; i++) {
-          const fill = Math.max(0, Math.min(1, v - (i - 1)));
-          const pct = fill >= 1 ? 100 : (fill >= 0.5 ? 50 : 0);
-          if (pct === 0) out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span></span>';
-          else if (pct === 100) out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span><span style="position:absolute;left:0;top:0;width:100%;overflow:hidden;color:#f7c948">★</span></span>';
-          else out += '<span style="position:relative;display:inline-block;width:1em;height:1em;line-height:1em;"><span style="color:#555">☆</span><span style="position:absolute;left:0;top:0;width:50%;overflow:hidden;color:#f7c948">★</span></span>';
-        }
-        return out;
-      };
+      function setActiveTab(tab) {
+        tabs.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tab));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === panelId(tab)));
+        resetResults();
+      }
 
-      const usedKeys = new Set(['id','name','isOpenNow','address','phoneNumber','distanceMeters','rating','userRatingCount','priceRange','googleMapsUri','websiteUri','reviewsUrl','directionsUrl','mapsUrl']);
+      function panelId(tab) {
+        if (tab === "compare.tech") return "form-tech";
+        if (tab === "compare.product") return "form-product";
+        return "form-places";
+      }
 
-      items.forEach((p) => {
-        const name = p?.name || '(unknown)';
-        const addr = typeof p?.address === 'string' ? p.address : (p?.address || '');
-        const mapsHref = p?.googleMapsUri || p?.reviewsUrl || (addr ? ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr)) : '#');
-        const dirHref = p?.directionsUrl || mapsHref;
-        const phone = p?.phoneNumber || '';
-        const dist = meter(p?.distanceMeters);
-        const rating = (typeof p?.rating === 'number') ? p.rating : null;
-        const count = (typeof p?.userRatingCount === 'number') ? p.userRatingCount : null;
-        const cur = currencySymbol();
-        const pr = Number(p?.priceRange);
-        const openNow = p?.isOpenNow === true;
+      function resetResults() {
+        cardsEl.innerHTML = "";
+        cardsEl.classList.remove("comparison");
+        rawEl.textContent = "";
+        setStatus("idle");
+      }
 
-        // Line 1: Name + Open/Closed dot on right
-        const statusDot = `<span title="${openNow ? 'Open' : 'Closed'}" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:${openNow ? '#38d39f' : '#ff6b6b'};display:inline-block"></span><span style="color:#9aa3b2;">${openNow ? 'Open' : 'Closed'}</span></span>`;
-        const line1 = `<div style="display:flex;align-items:center;gap:8px;font-weight:700;"><a href="${mapsHref}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${name}</a>${statusDot}</div>`;
+      tabs.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          setActiveTab(btn.dataset.tab);
+        })
+      );
 
-        // Line 2: Address link to Google + copy
-        const line2 = addr ? `<div class="rowline"><a href="${dirHref}" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:none;">${addr}</a><button type="button" title="Copy address" style="background:none;border:none;color:#9aa3b2;cursor:pointer;margin-left:6px;" onclick="navigator.clipboard.writeText('${String(addr).replace(/'/g,'&#39;')}')">📋</button></div>` : '';
-
-        // Line 3: Phone tel: + copy
-        const line3 = phone ? `<div class="rowline"><span style="color:var(--muted);">☎</span><a href="tel:${phone}" style="color:var(--muted);text-decoration:none;margin-left:4px;">${phone}</a><button type="button" title="Copy phone" style="background:none;border:none;color:#9aa3b2;cursor:pointer;margin-left:6px;" onclick="navigator.clipboard.writeText('${String(phone).replace(/'/g,'&#39;')}')">📋</button></div>` : '';
-
-        // Line 4: Distance
-        const line4 = dist ? `<div class="rowline"><span style="color:var(--muted);">Distance</span><span>${dist}</span></div>` : '';
-
-        // Line 5: Stars + rating + (count)
-        const stars = rating != null ? buildStars(rating) : '';
-        const line5 = rating != null ? `<div class="rowline"><span class="stars" aria-label="rating">${stars}</span><span>${rating.toFixed(1)}${count!=null?` (${count})`:''}</span></div>` : '';
-
-        // Line 6: Price row with locale symbol
-        let line6 = '';
-        if (Number.isFinite(pr)) {
-          const filled = Math.max(0, Math.min(5, Math.round(pr)));
-          const row = Array.from({length:5}).map((_,i)=> `<span style="color:${i<filled ? '#e6eaf2' : '#555'}">${cur}</span>`).join('');
-          line6 = `<div class="rowline"><span style="color:var(--muted);">Price</span><span>${row}</span></div>`;
-        }
-
-        // Line 7: More details badges for remaining non-null/true scalars
-        const extras = [];
-        try {
-          Object.keys(p || {}).forEach((k) => {
-            if (usedKeys.has(k)) return;
-            const v = p[k];
-            if (v === true) extras.push(`<span class="badge">${k}</span>`);
-            else if (v != null && v !== false && v !== '' && !(Array.isArray(v) && v.length === 0) && typeof v !== 'object') {
-              extras.push(`<span class="badge">${k}: ${String(v)}</span>`);
-            }
-          });
-        } catch(_) {}
-        const line7 = extras.length ? `<details><summary>More details</summary><div style="margin-top:6px;">${extras.join(' ')}</div></details>` : '';
-
-        const html = `<div class="place">${line1}${line2}${line3}${line4}${line5}${line6}${line7}</div>`;
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        wrap.appendChild(div.firstChild);
+      document.getElementById("form-places").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await requestPlaces(document.getElementById("input-places").value.trim());
       });
-    }
-  </script>
+
+      document.getElementById("form-tech").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await requestComparison("compare.tech", document.getElementById("input-tech").value.trim());
+      });
+
+      document.getElementById("form-product").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await requestComparison("compare.product", document.getElementById("input-product").value.trim());
+      });
+
+      async function requestPlaces(query) {
+        if (!query) return setStatus("Enter a query", "err");
+        setStatus("Fetching places…", "warn");
+        const params = new URLSearchParams({ q: query, type: "places" });
+        try {
+          const response = await fetch(`${API_URL}?${params.toString()}`, { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          rawEl.textContent = JSON.stringify(payload, null, 2);
+          renderPlaces(payload.items || payload.results || []);
+        } catch (error) {
+          console.error(error);
+          setStatus(error.message || "Request failed", "err");
+        }
+      }
+
+      function renderPlaces(items) {
+        cardsEl.innerHTML = "";
+        cardsEl.classList.remove("comparison");
+        if (!items.length) {
+          setStatus("No places", "warn");
+          return;
+        }
+        setStatus(`${items.length} places`, "ok");
+        items.slice(0, 12).forEach((place) => {
+          const div = document.createElement("div");
+          div.className = "card-entry";
+          const href = place.googleMapsUri || place.websiteUri || "#";
+          const rating =
+            typeof place.rating === "number"
+              ? `<div class="muted">⭐ ${place.rating.toFixed(1)} (${place.userRatingCount ?? 0})</div>`
+              : "";
+          div.innerHTML = `
+            <h3>${place.name ?? "Untitled"}</h3>
+            <div class="muted">${place.address ?? ""}</div>
+            ${rating}
+            ${href !== "#" ? `<a href="${href}" target="_blank" rel="noopener">Open map/site</a>` : ""}
+          `;
+          cardsEl.appendChild(div);
+        });
+      }
+
+      async function requestComparison(type, query) {
+        if (!query) return setStatus("Enter a prompt", "err");
+        setStatus("Building comparison…", "warn");
+        const params = new URLSearchParams({ type, q: query });
+        try {
+          const response = await fetch(`${API_URL}?${params.toString()}`, { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          rawEl.textContent = JSON.stringify(payload, null, 2);
+          renderComparison(payload);
+        } catch (error) {
+          console.error(error);
+          setStatus(error.message || "Request failed", "err");
+        }
+      }
+
+      function renderComparison(payload) {
+        cardsEl.classList.add("comparison");
+        cardsEl.innerHTML = "";
+        const block = document.createElement("div");
+        block.className = "card-entry";
+        const items = payload.items || [];
+        const pillRow = items.length
+          ? `<div class="note" style="margin-bottom:8px;">${items.map((item) => `<span style="margin-right:8px;">${item}</span>`).join("")}</div>`
+          : "";
+        const tableHtml = payload.table?.html || payload.description || "";
+        const highlights = (payload.highlights || [])
+          .map(
+            (h) => `<div style="margin-top:10px;">
+              <strong>${h.item || "Highlight"}</strong>
+              <div class="muted">${h.summary || ""}</div>
+            </div>`
+          )
+          .join("");
+        const links = (payload.links || [])
+          .map((link) => `<a href="${link.url}" target="_blank" rel="noopener">${link.label || link.url}</a>`)
+          .join("");
+        block.innerHTML = `
+          ${pillRow}
+          ${tableHtml || "<div class='muted'>No table returned.</div>"}
+          ${highlights}
+          ${payload.summary ? `<div style="margin-top:12px;">${payload.summary}</div>` : ""}
+          ${links ? `<div class="links">${links}</div>` : ""}
+        `;
+        cardsEl.appendChild(block);
+        setStatus("Comparison ready", "ok");
+      }
+
+      setActiveTab("places");
+    </script>
   </body>
-  </html>
-  
+</html>

@@ -9,8 +9,6 @@
     { "src": "^/snake-game/$", "dest": "/api/snake-game" },
     { "src": "/geekseek/playground", "dest": "/playground-geekseek.html" },
     { "src": "/geekseek/playground.html", "dest": "/playground-geekseek.html" },
-    { "src": "/geekseek/playground-v2", "dest": "/playground-geekseek-v2.html" },
-    { "src": "/geekseek/playground-v2.html", "dest": "/playground-geekseek-v2.html" },
     { "src": "/geekfeed/playground", "dest": "/playground-geekfeed.html" },
     { "src": "/geekfeed/playground.html", "dest": "/playground-geekfeed.html" }
   ]
