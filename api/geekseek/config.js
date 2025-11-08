@@ -3,9 +3,11 @@ const parseCoordinate = (value) => {
   return Number.isFinite(num) ? num : undefined;
 };
 
+const BERLIN_FALLBACK = { latitude: 52.520008, longitude: 13.404954 };
+
 export const DEFAULT_LOCATION = {
-  latitude: parseCoordinate(process.env.GEEKSEEK_LAT),
-  longitude: parseCoordinate(process.env.GEEKSEEK_LNG),
+  latitude: parseCoordinate(process.env.GEEKSEEK_LAT) ?? BERLIN_FALLBACK.latitude,
+  longitude: parseCoordinate(process.env.GEEKSEEK_LNG) ?? BERLIN_FALLBACK.longitude,
 };
 
 export const DEFAULT_RADIUS_METERS = Number(process.env.GEEKSEEK_RADIUS ?? 50_000);

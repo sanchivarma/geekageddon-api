@@ -4,34 +4,20 @@ const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MAX_ITEMS_DEFAULT = 5;
 const EMPTY_CELL_VALUE = "--";
 const DEFAULT_ASPECT_PRIORITY = [
-  'Latest Version & Release Date',
-  'Usability rating (1-5)',
-  'Performance rating (1-5)',
-  'Customer support rating (1-5)',
-  "Market Presence & Industry Recognition",
-  "User adoption Statistics",
-  "Release Cadence & Update Frequency",
-  "Pricing Model & Cost Efficiency",
-  "Target Audience & Ideal Users",
-  "Core Functionality & Capabilities",
-  "Differentiators & Unique Selling Points",
-  "System Requirements",
-  "Technical Specifications",
-  "Integration & Compatibility",
-  "Maintenance & Updates",
-  "Vendor Reputation & Reliability",
-  "User Base & Adoption",
-  "Popularity & Market Share",
-  "Primary Use Cases",
+  "Identity & Overview",
+  "Latest Release / Update",
+  "User Adoption & Sentiment",
+  "Core Capabilities",
+  "Differentiators / Unique Selling Points",
   "Architecture & Deployment Model",
   "Hardware / Infrastructure",
   "Performance & Benchmarks",
-  "Software & Features",
+  "Software / Features",
   "Ecosystem & Integrations",
   "Security & Compliance",
-  "Data Governance & Residency",
+  "Data Governance",
   "Observability & Telemetry",
-  "Developer Experience & Tooling",
+  "Developer / User Experience",
   "Operational Complexity",
   "Scalability & Elasticity",
   "Pricing & Licensing",
@@ -182,7 +168,7 @@ const buildPrompt = ({
   maxItems,
   requiredAspects = DEFAULT_ASPECT_PRIORITY,
 }) => {
-  const uniqueAspects = mergeAspectList(requiredAspects);
+  const uniqueAspects = Array.isArray(requiredAspects) ? requiredAspects : [];
   const payload = {
     query: queryText,
     requestedItems: fallbackItems(items, maxItems),
@@ -210,8 +196,9 @@ const buildPrompt = ({
   return [
     `${persona}. You specialize in ${domain}.`,
     "Respond ONLY with strict JSON that matches the schema provided.",
-    "Comparison rows must prioritize the most popular / market-moving factors first.",
-    `Mandatory aspects to cover (in priority order): ${uniqueAspects.join(", ")}.`,
+    uniqueAspects.length
+      ? `Mandatory aspects to cover (in priority order): ${uniqueAspects.join(", ")}.`
+      : "Select the most relevant comparison factors for this scenario; do not assume any fixed template.",
     "Mention additional aspects (ecosystem, roadmap, integrations) if relevant.",
     styleNotes.length ? `Style notes: ${styleNotes.join("; ")}` : "",
     "Input payload:",
@@ -225,8 +212,8 @@ const buildPrompt = ({
     .join("\n");
 };
 
-const mergeAspectList = (additional = []) => {
-  const merged = [...DEFAULT_ASPECT_PRIORITY];
+const mergeAspectList = (additional = [], includeDefaults = true) => {
+  const merged = includeDefaults ? [...DEFAULT_ASPECT_PRIORITY] : [];
   ensureArray(additional).forEach((item) => {
     const label = String(item ?? "").trim();
     if (!label) return;
@@ -249,9 +236,10 @@ export async function generateComparison({
   maxRows = 6,
   maxItems = MAX_ITEMS_DEFAULT,
   extraAspects = [],
+  includeDefaultAspects = true,
 }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
-  const requiredAspects = mergeAspectList(extraAspects);
+  const requiredAspects = mergeAspectList(extraAspects, includeDefaultAspects);
   const prompt = buildPrompt({
     persona,
     domain,

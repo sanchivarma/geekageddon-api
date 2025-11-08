@@ -319,14 +319,15 @@
         const query = document.getElementById("placesQuery").value.trim();
         if (!query) return setStatus("Enter a query", "err");
         const needsGeo = NEAR_ME_REGEX.test(query);
+        const hasExplicitPlace = /\b(in|at|near|inside|within)\s+[A-Za-z]/i.test(query);
         let coords = null;
-        if (needsGeo) {
+        if (needsGeo && !hasExplicitPlace) {
           coords = await requestGeolocation();
         }
         const params = new URLSearchParams();
         params.set("type", "places");
         params.set("q", query);
-        if (needsGeo && coords) {
+        if (needsGeo && !hasExplicitPlace && coords) {
           params.set("lat", coords.latitude);
           params.set("lng", coords.longitude);
         }
