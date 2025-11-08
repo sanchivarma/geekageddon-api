@@ -7,12 +7,12 @@
     <style>
       :root {
         --bg: #0f1220;
-        --panel: #161a2e;
-        --panel-soft: #1f2440;
+        --panel: #171b2f;
+        --panel-soft: #1f2441;
         --text: #e6eaf2;
-        --muted: #919abc;
+        --muted: #98a0bd;
         --accent: #7aa2f7;
-        --accent-soft: rgba(122, 162, 247, 0.15);
+        --accent-soft: rgba(122, 162, 247, 0.18);
         --ok: #38d39f;
         --warn: #f7c948;
         --err: #ff6b6b;
@@ -24,17 +24,17 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: radial-gradient(circle at top, rgba(122, 162, 247, 0.2), transparent 45%), var(--bg);
+        background: radial-gradient(circle at top, rgba(122, 162, 247, 0.18), transparent 50%), var(--bg);
         color: var(--text);
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       }
       .wrap {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 32px 16px 64px;
+        padding: 32px 16px 80px;
       }
       h1 {
-        margin: 0 0 8px;
+        margin: 0 0 10px;
         font-size: 26px;
       }
       p.lead {
@@ -43,20 +43,20 @@
       }
       .panel {
         background: var(--panel);
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 20px;
-        margin-bottom: 18px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+        margin-bottom: 20px;
       }
       .tab-bar {
         display: flex;
-        flex-wrap: wrap;
         gap: 8px;
         margin-bottom: 16px;
+        flex-wrap: wrap;
       }
       .tab-bar button {
-        flex: 1 1 140px;
+        flex: 1 1 130px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.05);
         background: var(--panel-soft);
@@ -66,14 +66,14 @@
         cursor: pointer;
       }
       .tab-bar button.active {
-        border-color: var(--accent);
         background: var(--accent-soft);
+        border-color: var(--accent);
         color: var(--text);
       }
       .mode-panel {
         display: none;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
       }
       .mode-panel.active {
         display: flex;
@@ -83,30 +83,34 @@
         letter-spacing: 0.08em;
         color: var(--muted);
         text-transform: uppercase;
+        display: block;
+        margin-bottom: 6px;
       }
-      textarea {
+      textarea,
+      input {
         width: 100%;
-        min-height: 100px;
-        border-radius: 14px;
+        border-radius: 13px;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        background: #0d1121;
+        background: #0d1122;
         color: var(--text);
-        font-size: 14px;
         padding: 12px;
-        resize: vertical;
+        font-size: 14px;
         outline: none;
       }
-      button.primary {
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+      .primary {
         border: none;
         border-radius: 12px;
         background: var(--accent);
         color: #060916;
-        padding: 12px;
         font-weight: 700;
+        padding: 12px;
         cursor: pointer;
-        margin-top: 8px;
       }
-      button.primary:disabled {
+      .primary:disabled {
         opacity: 0.6;
         cursor: not-allowed;
       }
@@ -153,10 +157,12 @@
         color: var(--muted);
         font-size: 13px;
       }
+      .comparison-mode {
+        display: block;
+      }
       table.compare {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 12px;
         font-size: 13px;
       }
       table.compare th,
@@ -181,59 +187,50 @@
       pre#rawOut {
         margin-top: 16px;
         border-radius: 12px;
-        background: #0d1121;
-        color: var(--muted);
+        background: #0b0f1d;
+        color: #b5bedc;
         padding: 12px;
         font-size: 12px;
-        overflow-x: auto;
+        max-height: 320px;
+        overflow: auto;
       }
     </style>
   </head>
   <body>
     <div class="wrap">
       <h1>Geekseek Playground</h1>
-      <p class="lead">Quickly exercise every Geekseek mode using only plain text prompts.</p>
+      <p class="lead">Run location searches or request comparison tables from the unified Geekseek API.</p>
 
       <div class="panel">
         <div class="tab-bar">
-          <button type="button" class="active" data-tab="places">Places</button>
-          <button type="button" data-tab="compare.tech">Compare Tech</button>
-          <button type="button" data-tab="compare.product">Compare Product</button>
+          <button type="button" class="active" data-mode-tab="places">Places</button>
+          <button type="button" data-mode-tab="compare">Compare</button>
         </div>
 
-        <form id="form-places" class="mode-panel active">
+        <form id="form-places" class="mode-panel active" autocomplete="off">
           <div>
-            <label for="input-places">Places query</label>
-            <textarea id="input-places" placeholder="Example: quiet coffee shops with Wi-Fi near Mitte" required></textarea>
-            <div class="note">Calls <code>/api/geekseek</code> with the query as-is.</div>
+            <label for="placesQuery">Places prompt</label>
+            <textarea
+              id="placesQuery"
+              placeholder="Example: Find quiet coffee shops with Wi-Fi near Berlin that open late"
+              required
+            ></textarea>
+            <div class="note">Describe everything in one prompt (location, filters, vibe, price, etc.).</div>
           </div>
           <button type="submit" class="primary">Search Places</button>
         </form>
 
-        <form id="form-tech" class="mode-panel">
+        <form id="form-compare" class="mode-panel" autocomplete="off">
           <div>
-            <label for="input-tech">Tech comparison prompt</label>
+            <label for="compareQuery">Comparison prompt</label>
             <textarea
-              id="input-tech"
-              placeholder="Example: Compare Pinecone, Weaviate, Milvus for realtime RAG workloads"
+              id="compareQuery"
+              placeholder="Example: Compare iPhone 15 Pro vs Galaxy S24 Ultra hardware stats and camera quality"
               required
             ></textarea>
-            <div class="note">Calls <code>/api/geekseek?type=compare.tech</code>. Mention items inline or comma separated.</div>
+            <div class="note">Include the items and factors you care about directly in this prompt.</div>
           </div>
-          <button type="submit" class="primary">Compare Tech</button>
-        </form>
-
-        <form id="form-product" class="mode-panel">
-          <div>
-            <label for="input-product">Product comparison prompt</label>
-            <textarea
-              id="input-product"
-              placeholder="Example: Compare the latest flagship noise-cancelling headphones for remote work"
-              required
-            ></textarea>
-            <div class="note">Calls <code>/api/geekseek?type=compare.product</code>.</div>
-          </div>
-          <button type="submit" class="primary">Compare Products</button>
+          <button type="submit" class="primary">Compare</button>
         </form>
       </div>
 
@@ -249,78 +246,134 @@
 
     <script>
       const API_URL = "/api/geekseek";
-      const tabs = document.querySelectorAll("[data-tab]");
+      const tabs = document.querySelectorAll("[data-mode-tab]");
       const panels = document.querySelectorAll(".mode-panel");
       const statusEl = document.getElementById("status");
       const cardsEl = document.getElementById("cards");
       const rawEl = document.getElementById("rawOut");
+      const state = { mode: "places", coords: null };
+      const NEAR_ME_REGEX = /\b(near\s*me|around\s*me|around\s*here|nearby|close\s*to\s*me)\b/i;
+
+      tabs.forEach((btn) => {
+        btn.addEventListener("click", () => setMode(btn.dataset.modeTab));
+      });
+
+      function setMode(mode) {
+        state.mode = mode;
+        tabs.forEach((btn) => btn.classList.toggle("active", btn.dataset.modeTab === mode));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === panelId(mode)));
+        resetResults("idle");
+      }
+
+      function panelId(mode) {
+        return mode === "compare" ? "form-compare" : "form-places";
+      }
 
       function setStatus(text, tone = "") {
         statusEl.textContent = text;
         statusEl.className = `status ${tone}`.trim();
       }
 
-      function setActiveTab(tab) {
-        tabs.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tab));
-        panels.forEach((panel) => panel.classList.toggle("active", panel.id === panelId(tab)));
-        resetResults();
-      }
-
-      function panelId(tab) {
-        if (tab === "compare.tech") return "form-tech";
-        if (tab === "compare.product") return "form-product";
-        return "form-places";
-      }
-
-      function resetResults() {
+      function resetResults(message = "idle") {
+        setStatus(message);
         cardsEl.innerHTML = "";
-        cardsEl.classList.remove("comparison");
+        cardsEl.classList.remove("comparison-mode");
         rawEl.textContent = "";
-        setStatus("idle");
       }
-
-      tabs.forEach((btn) =>
-        btn.addEventListener("click", () => {
-          setActiveTab(btn.dataset.tab);
-        })
-      );
 
       document.getElementById("form-places").addEventListener("submit", async (event) => {
         event.preventDefault();
-        await requestPlaces(document.getElementById("input-places").value.trim());
+        await runPlacesSearch();
       });
 
-      document.getElementById("form-tech").addEventListener("submit", async (event) => {
+      document.getElementById("form-compare").addEventListener("submit", async (event) => {
         event.preventDefault();
-        await requestComparison("compare.tech", document.getElementById("input-tech").value.trim());
+        await runCompareSearch();
       });
 
-      document.getElementById("form-product").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        await requestComparison("compare.product", document.getElementById("input-product").value.trim());
-      });
+      async function requestGeolocation() {
+        if (!navigator.geolocation) {
+          setStatus("Geolocation not supported in this browser", "err");
+          return null;
+        }
+        setStatus("Requesting your location…", "warn");
+        return new Promise((resolve) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+              state.coords = coords;
+              setStatus("Location acquired", "ok");
+              resolve(coords);
+            },
+            (error) => {
+              console.error(error);
+              setStatus(error.message ?? "Unable to fetch location", "err");
+              resolve(null);
+            },
+            { enableHighAccuracy: false, maximumAge: 120000, timeout: 8000 }
+          );
+        });
+      }
 
-      async function requestPlaces(query) {
+      async function runPlacesSearch() {
+        const query = document.getElementById("placesQuery").value.trim();
         if (!query) return setStatus("Enter a query", "err");
-        setStatus("Fetching places…", "warn");
-        const params = new URLSearchParams({ q: query, type: "places" });
+        const needsGeo = NEAR_ME_REGEX.test(query);
+        let coords = null;
+        if (needsGeo) {
+          coords = await requestGeolocation();
+        }
+        const params = new URLSearchParams();
+        params.set("type", "places");
+        params.set("q", query);
+        if (needsGeo && coords) {
+          params.set("lat", coords.latitude);
+          params.set("lng", coords.longitude);
+        }
+
+        resetResults("Sending places request...");
         try {
-          const response = await fetch(`${API_URL}?${params.toString()}`, { headers: { Accept: "application/json" } });
+          const response = await fetch(`${API_URL}?${params.toString()}`, {
+            headers: { Accept: "application/json" },
+          });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const payload = await response.json();
           rawEl.textContent = JSON.stringify(payload, null, 2);
           renderPlaces(payload.items || payload.results || []);
         } catch (error) {
           console.error(error);
-          setStatus(error.message || "Request failed", "err");
+          setStatus(error.message ?? "Request failed", "err");
+        }
+      }
+
+      async function runCompareSearch() {
+        const query = document.getElementById("compareQuery").value.trim();
+        if (!query) return setStatus("Enter a prompt", "err");
+        const params = new URLSearchParams();
+        params.set("type", "compare");
+        params.set("q", query);
+        params.set("rows", "25");
+
+        resetResults("Generating comparison...");
+        try {
+          const response = await fetch(`${API_URL}?${params.toString()}`, {
+            headers: { Accept: "application/json" },
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          rawEl.textContent = JSON.stringify(payload, null, 2);
+          renderComparison(payload);
+        } catch (error) {
+          console.error(error);
+          setStatus(error.message ?? "Request failed", "err");
         }
       }
 
       function renderPlaces(items) {
+        cardsEl.classList.remove("comparison-mode");
         cardsEl.innerHTML = "";
-        cardsEl.classList.remove("comparison");
-        if (!items.length) {
-          setStatus("No places", "warn");
+        if (!Array.isArray(items) || !items.length) {
+          setStatus("No places found", "warn");
           return;
         }
         setStatus(`${items.length} places`, "ok");
@@ -336,61 +389,54 @@
             <h3>${place.name ?? "Untitled"}</h3>
             <div class="muted">${place.address ?? ""}</div>
             ${rating}
-            ${href !== "#" ? `<a href="${href}" target="_blank" rel="noopener">Open map/site</a>` : ""}
+            ${
+              href && href !== "#"
+                ? `<a href="${href}" target="_blank" rel="noopener">Open map/site</a>`
+                : ""
+            }
           `;
           cardsEl.appendChild(div);
         });
       }
 
-      async function requestComparison(type, query) {
-        if (!query) return setStatus("Enter a prompt", "err");
-        setStatus("Building comparison…", "warn");
-        const params = new URLSearchParams({ type, q: query });
-        try {
-          const response = await fetch(`${API_URL}?${params.toString()}`, { headers: { Accept: "application/json" } });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const payload = await response.json();
-          rawEl.textContent = JSON.stringify(payload, null, 2);
-          renderComparison(payload);
-        } catch (error) {
-          console.error(error);
-          setStatus(error.message || "Request failed", "err");
-        }
-      }
-
-      function renderComparison(payload) {
-        cardsEl.classList.add("comparison");
+      function renderComparison(payload = {}) {
+        cardsEl.classList.add("comparison-mode");
         cardsEl.innerHTML = "";
         const block = document.createElement("div");
         block.className = "card-entry";
-        const items = payload.items || [];
-        const pillRow = items.length
-          ? `<div class="note" style="margin-bottom:8px;">${items.map((item) => `<span style="margin-right:8px;">${item}</span>`).join("")}</div>`
-          : "";
-        const tableHtml = payload.table?.html || payload.description || "";
-        const highlights = (payload.highlights || [])
+        const items = Array.isArray(payload.items) ? payload.items : [];
+        const pills = items
+          .map((item) => `<span style="margin-right:8px;color:${items.length ? '#e6eaf2' : '#98a0bd'}">${item}</span>`)
+          .join("");
+        const tableHtml = payload.table?.html || payload.description || "<p class=\"muted\">No table returned.</p>";
+        const highlights = Array.isArray(payload.highlights) ? payload.highlights : [];
+        const links = Array.isArray(payload.links) ? payload.links : [];
+        const highlightHtml = highlights
           .map(
-            (h) => `<div style="margin-top:10px;">
-              <strong>${h.item || "Highlight"}</strong>
-              <div class="muted">${h.summary || ""}</div>
-            </div>`
+            (entry) => `
+              <div style="border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;">
+                <strong>${entry.item || "Highlight"}</strong>
+                <div class="muted">${entry.summary || ""}</div>
+              </div>
+            `
           )
           .join("");
-        const links = (payload.links || [])
+        const linksHtml = links
           .map((link) => `<a href="${link.url}" target="_blank" rel="noopener">${link.label || link.url}</a>`)
           .join("");
+
         block.innerHTML = `
-          ${pillRow}
-          ${tableHtml || "<div class='muted'>No table returned.</div>"}
-          ${highlights}
+          <div class="note" style="margin-bottom:8px;">${pills}</div>
+          <div class="table-wrap">${tableHtml}</div>
+          ${highlightHtml ? `<div style="margin-top:12px;display:grid;gap:10px;">${highlightHtml}</div>` : ""}
           ${payload.summary ? `<div style="margin-top:12px;">${payload.summary}</div>` : ""}
-          ${links ? `<div class="links">${links}</div>` : ""}
+          ${linksHtml ? `<div class="links">${linksHtml}</div>` : ""}
         `;
         cardsEl.appendChild(block);
         setStatus("Comparison ready", "ok");
       }
 
-      setActiveTab("places");
+      resetResults("idle");
     </script>
   </body>
 </html>
