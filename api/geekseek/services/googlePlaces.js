@@ -104,20 +104,12 @@ export async function searchPlaces({
   if (!location?.latitude || !location?.longitude) throw new Error("location.latitude and location.longitude are required");
   const { endpoint, method, body } = toSearchBody({ query, location, radiusMeters, languageCode, regionCode, includedTypes, maxResultCount });
   const headers = buildHeaders(apiKey, SEARCH_FIELDS.join(","));
-  console.log("[geekseek] places.search request", {
-    endpoint,
-    method,
-    languageCode,
-    includedTypes,
-    radiusMeters,
-  });
   const { data } = await fetchJson(endpoint, {
     method,
     headers,
     body: sanitizeBody(body),
   });
   const count = Array.isArray(data?.places) ? data.places.length : 0;
-  console.log("[geekseek] places.search response", { count });
   return Array.isArray(data?.places) ? data.places : [];
 }
 
@@ -126,13 +118,7 @@ export async function fetchPlaceDetails({ apiKey, placeId }) {
   if (!placeId) throw new Error("placeId is required");
   const url = `${BASE_URL}/places/${placeId}`;
   const headers = buildHeaders(apiKey, DETAIL_FIELDS.join(","));
-  console.log("[geekseek] places.details request", { placeId });
   const { data } = await fetchJson(url, { method: "GET", headers });
-  console.log("[geekseek] places.details response", {
-    placeId,
-    hasData: !!data,
-    fields: data ? Object.keys(data).length : 0,
-  });
   return data;
 }
 

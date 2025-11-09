@@ -95,12 +95,6 @@ const buildPrompt = ({ userIntent, origin, places, details, limit }) => {
 export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, places, details, limit }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
   const prompt = buildPrompt({ userIntent, origin, places, details, limit });
-  console.log("[geekseek] openai.normalize request", {
-    model: OPENAI_MODEL,
-    limit,
-    placesCount: Array.isArray(places) ? places.length : 0,
-    detailsCount: details ? Object.keys(details).length : 0,
-  });
   const response = await fetch(OPENAI_URL, {
     method: "POST",
     headers: {
@@ -113,10 +107,6 @@ export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, pl
       response_format: { type: "json_object" },
       temperature: 0,
     }),
-  });
-  console.log("[geekseek] openai.normalize response", {
-    status: response.status,
-    ok: response.ok,
   });
   if (!response.ok) {
     const text = await response.text();
@@ -137,7 +127,6 @@ export async function normalizePlacesWithOpenAI({ apiKey, userIntent, origin, pl
     throw err;
   }
   const results = Array.isArray(parsed?.results) ? parsed.results : [];
-  console.log("[geekseek] openai.normalize results", { count: results.length });
   const sanitized = results.map((item) => sanitizePlace(item));
   return sanitized;
 }

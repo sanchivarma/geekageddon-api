@@ -1,34 +1,16 @@
 import { OPENAI_MODEL } from "../config.js";
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-const MAX_ITEMS_DEFAULT = 5;
+const MAX_ITEMS_DEFAULT = 2; // A vs B
 const EMPTY_CELL_VALUE = "--";
-const DEFAULT_ASPECT_PRIORITY = [
-  "Identity & Overview",
-  "Latest Release / Update",
-  "User Adoption & Sentiment",
-  "Core Capabilities",
-  "Differentiators / Unique Selling Points",
-  "Architecture & Deployment Model",
-  "Hardware / Infrastructure",
-  "Performance & Benchmarks",
-  "Software / Features",
-  "Ecosystem & Integrations",
-  "Security & Compliance",
-  "Data Governance",
-  "Observability & Telemetry",
-  "Developer / User Experience",
-  "Operational Complexity",
-  "Scalability & Elasticity",
-  "Pricing & Licensing",
-  "Support & Service",
-  "Community & Reviews",
-  "Migration & Lock-in",
-  "Roadmap & Longevity",
-];
 
-const ensureArray = (value) => (Array.isArray(value) ? value : value != null ? [value] : []);
+// New, minimal target schema
+// Model must return: { "rows": [ { "key": "Factor", "A": "value", "B": "value" }, ... ] }
+const RESPONSE_SCHEMA = {
+  rows: [{ key: "Factor", A: "Value for A", B: "Value for B" }],
+};
 
+const toArray = (value) => (Array.isArray(value) ? value : value != null ? [value] : []);
 const escapeHtml = (value) =>
   String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -37,83 +19,10 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;");
 
 const fallbackItems = (items = [], max = MAX_ITEMS_DEFAULT) =>
-  ensureArray(items)
+  toArray(items)
     .map((item) => String(item).trim())
     .filter(Boolean)
     .slice(0, max);
-
-const sanitizeLinks = (links = []) =>
-  ensureArray(links)
-    .map((link) => ({
-      label: String(link?.label ?? link?.title ?? "Source").trim(),
-      url: String(link?.url ?? link?.href ?? "").trim(),
-      reason: link?.reason ? String(link.reason).trim() : undefined,
-    }))
-    .filter((link) => link.url);
-
-const sanitizeHighlights = (highlights = [], items = []) =>
-  ensureArray(highlights)
-    .map((entry, index) => ({
-      item: String(entry?.item ?? items[index] ?? items[0] ?? "").trim(),
-      summary: String(entry?.summary ?? entry?.headline ?? "").trim(),
-      bullets: ensureArray(entry?.bullets ?? entry?.points ?? entry?.takeaways)
-        .map((line) => String(line).trim())
-        .filter(Boolean)
-        .slice(0, 4),
-      links: sanitizeLinks(entry?.links),
-    }))
-    .filter((entry) => entry.item || entry.summary || entry.bullets.length);
-
-const ensureAspectCoverage = (rows, columnCount, requiredAspects = DEFAULT_ASPECT_PRIORITY) => {
-  const existing = new Set(rows.map((row) => row.label.toLowerCase()));
-  const filled = [...rows];
-  for (const aspect of requiredAspects) {
-    const key = aspect.toLowerCase();
-    if (existing.has(key)) continue;
-    filled.push({
-      label: aspect,
-      values: Array.from({ length: columnCount }, () => EMPTY_CELL_VALUE),
-    });
-  }
-  return filled;
-};
-
-const sortRowsByPriority = (rows, requiredAspects = DEFAULT_ASPECT_PRIORITY) => {
-  const orderMap = new Map(requiredAspects.map((label, index) => [label.toLowerCase(), index]));
-  return [...rows].sort((a, b) => {
-    const aIndex = orderMap.has(a.label.toLowerCase()) ? orderMap.get(a.label.toLowerCase()) : requiredAspects.length;
-    const bIndex = orderMap.has(b.label.toLowerCase()) ? orderMap.get(b.label.toLowerCase()) : requiredAspects.length;
-    if (aIndex !== bIndex) return aIndex - bIndex;
-    return a.label.localeCompare(b.label);
-  });
-};
-
-const sanitizeTable = ({ table = {}, items = [], maxRows = 6, requiredAspects = DEFAULT_ASPECT_PRIORITY }) => {
-  const canonicalItems = items.length ? items : ["Option A", "Option B"];
-  const columns = ["Factor", ...canonicalItems];
-  const normalizedRows = ensureArray(table.rows)
-    .map((row) => ({
-      label: String(row?.label ?? row?.aspect ?? "").trim() || "Factor",
-      values: ensureArray(row?.values ?? row?.items)
-        .slice(0, canonicalItems.length)
-        .map((value) => String(value ?? "").trim()),
-    }))
-    .filter((row) => row.values.some(Boolean) || row.label);
-  const deduped = [];
-  const seen = new Set();
-  for (const row of normalizedRows) {
-    const key = row.label.toLowerCase();
-    if (seen.has(key)) continue;
-    const values = row.values.length === canonicalItems.length
-      ? row.values
-      : [...row.values, ...Array(Math.max(0, canonicalItems.length - row.values.length)).fill(EMPTY_CELL_VALUE)];
-    deduped.push({ label: row.label, values });
-    seen.add(key);
-  }
-  const withMandatory = ensureAspectCoverage(deduped, canonicalItems.length, requiredAspects);
-  const ordered = sortRowsByPriority(withMandatory, requiredAspects).slice(0, maxRows);
-  return { columns, rows: ordered };
-};
 
 const buildTableHtml = ({ columns, rows }) => {
   const header = columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("");
@@ -128,171 +37,190 @@ const buildTableHtml = ({ columns, rows }) => {
   return `<table class="geekseek-table"><thead><tr>${header}</tr></thead><tbody>${body}</tbody></table>`;
 };
 
-const sanitizeComparisonPayload = ({
-  payload = {},
-  items = [],
-  maxRows = 6,
-  maxItems = MAX_ITEMS_DEFAULT,
-  requiredAspects = DEFAULT_ASPECT_PRIORITY,
-}) => {
-  const normalizedItems = fallbackItems(payload.items?.length ? payload.items : items, maxItems);
-  const table = sanitizeTable({
-    table: payload.table ?? {},
-    items: normalizedItems,
-    maxRows,
-    requiredAspects,
-  });
-  const tableHtml = buildTableHtml(table);
-  const highlights = sanitizeHighlights(payload.highlights, normalizedItems);
-  const links = sanitizeLinks(payload.links ?? payload.resources ?? payload.sources);
-  const summary = String(payload.summary ?? payload.verdict ?? "").trim();
+const stripMarkdownFence = (text = "") => {
+  if (!text.trim().startsWith("```")) return text;
+  return text.replace(/^```(?:json)?\s*/i, "").replace(/```$/i, "").trim();
+};
+
+const parseJsonStrict = (rawContent) => {
+  const baseText = typeof rawContent === "string" ? rawContent.trim() : "";
+  if (!baseText) {
+    const err = new Error("OpenAI response was empty");
+    err.cause = new Error("EMPTY_CONTENT");
+    throw err;
+  }
+  const candidate = stripMarkdownFence(baseText);
+  try {
+    return JSON.parse(candidate);
+  } catch (primaryError) {
+    const start = candidate.indexOf("{");
+    const end = candidate.lastIndexOf("}");
+    if (start !== -1 && end !== -1 && end > start) {
+      const trimmed = candidate.slice(start, end + 1);
+      try {
+        return JSON.parse(trimmed);
+      } catch {
+        // fall through to final error
+      }
+    }
+    const err = new Error("Failed to parse OpenAI JSON response");
+    err.cause = primaryError;
+    err.snippet = candidate.slice(0, 500);
+    throw err;
+  }
+};
+
+// Normalize model output (rows[{key,A,B}]) into table html + echo rows
+const sanitizeRows = (rows = [], items = []) => {
+  const [itemA = "A", itemB = "B"] = items.length === 2 ? items : ["A", "B"];
+  const normalized = toArray(rows)
+    .map((r) => ({
+      key: String(r?.key ?? r?.label ?? "").trim(),
+      A: String(r?.A ?? r?.a ?? "").trim(),
+      B: String(r?.B ?? r?.b ?? "").trim(),
+    }))
+    .filter((r) => r.key);
+
+  const seen = new Set();
+  const deduped = [];
+  for (const r of normalized) {
+    const k = r.key.toLowerCase();
+    if (seen.has(k)) continue;
+    deduped.push({
+      label: r.key,
+      values: [r.A || EMPTY_CELL_VALUE, r.B || EMPTY_CELL_VALUE],
+    });
+    seen.add(k);
+  }
+
+  const columns = ["Key", itemA, itemB];
+  return { columns, rows: deduped };
+};
+
+const sanitizeComparisonPayload = ({ payload = {}, items = [], maxRows = 6 }) => {
+  // Accept either { rows:[...] } or a bare array [...]
+  const rows = Array.isArray(payload) ? payload : payload.rows;
+  const normalizedItems = fallbackItems(items, 2);
+  const table = sanitizeRows(rows, normalizedItems);
+
+  // Enforce max rows and build HTML
+  const clipped = { columns: table.columns, rows: table.rows.slice(0, maxRows) };
+  const tableHtml = buildTableHtml(clipped);
+
   return {
     items: normalizedItems,
-    table: { ...table, html: tableHtml },
-    highlights,
-    links,
-    summary,
+    rows: (rows || []).slice(0, maxRows), // raw rows echo for direct use
+    table: { ...clipped, html: tableHtml },
+    summary: "", // no summary in this minimal mode
     description: tableHtml,
   };
 };
 
+// Super-short, fast prompt builder
 const buildPrompt = ({
-  persona,
-  domain,
-  styleNotes,
   queryText,
   items,
   locale,
-  focus,
   maxRows,
-  maxItems,
-  requiredAspects = DEFAULT_ASPECT_PRIORITY,
 }) => {
-  const uniqueAspects = Array.isArray(requiredAspects) ? requiredAspects : [];
-  const payload = {
-    query: queryText,
-    requestedItems: fallbackItems(items, maxItems),
-    locale,
-    focus,
-    requiredAspects: uniqueAspects,
-  };
-  const schema = {
-    items: ["Item name"],
-    table: {
-      columns: ["Factor", "Item A", "Item B"],
-      rows: [{ label: "Hardware", values: ["Item A detail", "Item B detail"] }],
-    },
-    highlights: [
-      {
-        item: "Item A",
-        summary: "One sentence headline",
-        bullets: ["Actionable insight 1", "Actionable insight 2"],
-        links: [{ label: "Deep dive", url: "https://example.com/link" }],
-      },
-    ],
-    links: [{ label: "Official site", url: "https://example.com", reason: "Docs" }],
-    summary: "One paragraph verdict with recommendation",
-  };
+  const [A = "A", B = "B"] = fallbackItems(items, 2);
+  // One tight instruction block → low tokens, faster completion.
   return [
-    `${persona}. You specialize in ${domain}.`,
-    "Respond ONLY with strict JSON that matches the schema provided.",
-    uniqueAspects.length
-      ? `Mandatory aspects to cover (in priority order): ${uniqueAspects.join(", ")}.`
-      : "Select the most relevant comparison factors for this scenario; do not assume any fixed template.",
-    "Mention additional aspects (ecosystem, roadmap, integrations) if relevant.",
-    styleNotes.length ? `Style notes: ${styleNotes.join("; ")}` : "",
-    "Input payload:",
-    JSON.stringify(payload, null, 2),
-    "Return STRICT JSON matching this schema (no Markdown and no prose outside JSON):",
-    JSON.stringify(schema, null, 2),
-    `Cap the table at ${maxRows} rows and ${maxItems} compared items.`,
-    "Always cite reputable hardware/software benchmarks or product review sources in the links array.",
+    `Return JSON only, no markdown, no prose.`,
+    `Format: {"rows":[{"key":"Factor","A":"value","B":"value"}]}`,
+    `Compare "${A}" vs "${B}"${queryText ? ` for "${queryText}"` : ""}.`,
+    `Produce at most ${Math.max(10, Math.min(20, maxRows || 6))} rows.`,
+    `Prefer concise, non-marketed phrasing (≤ 8 words per value).`,
+    `Common factors: Price, Performance, Features, Ease of Use, Ecosystem, Learning Curve, Support, When to Choose ${A}, When to Choose ${B}.`,
+    `Use "${EMPTY_CELL_VALUE}" if unknown.`,
+    locale ? `Locale: ${locale}.` : ``,
   ]
     .filter(Boolean)
-    .join("\n");
-};
-
-const mergeAspectList = (additional = [], includeDefaults = true) => {
-  const merged = includeDefaults ? [...DEFAULT_ASPECT_PRIORITY] : [];
-  ensureArray(additional).forEach((item) => {
-    const label = String(item ?? "").trim();
-    if (!label) return;
-    if (!merged.some((existing) => existing.toLowerCase() === label.toLowerCase())) {
-      merged.push(label);
-    }
-  });
-  return merged;
+    .join(" ");
 };
 
 export async function generateComparison({
   apiKey,
-  persona,
-  domain,
-  styleNotes = [],
+  persona,        // kept for signature compatibility (unused in fast mode)
+  domain,         // kept for signature compatibility (unused in fast mode)
+  styleNotes = [],// kept for signature compatibility (unused in fast mode)
   queryText,
   items = [],
   locale = "en",
-  focus,
+  focus,          // kept for signature compatibility (unused in fast mode)
   maxRows = 6,
-  maxItems = MAX_ITEMS_DEFAULT,
-  extraAspects = [],
-  includeDefaultAspects = true,
+  maxItems = MAX_ITEMS_DEFAULT, // kept for signature compatibility (unused in fast mode)
+  timeoutMs = Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 1000), // ~1s budget
+  maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 220), // smaller = faster
 }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
-  const requiredAspects = mergeAspectList(extraAspects, includeDefaultAspects);
+
   const prompt = buildPrompt({
-    persona,
-    domain,
-    styleNotes,
     queryText,
-    items,
-    locale,
-    focus,
-    maxRows,
-    maxItems,
-    requiredAspects,
-  });
-  console.log("[geekseek] comparison request", {
-    domain,
-    items: fallbackItems(items, maxItems),
+    items: fallbackItems(items, 2),
     locale,
     maxRows,
   });
-  const response = await fetch(OPENAI_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: OPENAI_MODEL,
-      messages: [
-        { role: "system", content: "You respond ONLY with strict JSON. No prose." },
-        { role: "user", content: prompt },
-      ],
-      response_format: { type: "json_object" },
-      temperature: 0.2,
-    }),
-  });
-  console.log("[geekseek] comparison response", {
-    status: response.status,
-    ok: response.ok,
-  });
-  if (!response.ok) {
-    const errorBody = await response.text();
-    const error = new Error(`OpenAI comparison request failed (${response.status})`);
-    error.body = errorBody;
-    throw error;
-  }
-  const json = await response.json();
-  const content = json?.choices?.[0]?.message?.content ?? "{}";
-  let parsed;
+
+  // Minimal logging to reduce overhead
+  console.log("[geekseek] compare", { items: fallbackItems(items, 2), maxRows });
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
-    parsed = JSON.parse(content);
+    const response = await fetch(OPENAI_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        // Small perf gain on Node: disable compression negotiation overhead
+        // (OpenAI already responds quickly to small prompts)
+        // Note: OK to omit; kept here for clarity.
+        "Accept-Encoding": "identity",
+      },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        messages: [
+          { role: "system", content: "Respond with STRICT JSON ONLY. Do not include code fences or text." },
+          { role: "user", content: prompt },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0,
+        max_completion_tokens: maxCompletionTokens,
+        top_p: 1,
+        n: 1,
+      }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      const err = new Error(`OpenAI comparison request failed (${response.status})`);
+      err.body = errorBody;
+      throw err;
+    }
+
+    const json = await response.json();
+    const content = json?.choices?.[0]?.message?.content ?? "{}";
+    const parsed = parseJsonStrict(content);
+
+    return sanitizeComparisonPayload({ payload: parsed, items, maxRows });
   } catch (error) {
-    const err = new Error("Failed to parse OpenAI comparison JSON");
-    err.cause = error;
-    throw err;
+    if (error?.name === "AbortError") {
+      const timeoutError = new Error("OpenAI comparison request timed out, please simplify the prompt");
+      timeoutError.code = "OPENAI_TIMEOUT";
+      throw timeoutError;
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
-  return sanitizeComparisonPayload({ payload: parsed, items, maxRows, maxItems, requiredAspects });
 }
+
+/**
+ * Example user-facing prompt pattern (if you need one elsewhere):
+ * "iPhone 16 vs Galaxy S24 — return JSON only as:
+ *  {\"rows\":[{\"key\":\"Price\",\"A\":\"...\",\"B\":\"...\"}, ...]}.
+ *  Max 8 words per value, use \"--\" if unknown."
+ */
