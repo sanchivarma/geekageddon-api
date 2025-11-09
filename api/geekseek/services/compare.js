@@ -16,7 +16,7 @@ export async function buildComparison({
   const domain = "generic cross-domain comparisons (products, services, policies, locations, ideas, etc.)";
   const styleNotes = [
     "Select the 20 most decision-ready comparison factors implied by the prompt.",
-    "Keep every table cell under 140 characters and prefer concrete or numeric facts.",
+    "Keep every table cell under 300 characters and provide relevant concrete or numeric facts.",
     "Group rows logically (overview, experience, economics, metrics, outlook) but adapt to the subject.",
     "Cite reputable public sources for each factor (docs, analyst reports, government/open data).",
   ];

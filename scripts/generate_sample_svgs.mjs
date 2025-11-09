@@ -29,7 +29,6 @@ async function run() {
     await fs.writeFile(path.join(outDir, `text-${bt}.svg`), svg2, 'utf8');
   }
 
-  console.log('Generated sample SVGs in outputs/');
 }
 
 run().catch(err => {

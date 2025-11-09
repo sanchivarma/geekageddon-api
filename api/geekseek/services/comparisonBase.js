@@ -162,9 +162,6 @@ export async function generateComparison({
     maxRows,
   });
 
-  // Minimal logging to reduce overhead
-  console.log("[geekseek] compare", { items: fallbackItems(items, 2), maxRows });
-
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
