@@ -131,7 +131,7 @@ const buildPrompt = ({
     `Compare "${A}" vs "${B}"${queryText ? ` for "${queryText}"` : ""}.`,
     `Produce at most ${Math.max(10, Math.min(20, maxRows || 6))} rows.`,
     `Prefer concise, non-marketed phrasing (≤ 8 words per value).`,
-    `Common factors: Link, Price, Performance, Features, Ease of Use, Ecosystem, Learning Curve, Support, When to Choose ${A}, When to Choose ${B}.`,
+    `Common factors: Link, Overall Rating (1-5), Price, Performance, Features, Ease of Use, Ecosystem, Learning Curve, Support, When to Choose ${A}, When to Choose ${B}.`,
     `Use "${EMPTY_CELL_VALUE}" if unknown.`,
     locale ? `Locale: ${locale}.` : ``,
   ]
