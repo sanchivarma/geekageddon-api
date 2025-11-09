@@ -36,55 +36,14 @@ const STATS_FACTORS = [
 
 const TECH_PRODUCT_FACTORS = [...DETAIL_FACTORS, ...TECH_FACTORS, ...STATS_FACTORS];
 
-const LOCATION_FACTORS = [
-  "Region & Coordinates",
-  "Population & Growth",
-  "Demographics & Diversity",
-  "Economy & GDP",
-  "Major Industries & Job Market",
-  "Average Income",
-  "Cost of Living Index",
-  "Housing Market",
-  "Safety & Crime Rate",
-  "Healthcare Quality",
-  "Education & Universities",
-  "Public Transportation",
-  "Traffic & Commute",
-  "Climate & Seasons",
-  "Air Quality & Environment",
-  "Culture & Lifestyle",
-  "Entertainment & Food Scene",
-  "Tourism & Attractions",
-  "Innovation & Startup Activity",
-  "Infrastructure Readiness",
-  "Digital Connectivity",
-  "Regulatory / Visa Ease",
-  "Future Development Plans",
-  "Quality-of-Life Ratings",
-  "Notable Strengths & Trade-offs",
-];
-
 const TECH_KEYWORDS =
   /\b(api|sdk|framework|platform|database|db|vector|ml|ai|tensor|gpu|cpu|chip|processor|server|cloud|infra|devops|kubernetes|docker|microservice|pipeline|model|embedding|runtime|cli|library|sdk)\b/i;
 const PRODUCT_KEYWORDS =
   /\b(device|phone|smartphone|camera|headphone|earbud|laptop|notebook|tablet|watch|smartwatch|monitor|tv|television|router|console|gadget|appliance|printer|speaker|projector|lens|car|ev|vehicle|bike|drone|vacuum)\b/i;
-const LOCATION_KEYWORDS =
-  /\b(city|cities|country|countries|state|states|province|region|metro|capital|town|village|population|climate|gdp|economy|cost of living|quality of life|visa|immigration|tourism|travel)\b/i;
 const PRODUCT_TOKENS = /\b(pro|max|mini|ultra|plus|series|gen|mk|edition|air|studio|gear|one|s\d+|x\d+)\b/i;
-
-const isLikelyLocationName = (value = "") => {
-  const trimmed = value.trim();
-  if (!trimmed) return false;
-  if (/\d/.test(trimmed)) return false;
-  if (PRODUCT_TOKENS.test(trimmed)) return false;
-  const tokens = trimmed.split(/\s+/);
-  if (tokens.length > 4) return false;
-  return tokens.every((token) => /^[A-Za-z][A-Za-z.\-']*$/.test(token));
-};
 
 const detectContext = (queryText = "", items = []) => {
   const haystack = [queryText, ...items].filter(Boolean).join(" ").toLowerCase();
-  if (LOCATION_KEYWORDS.test(haystack) || items.some(isLikelyLocationName)) return "location";
   if (TECH_KEYWORDS.test(haystack)) return "tech";
   if (PRODUCT_KEYWORDS.test(haystack)) return "product";
   return "generic";
@@ -113,17 +72,7 @@ export async function buildComparison({
   let includeDefaultAspects = false;
   let enforcedRows = Math.max(maxRows, 25);
 
-  if (context === "location") {
-    persona = "You are an urban economist who compares global cities and regions with quantifiable civic metrics";
-    domain = "cities, metros, regions, and countries";
-    styleNotes = [
-      "Produce at least twenty-five comparison factors, grouped logically (overview, economy, lifestyle, infrastructure, future outlook)",
-      "Use concrete metrics where possible: population, GDP, temperature range, cost-of-living index, safety scores, rent averages, commute times",
-      "Narrate each factor in crisp sentences that help relocation, expansion, or travel decisions; cite reputable civic or economic sources in links",
-      "Call out notable strengths, weaknesses, and trade-offs directly within the relevant rows",
-    ];
-    extraAspects = LOCATION_FACTORS;
-  } else if (context === "generic") {
+  if (context === "generic") {
     persona =
       "You are a senior research facilitator who adapts comparison criteria to any subject matter (products, services, policies, locales)";
     domain = "general purpose comparisons across consumer, technical, policy, civic, or experiential domains";
