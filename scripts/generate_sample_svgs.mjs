@@ -28,7 +28,6 @@ async function run() {
     const svg2 = generateJokeSVG(sampleText, themes[0].theme, { borderAnimation: bt, reduceMotion: false });
     await fs.writeFile(path.join(outDir, `text-${bt}.svg`), svg2, 'utf8');
   }
-
 }
 
 run().catch(err => {
