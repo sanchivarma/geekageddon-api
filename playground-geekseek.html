@@ -405,36 +405,53 @@
         cardsEl.innerHTML = "";
         const block = document.createElement("div");
         block.className = "card-entry";
-        const items = Array.isArray(payload.items) ? payload.items : [];
-        const pills = items
-          .map((item) => `<span style="margin-right:8px;color:${items.length ? '#e6eaf2' : '#98a0bd'}">${item}</span>`)
-          .join("");
-        const tableHtml = payload.table?.html || payload.description || "<p class=\"muted\">No table returned.</p>";
-        const highlights = Array.isArray(payload.highlights) ? payload.highlights : [];
-        const links = Array.isArray(payload.links) ? payload.links : [];
-        const highlightHtml = highlights
-          .map(
-            (entry) => `
-              <div style="border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;">
-                <strong>${entry.item || "Highlight"}</strong>
-                <div class="muted">${entry.summary || ""}</div>
-              </div>
-            `
-          )
-          .join("");
-        const linksHtml = links
-          .map((link) => `<a href="${link.url}" target="_blank" rel="noopener">${link.label || link.url}</a>`)
-          .join("");
+        if (payload.success === false) {
+          block.innerHTML = `<pre class="muted">${JSON.stringify(payload, null, 2)}</pre>`;
+          cardsEl.appendChild(block);
+          setStatus("Comparison returned error", "err");
+          return;
+        }
+        const modelPills =
+          Array.isArray(payload.models)
+            ? payload.models.map((model) => model.name)
+                .filter(Boolean)
+                .map((name) => `<span style="margin-right:8px;color:#e6eaf2">${name}</span>`)
+                .join("")
+            : Object.values(payload.models ?? {})
+                .map((model) => model?.name)
+                .filter(Boolean)
+                .map((name) => `<span style="margin-right:8px;color:#e6eaf2">${name}</span>`)
+                .join("");
+        const pills = modelPills || `<span class="muted">Items inferred from prompt</span>`;
+        const generatedAt =
+          payload.generatedAt && !Number.isNaN(Date.parse(payload.generatedAt))
+            ? new Date(payload.generatedAt).toLocaleString()
+            : "";
+        const rows = Array.isArray(payload.table?.rows) ? payload.table.rows : [];
+        const modelEntries = Object.entries(payload.models ?? {}).sort(([a], [b]) => a.localeCompare(b));
+        const columnLabels = ["Factor", ...modelEntries.map(([, model]) => model?.name ?? "Option")];
+        const tableHtml = rows.length
+          ? `<table class="geekseek-table"><thead><tr>${columnLabels
+              .map((column) => `<th>${column}</th>`)
+              .join("")}</tr></thead><tbody>${rows
+              .map(
+                (row) =>
+                  `<tr><th scope="row">${row.label || "Factor"}</th>${columnLabels
+                    .slice(1)
+                    .map((_, index) => `<td>${row.values?.[index] ?? "--"}</td>`)
+                    .join("")}</tr>`
+              )
+              .join("")}</tbody></table>`
+          : `<p class="muted">No table returned.</p>`;
 
         block.innerHTML = `
-          <div class="note" style="margin-bottom:8px;">${pills}</div>
+          <div class="note" style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;">${pills}</div>
+          ${generatedAt ? `<div class="note" style="margin-bottom:8px;">Generated ${generatedAt}</div>` : ""}
           <div class="table-wrap">${tableHtml}</div>
-          ${highlightHtml ? `<div style="margin-top:12px;display:grid;gap:10px;">${highlightHtml}</div>` : ""}
-          ${payload.summary ? `<div style="margin-top:12px;">${payload.summary}</div>` : ""}
-          ${linksHtml ? `<div class="links">${linksHtml}</div>` : ""}
         `;
         cardsEl.appendChild(block);
-        setStatus("Comparison ready", "ok");
+        const rowCount = rows.length;
+        setStatus(rowCount ? `${rowCount} comparison factors` : "Comparison ready", "ok");
       }
 
       resetResults("idle");

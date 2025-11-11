@@ -2,13 +2,7 @@ import { OPENAI_MODEL } from "../config.js";
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MAX_ITEMS_DEFAULT = 2; // A vs B
-const EMPTY_CELL_VALUE = "--";
-
-// New, minimal target schema
-// Model must return: { "rows": [ { "key": "Factor", "A": "value", "B": "value" }, ... ] }
-const RESPONSE_SCHEMA = {
-  rows: [{ key: "Factor", A: "Value for A", B: "Value for B" }],
-};
+const EMPTY_CELL_VALUE = "";
 
 const toArray = (value) => (Array.isArray(value) ? value : value != null ? [value] : []);
 const escapeHtml = (value) =>
@@ -24,19 +18,6 @@ const fallbackItems = (items = [], max = MAX_ITEMS_DEFAULT) =>
     .filter(Boolean)
     .slice(0, max);
 
-const buildTableHtml = ({ columns, rows }) => {
-  const header = columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("");
-  const body = rows
-    .map(
-      (row) =>
-        `<tr><th scope="row">${escapeHtml(row.label)}</th>${row.values
-          .map((value) => `<td>${escapeHtml(value || EMPTY_CELL_VALUE)}</td>`)
-          .join("")}</tr>`
-    )
-    .join("");
-  return `<table class="geekseek-table"><thead><tr>${header}</tr></thead><tbody>${body}</tbody></table>`;
-};
-
 const stripMarkdownFence = (text = "") => {
   if (!text.trim().startsWith("```")) return text;
   return text.replace(/^```(?:json)?\s*/i, "").replace(/```$/i, "").trim();
@@ -50,69 +31,117 @@ const parseJsonStrict = (rawContent) => {
     throw err;
   }
   const candidate = stripMarkdownFence(baseText);
-  try {
-    return JSON.parse(candidate);
-  } catch (primaryError) {
-    const start = candidate.indexOf("{");
-    const end = candidate.lastIndexOf("}");
-    if (start !== -1 && end !== -1 && end > start) {
-      const trimmed = candidate.slice(start, end + 1);
-      try {
-        return JSON.parse(trimmed);
-      } catch {
-        // fall through to final error
-      }
+  const clean = candidate
+    .replace(/[“”„]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/,\s*([\]}])/g, "$1");
+
+  const trimmed = (() => {
+    const start = clean.indexOf("{");
+    const end = clean.lastIndexOf("}");
+    return start !== -1 && end !== -1 && end > start ? clean.slice(start, end + 1) : clean;
+  })();
+
+  const attemptParse = (text) => {
+    try {
+      return JSON.parse(text);
+    } catch {
+      return null;
     }
-    const err = new Error("Failed to parse OpenAI JSON response");
-    err.cause = primaryError;
-    err.snippet = candidate.slice(0, 500);
-    throw err;
+  };
+
+  const base = attemptParse(trimmed);
+  if (base) return base;
+
+  const closers = ["}", "]}"];
+  for (const closer of closers) {
+    const withCloser = trimmed.endsWith(closer) ? trimmed : `${trimmed}${closer}`;
+    const candidateParse = attemptParse(withCloser);
+    if (candidateParse) return candidateParse;
   }
+
+  let truncation = trimmed;
+  while (truncation.length > 0) {
+    truncation = truncation.slice(0, -1);
+    if (!truncation.trim()) break;
+    const parsed = attemptParse(truncation);
+    if (parsed) return parsed;
+  }
+
+  const err = new Error("Failed to parse OpenAI JSON response");
+  err.snippet = trimmed.slice(0, 500);
+  throw err;
 };
 
 // Normalize model output (rows[{key,A,B}]) into table html + echo rows
-const sanitizeRows = (rows = [], items = []) => {
-  const [itemA = "A", itemB = "B"] = items.length === 2 ? items : ["A", "B"];
-  const normalized = toArray(rows)
-    .map((r) => ({
-      key: String(r?.key ?? r?.label ?? "").trim(),
-      A: String(r?.A ?? r?.a ?? "").trim(),
-      B: String(r?.B ?? r?.b ?? "").trim(),
-    }))
-    .filter((r) => r.key);
-
+const sanitizeRows = ({ rows = [], columnKeys = ["A", "B"], maxRows = 6 }) => {
+  const normalized = [];
   const seen = new Set();
-  const deduped = [];
-  for (const r of normalized) {
-    const k = r.key.toLowerCase();
-    if (seen.has(k)) continue;
-    deduped.push({
-      label: r.key,
-      values: [r.A || EMPTY_CELL_VALUE, r.B || EMPTY_CELL_VALUE],
+  const safeRows = Array.isArray(rows) ? rows : [];
+  for (const row of safeRows) {
+    if (!row || typeof row !== "object") continue;
+    if (normalized.length >= maxRows) break;
+    const key = String(row.key ?? row.label ?? row.factor ?? "").trim();
+    if (!key) continue;
+    const values = columnKeys.map((keyName) => {
+      const direct = String(row[keyName] ?? row[keyName?.toLowerCase()] ?? row.values?.[columnKeys.indexOf(keyName)] ?? "").trim();
+      return direct || EMPTY_CELL_VALUE;
     });
-    seen.add(k);
+    const identifier = `${row.group ?? ""}::${key}`.toLowerCase();
+    if (seen.has(identifier)) continue;
+    seen.add(identifier);
+    normalized.push({
+      label: key,
+      group: row.group ?? row.section ?? row.category,
+      values,
+      source: row.source_url
+        ? { url: row.source_url, label: row.source ?? row.source_url }
+        : row.source
+        ? { url: row.source.url ?? row.source.url, label: row.source.label ?? row.source.name }
+        : undefined,
+    });
   }
-
-  const columns = ["Key", itemA, itemB];
-  return { columns, rows: deduped };
+  const columns = ["Factor", ...columnKeys];
+  return { columns, rows: normalized };
 };
 
 const sanitizeComparisonPayload = ({ payload = {}, items = [], maxRows = 6 }) => {
-  // Accept either { rows:[...] } or a bare array [...]
-  const rows = Array.isArray(payload) ? payload : payload.rows;
-  const normalizedItems = fallbackItems(items, 2);
-  const table = sanitizeRows(rows, normalizedItems);
-
-  // Enforce max rows and build HTML
-  const clipped = { columns: table.columns, rows: table.rows.slice(0, maxRows) };
-  const tableHtml = buildTableHtml(clipped);
+  const rawRows = Array.isArray(payload)
+    ? payload
+    : Array.isArray(payload.rows)
+    ? payload.rows
+    : Array.isArray(payload.table?.rows)
+    ? payload.table.rows
+    : [];
+  const modelKeys = Object.keys(payload.models ?? {});
+  const columnKeys = modelKeys.length ? modelKeys : ["A", "B"];
+  const primaryTable = sanitizeRows({ rows: rawRows, columnKeys, maxRows });
+  const fallbackRows =
+    primaryTable.rows.length > 0
+      ? primaryTable.rows
+      : rawRows.map((row) => {
+          const label = String(row?.label ?? row?.key ?? "Factor").trim();
+          const values = columnKeys.map((keyName, index) => {
+            const direct = String(row[keyName] ?? row[keyName?.toLowerCase()] ?? row.values?.[index] ?? "").trim();
+            return direct || EMPTY_CELL_VALUE;
+          });
+          return { label, values };
+        });
+  const columnLabels = ["Factor", ...columnKeys.map((key, index) => {
+    const candidate = payload.models?.[key]?.name ?? `Option ${index + 1}`;
+    return String(candidate).trim() || `Option ${index + 1}`;
+  })];
+  const table = {
+    columns: columnLabels,
+    rows: fallbackRows,
+  };
+  const generatedAt =
+    payload.timestamp_utc ?? payload.generated_at ?? payload.timestamp ?? new Date().toISOString();
 
   return {
-    items: normalizedItems,
-    rows: (rows || []).slice(0, maxRows), // raw rows echo for direct use
-    table: { ...clipped, html: tableHtml },
-    summary: "", // no summary in this minimal mode
-    description: tableHtml,
+    table,
+    generatedAt,
+    models: payload.models ?? {},
   };
 };
 
@@ -124,32 +153,29 @@ const buildPrompt = ({
   maxRows,
 }) => {
   const [A = "A", B = "B"] = fallbackItems(items, 2);
-  // One tight instruction block → low tokens, faster completion.
   return [
-    `Return JSON only, no markdown, no prose.`,
-    `Format: {"rows":[{"key":"Factor","A":"value","B":"value"}]}`,
-    `Compare "${A}" vs "${B}"${queryText ? ` for "${queryText}"` : ""}.`,
-    `Produce at most ${Math.max(10, Math.min(20, maxRows || 6))} rows.`,
-    `Prefer concise, non-marketed phrasing (≤ 8 words per value).`,
-    `Common factors: Link, Overall Rating (1-5), Price, Performance, Features, Ease of Use, Ecosystem, Learning Curve, Support, When to Choose ${A}, When to Choose ${B}.`,
-    `Use "${EMPTY_CELL_VALUE}" if unknown.`,
-    locale ? `Locale: ${locale}.` : ``,
-  ]
+  `Return JSON only, no markdown, no prose.`,
+  `Schema (strict): {"models":{"A":{"name":"","url":""},"B":{"name":"","url":""}},"rows":[{"key":"Factor","A":"value","B":"value","source_url":""}]}`,
+  `Compare for "${queryText}". If terms like "latest" or generic categories are used, select specific models/versions and release year`,
+  `Select 10–20 decision-ready factors like : Name, Official Link, Overview, Rating (0–5), Review, Price (cuurency symbol + numeric value), Performance, Reliability, Ease of Use, Tech Support etc other factors as relevant`,
+  `For each value, write 1–2 concise sentences with at least one concrete datum (number, %, date, spec). Do not add a period symbol at the end of last sentence. Rating will be numeric value between 0-5.`,
+  `Produce at least 10 rows and at most 20-25 rows.`,
+]
     .filter(Boolean)
     .join(" ");
 };
 
 export async function generateComparison({
   apiKey,
-  persona,        // kept for signature compatibility (unused in fast mode)
-  domain,         // kept for signature compatibility (unused in fast mode)
-  styleNotes = [],// kept for signature compatibility (unused in fast mode)
+  persona,
+  domain,
+  styleNotes = [],
   queryText,
   items = [],
   locale = "en",
-  focus,          // kept for signature compatibility (unused in fast mode)
-  maxRows = 6,
-  maxItems = MAX_ITEMS_DEFAULT, // kept for signature compatibility (unused in fast mode)
+  focus,
+  maxRows = 15,
+  maxItems = MAX_ITEMS_DEFAULT,
   timeoutMs = Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 1000), // ~1s budget
   maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 220), // smaller = faster
 }) {
@@ -166,20 +192,19 @@ export async function generateComparison({
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    console.log("************************************************");
+    console.log("Prompt:", prompt);
     const response = await fetch(OPENAI_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        // Small perf gain on Node: disable compression negotiation overhead
-        // (OpenAI already responds quickly to small prompts)
-        // Note: OK to omit; kept here for clarity.
         "Accept-Encoding": "identity",
       },
       body: JSON.stringify({
         model: OPENAI_MODEL,
         messages: [
-          { role: "system", content: "Respond with STRICT JSON ONLY. Do not include code fences or text." },
+          { role: "system", content: "Respond with STRICT JSON ONLY." },
           { role: "user", content: prompt },
         ],
         response_format: { type: "json_object" },
@@ -200,6 +225,10 @@ export async function generateComparison({
 
     const json = await response.json();
     const content = json?.choices?.[0]?.message?.content ?? "{}";
+
+
+    /* console.log("************************************************");
+    console.log("OpenAI comparison response:", content); */
     const parsed = parseJsonStrict(content);
 
     return sanitizeComparisonPayload({ payload: parsed, items, maxRows });
@@ -215,9 +244,3 @@ export async function generateComparison({
   }
 }
 
-/**
- * Example user-facing prompt pattern (if you need one elsewhere):
- * "iPhone 16 vs Galaxy S24 — return JSON only as:
- *  {\"rows\":[{\"key\":\"Price\",\"A\":\"...\",\"B\":\"...\"}, ...]}.
- *  Max 8 words per value, use \"--\" if unknown."
- */

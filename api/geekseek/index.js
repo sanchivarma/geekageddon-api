@@ -196,18 +196,14 @@ export default async function handler(req, res) {
         maxRows,
         maxItems,
       });
-      const description = payload.description ?? payload.table?.html ?? "";
       return res.status(200).json({
         success: true,
         type: TYPE_COMPARE,
         query: comparisonQuery,
         focus: focus || undefined,
-        items: payload.items,
         table: payload.table,
-        description,
-        highlights: payload.highlights,
-        links: payload.links,
-        summary: payload.summary,
+        generatedAt: payload.generatedAt,
+        models: payload.models,
       });
     } catch (error) {
       console.error("[geekseek] comparison error", error);

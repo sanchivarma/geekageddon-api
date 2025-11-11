@@ -12,13 +12,12 @@ export async function buildComparison({
   maxRows = 20,
   maxItems = 5,
 }) {
-  const persona = "You are a neutral analyst who produces crisp comparison tables for any subjects the user provides.";
-  const domain = "generic cross-domain comparisons (products, services, policies, locations, ideas, etc.)";
+  const persona = "You are a neutral analyst who produces crisp human-like comparison tables";
+  const domain = "Generic cross-domain comparisons (products, services, policies, locations, ideas, etc.)";
   const styleNotes = [
-    "Select the 20 most decision-ready comparison factors implied by the prompt.",
-    "Keep every table cell under 300 characters and provide relevant concrete or numeric facts.",
-    "Group rows logically (overview, experience, economics, metrics, outlook) but adapt to the subject.",
-    "Cite reputable public sources for each factor (docs, analyst reports, government/open data).",
+    "Select most decision-ready comparison factors implied by the prompt.",
+    "Keep every table cell under 200 characters and provide relevant facts.",
+    "Group rows logically (overview, rating, version, price, technical details, hardware/software details, reviews, experience, metrics) as applicable and relevant.",
   ];
   const enforcedRows = Math.max(MIN_ROWS, Math.min(maxRows, MAX_ROWS));
 
