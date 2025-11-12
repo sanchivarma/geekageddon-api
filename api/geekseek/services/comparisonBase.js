@@ -167,17 +167,12 @@ const buildPrompt = ({
 
 export async function generateComparison({
   apiKey,
-  persona,
-  domain,
-  styleNotes = [],
   queryText,
   items = [],
   locale = "en",
-  focus,
-  maxRows = 15,
-  maxItems = MAX_ITEMS_DEFAULT,
-  timeoutMs = Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 1000), // ~1s budget
-  maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 220), // smaller = faster
+  maxRows = 20,
+  timeoutMs = Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 10000),
+  maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 220),
 }) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -192,8 +187,6 @@ export async function generateComparison({
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    console.log("************************************************");
-    console.log("Prompt:", prompt);
     const response = await fetch(OPENAI_URL, {
       method: "POST",
       headers: {
@@ -226,9 +219,6 @@ export async function generateComparison({
     const json = await response.json();
     const content = json?.choices?.[0]?.message?.content ?? "{}";
 
-
-    /* console.log("************************************************");
-    console.log("OpenAI comparison response:", content); */
     const parsed = parseJsonStrict(content);
 
     return sanitizeComparisonPayload({ payload: parsed, items, maxRows });
