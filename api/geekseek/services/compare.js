@@ -3,8 +3,8 @@ import { OPENAI_MODEL } from "../config.js";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MAX_ITEMS_DEFAULT = 3; // A vs B vs C
 const EMPTY_CELL_VALUE = "";
-const MIN_ROWS = 8;
-const MAX_ROWS = 12;
+const MIN_ROWS = 10;
+const MAX_ROWS = 15;
 
 const toArray = (value) => (Array.isArray(value) ? value : value != null ? [value] : []);
 
@@ -150,11 +150,10 @@ const buildPrompt = ({
   const rowLimit = Math.min(Math.max(10, maxRows ?? 10), 15);
   return [
   `Return JSON only; no markdown.`,
-  `Schema (strict): {"models":{"A":{"name":"","url":""},"B":{"name":"","url":""}},"rows":[{"key":"Factor","A":"value","B":"value","source_url":""}]}`,
+  `Schema (strict): {"models":{"A":{"name":"","url":""},"B":{"name":"","url":""}},"rows":[{"key":"Factor","A":"value","B":"value"}]}`,
   `Compare "${A}" vs "${B}"${queryText ? ` for "${queryText}"` : ""}.`,
-  `Cover ${rowLimit} decision-ready factors (overview, specs, experience, economics).`,
-  `Limit each value to ≤120 characters and include one concrete datum when possible.`,
-  locale ? `Locale: ${locale}.` : ``,
+  `Cover ${rowLimit} comparisons (overview, rating (US Market), specs, experience, economics) with valid stats.`,
+  `Limit each value to ≤120 characters.`,
 ]
     .filter(Boolean)
     .join(" ");
