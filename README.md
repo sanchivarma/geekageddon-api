@@ -1,6 +1,9 @@
 # 🤖 Geekageddon API  
 🌍 https://geekageddon-api.vercel.app
 
+# 🤖 Geekageddon 
+🌍 https://geekageddon.com
+
 *Your open portal to latest geeky content and more.*
 
 ---
