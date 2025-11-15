@@ -20,7 +20,7 @@ Available endpoints are modular, so you can fetch what you need: jokes, quotes, 
 
 ![Animated_dash](https://geekageddon-api.vercel.app/api/jokes?borderAnimation=colorful-dash)
 
-For more customizations, checkout : [GEEK-JOKES.md](./GEEK-JOKES.md)
+For more UI-Style customizations, checkout : [GEEK-JOKES.md](./GEEK-JOKES.md)
 
 
 ## 🧩 2. Geek-Quotes API
@@ -31,7 +31,7 @@ For more customizations, checkout : [GEEK-JOKES.md](./GEEK-JOKES.md)
 
 ![Animated_dash](https://geekageddon-api.vercel.app/api/quotes?theme=aurora&borderAnimation=colorful-dash)
 
-For more customizations, checkout : [GEEK-QUOTES.md](./GEEK-QUOTES.md)
+For more UI-Style customizations, checkout : [GEEK-QUOTES.md](./GEEK-QUOTES.md)
 
 
 
