@@ -13,6 +13,7 @@ The **Geekageddon API** is a collection of lighthearted, useful, and nerdy endpo
 Available endpoints are modular, so you can fetch what you need: jokes, quotes, facts, or anything else we add next.
 
 ## 🧩 1. Geek-Jokes API
+=> Paste the below link in your github profile, and enjoy a randomly-selected hearty geeky-joke on your profile (changes on each profile visit)
 🌍 https://geekageddon-api.vercel.app/api/jokes
 
 > Random humor for developers, office survivors, and caffeine addicts ☕. The jokes can be categorized along with display customizations
@@ -23,6 +24,7 @@ For more customizations, checkout : [GEEK-JOKES.md](./GEEK-JOKES.md)
 
 
 ## 🧩 2. Geek-Quotes API
+=> Paste the below link in your github profile, and enjoy a randomly-selected famous quote on your profile (changes on each profile visit)
 🌍 https://geekageddon-api.vercel.app/api/quotes
 
 > Motivational quotes for makers, devs, and teams. Filter by category and style the SVG with themes and parameters.
