@@ -108,6 +108,7 @@ const sanitizeComparisonPayload = ({ payload = {}, items = [], maxRows = 6 }) =>
     : Array.isArray(payload.table?.rows)
     ? payload.table.rows
     : [];
+
   const modelKeys = Object.keys(payload.models ?? {});
   const columnKeys = modelKeys.length ? modelKeys : ["A", "B"];
   const primaryTable = sanitizeRows({ rows: rawRows, columnKeys, maxRows });
