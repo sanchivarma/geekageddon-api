@@ -213,7 +213,6 @@ const generateComparison = async ({
 
     const json = await response.json();
     const content = json?.choices?.[0]?.message?.content ?? "{}";
-
     const parsed = parseJsonStrict(content);
 
     return sanitizeComparisonPayload({ payload: parsed, items, maxRows });
