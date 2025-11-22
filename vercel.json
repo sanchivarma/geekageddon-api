@@ -10,6 +10,8 @@
     { "src": "/geekseek/playground", "dest": "/playground-geekseek.html" },
     { "src": "/geekseek/playground.html", "dest": "/playground-geekseek.html" },
     { "src": "/geekfeed/playground", "dest": "/playground-geekfeed.html" },
-    { "src": "/geekfeed/playground.html", "dest": "/playground-geekfeed.html" }
+    { "src": "/geekfeed/playground.html", "dest": "/playground-geekfeed.html" },
+    { "src": "/geekventures/playground", "dest": "/playground-geekventures.html" },
+    { "src": "/geekventures/playground.html", "dest": "/playground-geekventures.html" }
   ]
 }

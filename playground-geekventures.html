@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Geek Ventures Playground</title>
+    <style>
+      body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0f172a; color: #e2e8f0; }
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 80px; }
+      h1 { margin: 0 0 6px; }
+      .panel { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+      label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+      input, select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #1f2937; background: #0b1220; color: #e2e8f0; }
+      button { border: none; border-radius: 10px; padding: 10px 14px; background: #38bdf8; color: #0b1220; font-weight: 700; cursor: pointer; }
+      .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 12px; }
+      .card { background: #0b1220; border: 1px solid #1f2937; border-radius: 12px; padding: 12px; }
+      .muted { color: #94a3b8; font-size: 13px; }
+      pre { max-height: 300px; overflow: auto; background: #0b1220; padding: 12px; border-radius: 10px; border: 1px solid #1f2937; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Geek Ventures Playground</h1>
+      <p class="muted">Query /api/geekventures and inspect results.</p>
+
+      <div class="panel" style="display:flex;align-items:center;gap:10px;">
+        <button id="run">Fetch ventures</button>
+        <span id="status" class="muted">Idle</span>
+      </div>
+
+      <div class="panel">
+        <div id="table-wrap" class="grid"></div>
+        <pre id="raw"></pre>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "/api/geekventures";
+      const rawEl = document.getElementById("raw");
+      const tableWrap = document.getElementById("table-wrap");
+      const statusEl = document.getElementById("status");
+
+      document.getElementById("run").addEventListener("click", runQuery);
+
+      async function runQuery() {
+        const params = new URLSearchParams({ limit: "50", sort: "signal" });
+        statusEl.textContent = "Loading...";
+        tableWrap.innerHTML = "";
+        rawEl.textContent = "";
+        try {
+          const res = await fetch(`${API_URL}?${params.toString()}`, { headers: { Accept: "application/json" } });
+          const json = await res.json();
+          rawEl.textContent = JSON.stringify(json, null, 2);
+          if (!json.items?.length) {
+            statusEl.textContent = "No results";
+            return;
+          }
+          statusEl.textContent = `${json.count} items`;
+          renderTable(json.items);
+        } catch (err) {
+          statusEl.textContent = err.message || "Error";
+        }
+      }
+
+      function renderTable(items) {
+        const rows = items
+          .map(
+            (item) => `
+              <tr>
+                <th scope="row">${item.name || "Untitled"}</th>
+                <td>${item.source || ""}</td>
+                <td>${item.description || ""}</td>
+                <td>${(item.categories || []).join(", ")}</td>
+                <td>${item.yearFounded ?? ""}</td>
+                <td>${item.stage || ""}</td>
+                <td>${item.website ? `<a style="color:#38bdf8;text-decoration:none;" href="${item.website}" target="_blank" rel="noopener">Link</a>` : ""}</td>
+              </tr>
+            `
+          )
+          .join("");
+        tableWrap.innerHTML = `
+          <div style="overflow:auto;">
+            <table class="geekseek-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+              <thead>
+                <tr>
+                  <th>Venture</th>
+                  <th>Source</th>
+                  <th>Description</th>
+                  <th>Categories</th>
+                  <th>Year</th>
+                  <th>Stage</th>
+                  <th>Website</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
