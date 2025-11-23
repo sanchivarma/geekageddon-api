@@ -3,8 +3,6 @@ import { OPENAI_MODEL } from "../config.js";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MAX_ITEMS_DEFAULT = 3; // A vs B vs C
 const EMPTY_CELL_VALUE = "";
-const MIN_ROWS = 10;
-const MAX_ROWS = 15;
 
 const toArray = (value) => (Array.isArray(value) ? value : value != null ? [value] : []);
 
@@ -69,7 +67,7 @@ const parseJsonStrict = (rawContent) => {
   throw err;
 };
 
-const sanitizeRows = ({ rows = [], columnKeys = ["A", "B"], maxRows = 6 }) => {
+const sanitizeRows = ({ rows = [], columnKeys = ["A", "B"], maxRows = 15 }) => {
   const normalized = [];
   const seen = new Set();
   const safeRows = Array.isArray(rows) ? rows : [];
@@ -100,7 +98,7 @@ const sanitizeRows = ({ rows = [], columnKeys = ["A", "B"], maxRows = 6 }) => {
   return { columns, rows: normalized };
 };
 
-const sanitizeComparisonPayload = ({ payload = {}, items = [], maxRows = 6 }) => {
+const sanitizeComparisonPayload = ({ payload = {}, items = [], maxRows = 15 }) => {
   const rawRows = Array.isArray(payload)
     ? payload
     : Array.isArray(payload.rows)
@@ -148,13 +146,11 @@ const buildPrompt = ({
   maxRows,
 }) => {
   const [A = "A", B = "B"] = fallbackItems(items, 2);
-  const rowLimit = Math.min(Math.max(10, maxRows ?? 10), 15);
   return [
-  `Return JSON only; no markdown.`,
-  `Schema (strict): {"models":{"A":{"name":"","url":""},"B":{"name":"","url":""}},"rows":[{"key":"Factor","A":"value","B":"value"}]}`,
+  `Return JSON only per schema: {"models":{"A":{"name":"","url":""},"B":{"name":"","url":""}},"rows":[{"key":"Factor","A":"value","B":"value"}]}`,
   `Compare "${A}" vs "${B}"${queryText ? ` for "${queryText}"` : ""}.`,
-  `Cover ${rowLimit} comparisons (overview, rating (US Market), specs, experience, economics) with valid stats.`,
-  `Limit each value to ≤120 characters.`,
+  `Produce all relevant concise factors (overview, usage brief, year of release, official link, rating 0-5, price with currency, technical spects, hardware specs, user experience) and at least 15 rows.`,
+  `Keep each cell concise and include one concrete metric (number, brief, %, date).`,
 ]
     .filter(Boolean)
     .join(" ");
@@ -165,9 +161,9 @@ const generateComparison = async ({
   queryText,
   items = [],
   locale = "en",
-  maxRows = 20,
-  timeoutMs = Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 10000),
-  maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 220),
+  maxRows = 25,
+  timeoutMs = Number(15000),
+  maxCompletionTokens = Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 520),
 }) => {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -235,14 +231,13 @@ export async function buildComparison({
   locale = "en",
   maxRows = 20,
 }) {
-  const enforcedRows = Math.max(MIN_ROWS, Math.min(maxRows, MAX_ROWS));
   return generateComparison({
     apiKey,
     queryText,
     items,
     locale,
-    maxRows: enforcedRows,
-    timeoutMs: Number(process.env.GEEKSEEK_COMPARE_TIMEOUT_MS ?? 10000),
-    maxCompletionTokens: Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 500),
+    maxRows: maxRows,
+    timeoutMs: Number(15000),
+    maxCompletionTokens: Number(process.env.GEEKSEEK_COMPARE_MAX_TOKENS ?? 420),
   });
 }
