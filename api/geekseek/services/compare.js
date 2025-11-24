@@ -218,6 +218,7 @@ const generateComparison = async ({
       timeoutError.code = "OPENAI_TIMEOUT";
       throw timeoutError;
     }
+
     throw error;
   } finally {
     clearTimeout(timeout);
