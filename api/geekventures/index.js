@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
-import { fetchYCombinator } from "./services/ycombinator.js";
-import { fetchProductHunt } from "./services/productHunt.js";
-import { fetchCrunchbase } from "./services/crunchbase.js";
-import { fetchCompaniesApi } from "./services/companiesApi.js";
-import { fetchGeekLeapsLocal } from "./services/geekLeapsLocal.js";
-import { fetchIntellizence } from "./services/intellizence.js";
+import { fetchYCombinator } from "../../lib/geekventures/services/ycombinator.js";
+import { fetchProductHunt } from "../../lib/geekventures/services/productHunt.js";
+import { fetchCrunchbase } from "../../lib/geekventures/services/crunchbase.js";
+import { fetchCompaniesApi } from "../../lib/geekventures/services/companiesApi.js";
+import { fetchGeekLeapsLocal } from "../../lib/geekventures/services/geekLeapsLocal.js";
+import { fetchIntellizence } from "../../lib/geekventures/services/intellizence.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",

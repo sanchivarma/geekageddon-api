@@ -5,9 +5,9 @@ import {
   DEFAULT_REGION,
   DEFAULT_LIMIT,
   DEFAULT_TYPE,
-} from "./config.js";
-import { fetchNormalizedPlaces } from "./services/places.js";
-import { buildComparison } from "./services/compare.js";
+} from "../../lib/geekseek/config.js";
+import { fetchNormalizedPlaces } from "../../lib/geekseek/services/places.js";
+import { buildComparison } from "../../lib/geekseek/services/compare.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",

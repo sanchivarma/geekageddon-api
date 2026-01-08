@@ -1,4 +1,4 @@
-import { aggregateTechNews, SOURCE_CATALOG } from "./aggregator.js";
+import { aggregateTechNews, SOURCE_CATALOG } from "../../lib/geekfeed/aggregator.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
