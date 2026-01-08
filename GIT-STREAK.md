@@ -12,7 +12,7 @@ Use `?theme=themeName` to apply a predefined color scheme.
 
 ### Graph Option
 Use `?showgraph=true/false` to apply a predefined color scheme.
- ![default](https://geekageddon-api.vercel.app/gitstreak?user=sanchivarma&format=svg&theme=default&user=octocat)
+ ![Contribution-Graph](https://geekageddon-api.vercel.app/gitstreak?user=sanchivarma&format=svg&borderAnimation=dots&showgraph=true)
 
 #### All Themes (with preview)
 | Theme | Description | Preview |
