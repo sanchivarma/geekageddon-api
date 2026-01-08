@@ -147,13 +147,14 @@ const diffDays = (a, b) => {
   return Math.round((bDate - aDate) / 86400000);
 };
 
-const computeStreaks = (days) => {
+const computeStreaks = (days, todayIso) => {
+  const trimmed = days.filter((day) => day.date <= todayIso);
   let current = 0;
   let longest = 0;
   let streak = 0;
   let prevDate = null;
 
-  days.forEach((day) => {
+  trimmed.forEach((day) => {
     if (day.count > 0) {
       if (prevDate && diffDays(prevDate, day.date) === 1) {
         streak += 1;
@@ -167,13 +168,16 @@ const computeStreaks = (days) => {
     prevDate = day.date;
   });
 
-  for (let i = days.length - 1; i >= 0; i -= 1) {
-    if (days[i].count <= 0) break;
-    if (i < days.length - 1) {
-      const nextDate = days[i + 1].date;
-      if (diffDays(days[i].date, nextDate) !== 1) break;
+  let i = trimmed.length - 1;
+  while (i >= 0 && trimmed[i].count === 0) i -= 1;
+  while (i >= 0) {
+    if (trimmed[i].count <= 0) break;
+    if (i < trimmed.length - 1) {
+      const nextDate = trimmed[i + 1].date;
+      if (diffDays(trimmed[i].date, nextDate) !== 1) break;
     }
     current += 1;
+    i -= 1;
   }
 
   return { current, longest };
@@ -363,7 +367,8 @@ export default async function handler(req, res) {
     }
 
     const days = flattenDays(calendar);
-    const { current, longest } = computeStreaks(days);
+    const todayIso = today.toISOString().slice(0, 10);
+    const { current, longest } = computeStreaks(days, todayIso);
 
     const stats = {
       success: true,

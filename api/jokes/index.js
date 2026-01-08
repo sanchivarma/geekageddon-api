@@ -114,6 +114,83 @@ function generateJokeSVG(joke, theme, opts = {}) {
   </svg>`;
 }
 
+function generateQuoteSVG(quote, theme, opts = {}) {
+  const padding = theme.padding || 24;
+  const width = theme.width || 480;
+  const lineHeight = theme.lineHeight || 20;
+  const fontSize = theme.fontSize || 14;
+
+  const charsPerLine = Math.floor((width - padding * 2) / (fontSize * 0.6));
+  const text = typeof quote === "string" ? quote : quote.text || "";
+  const author = (typeof quote === "object" && quote.author) ? quote.author : "";
+
+  const esc = (value = "") => String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  const words = text.split(" ");
+  const lines = [];
+  let current = "";
+
+  words.forEach((word) => {
+    if ((current + " " + word).length > charsPerLine) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = current ? `${current} ${word}` : word;
+    }
+  });
+  if (current) lines.push(current);
+
+  const hasAuthor = Boolean(author);
+  const authorSpacer = hasAuthor ? 1 : 0;
+  const totalLines = lines.length + authorSpacer + (hasAuthor ? 1 : 0);
+  const height = totalLines * lineHeight + padding * 2;
+
+  const borderAnimation = opts.borderAnimation || "none";
+  const borderImage = opts.borderImage || null;
+  const reduceMotion = opts.reduceMotion === "true" || opts.reduceMotion === true;
+
+  const { defs: borderDefs, element: borderElement } = getBorderSVG(
+    borderAnimation,
+    theme,
+    width,
+    height,
+    padding,
+    reduceMotion,
+    borderImage
+  );
+
+  const quoteColor = theme.textColor;
+  const authorColor = theme.aColor || theme.textColor;
+
+  const textElems = lines
+    .map(
+      (line, i) =>
+        `<text x="${padding}" y="${padding + i * lineHeight}" font-size="${fontSize}" fill="${quoteColor}" dominant-baseline="hanging">${esc(line)}</text>`
+    )
+    .join("");
+
+  const authorY = padding + (lines.length + authorSpacer) * lineHeight;
+  const authorElem = hasAuthor
+    ? `<text x="${padding}" y="${authorY}" font-size="${fontSize}" fill="${authorColor}" font-style="italic" dominant-baseline="hanging">- ${esc(author)}</text>`
+    : "";
+
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quote card">
+    <defs>${borderDefs}</defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      @media (prefers-reduced-motion: reduce) { .anim { animation: none !important; } }
+    </style>
+    <rect width="100%" height="100%" fill="${theme.bgColor}" rx="8"/>
+    ${borderElement}
+    ${textElems}
+    ${authorElem}
+  </svg>`;
+}
+
 function getCustomTheme(query, themes) {
   const defaultTheme = themes.default;
   
@@ -155,17 +232,20 @@ function getCustomTheme(query, themes) {
 
 export default function handler(req, res) {
   const jokesPath = path.join(process.cwd(), "data", "jokes.json");
+  const quotesPath = path.join(process.cwd(), "data", "motivational-quotes.json");
   const themesPath = path.join(process.cwd(), "lib", "themes.json");
   
   const jokes = JSON.parse(fs.readFileSync(jokesPath, "utf8"));
+  const quotes = JSON.parse(fs.readFileSync(quotesPath, "utf8"));
   const themes = JSON.parse(fs.readFileSync(themesPath, "utf8"));
   const { category } = req.query;
+  const type = String(req.query.type ?? req.query.mode ?? "jokes").trim().toLowerCase();
 
-  let filtered = jokes;
+  let filtered = type === "quotes" || type === "quote" ? quotes : jokes;
   if (category) {
     const categories = category.split(",").map((c) => c.trim().toLowerCase());
-    filtered = jokes.filter((j) =>
-      j.categories.some((c) => categories.includes(c.toLowerCase()))
+    filtered = filtered.filter((item) =>
+      (item.categories || []).some((c) => categories.includes(String(c).toLowerCase()))
     );
   }
 
@@ -173,10 +253,10 @@ export default function handler(req, res) {
     res.status(404);
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.send("No jokes found for given category.");
+    return res.send(type === "quotes" || type === "quote" ? "No quotes found for given category." : "No jokes found for given category.");
   }
 
-  const joke = filtered[Math.floor(Math.random() * filtered.length)];
+  const selected = filtered[Math.floor(Math.random() * filtered.length)];
   const customTheme = getCustomTheme(req.query, themes);
 
   // Read border and motion options from query params
@@ -186,11 +266,9 @@ export default function handler(req, res) {
 
   // Pass the entire joke object to generateJokeSVG along with options
   // It will handle both Q&A format (joke.q & joke.a) and text format (joke.text)
-  const svg = generateJokeSVG(joke, customTheme, {
-    borderAnimation,
-    borderImage,
-    reduceMotion
-  });
+  const svg = (type === "quotes" || type === "quote")
+    ? generateQuoteSVG(selected, customTheme, { borderAnimation, borderImage, reduceMotion })
+    : generateJokeSVG(selected, customTheme, { borderAnimation, borderImage, reduceMotion });
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
   res.setHeader("Access-Control-Allow-Origin", "*");
