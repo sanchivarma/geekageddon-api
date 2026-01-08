@@ -7,6 +7,8 @@
   "routes": [
     { "src": "^/snake-game$", "dest": "/api/snake-game" },
     { "src": "^/snake-game/$", "dest": "/api/snake-game" },
+    { "src": "^/gitstreak$", "dest": "/api/gitstreak" },
+    { "src": "^/gitstreak/$", "dest": "/api/gitstreak" },
     { "src": "/geekseek/playground", "dest": "/playground-geekseek.html" },
     { "src": "/geekseek/playground.html", "dest": "/playground-geekseek.html" },
     { "src": "/geekfeed/playground", "dest": "/playground-geekfeed.html" },
