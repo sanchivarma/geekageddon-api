@@ -352,7 +352,7 @@ export default async function handler(req, res) {
 
   const today = new Date();
   const from = monthsAgo(today, 5);
-  const to = monthsAhead(today, 1);
+  const to = today;
 
   try {
     const calendar = await fetchContributionCalendar({
