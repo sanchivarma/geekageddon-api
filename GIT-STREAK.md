@@ -15,7 +15,10 @@ Use `?theme=themeName` to apply a predefined color scheme.
 
 ### Graph Option
 Use `?showgraph=true/false` to toggle the contribution grid.
- ![Contribution-Graph](https://geekageddon-api.vercel.app/gitstreak?user=octocat&borderAnimation=dots&showgraph=true)
+
+<br/>
+
+ ![Contribution-Graph](https://geekageddon-api.vercel.app/gitstreak?user=sanchivarma&borderAnimation=dots&showgraph=true)
 
 #### All Themes (with preview)
 | Theme | Description | Preview |
