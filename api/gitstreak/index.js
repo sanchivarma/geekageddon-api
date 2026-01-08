@@ -80,6 +80,7 @@ const getCustomTheme = (query, themes) => {
 const buildQuery = () => `
 query($login: String!, $from: DateTime!, $to: DateTime!) {
   user(login: $login) {
+    createdAt
     contributionsCollection(from: $from, to: $to) {
       contributionCalendar {
         totalContributions
@@ -123,7 +124,11 @@ const fetchContributionCalendar = async ({ token, login, from, to }) => {
     throw err;
   }
 
-  return payload.data?.user?.contributionsCollection?.contributionCalendar ?? null;
+  const user = payload.data?.user ?? null;
+  return {
+    calendar: user?.contributionsCollection?.contributionCalendar ?? null,
+    createdAt: user?.createdAt ?? null,
+  };
 };
 
 const flattenDays = (calendar) => {
@@ -240,7 +245,7 @@ const buildSvg = ({ login, currentStreak, longestStreak, days, showGraph, theme,
           return `${dayNum}-${month}-${year.slice(-2)}`;
         };
         const tooltip = `${formatDate(day.date)} • ${day.count} contributions`;
-        rects += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" fill="${colors[level]}"><title>${tooltip}</title></rect>`;
+        rects += `<rect class="day-cell" x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" fill="${colors[level]}"><title>${tooltip}</title></rect>`;
       });
     });
   }
@@ -298,6 +303,7 @@ const buildSvg = ({ login, currentStreak, longestStreak, days, showGraph, theme,
       @keyframes dashMove { to { stroke-dashoffset: -32; } }
       @keyframes pulseText { 0%,100%{opacity:0.8;} 50%{opacity:1;} }
       @keyframes blinkDot { 0%,100% { opacity:0.2; } 50% { opacity:1; } }
+      .day-cell { pointer-events: all; }
       @media (prefers-reduced-motion: reduce) {
         .anim { animation: none !important; }
         .blink { animation: none !important; }
@@ -355,26 +361,47 @@ export default async function handler(req, res) {
   const to = today;
 
   try {
-    const calendar = await fetchContributionCalendar({
+    const initial = await fetchContributionCalendar({
       token,
       login,
       from: toIsoDate(from),
       to: toIsoDate(to),
     });
 
-    if (!calendar) {
+    if (!initial.calendar) {
       return res.status(404).json({ success: false, message: "GitHub user not found" });
     }
 
-    const days = flattenDays(calendar);
+    const days = flattenDays(initial.calendar);
     const todayIso = today.toISOString().slice(0, 10);
-    const { current, longest } = computeStreaks(days, todayIso);
+    const createdAt = initial.createdAt ? new Date(initial.createdAt) : null;
+    const startYear = createdAt ? createdAt.getUTCFullYear() : today.getUTCFullYear();
+    const endYear = today.getUTCFullYear();
+
+    const allDays = [];
+    for (let year = startYear; year <= endYear; year += 1) {
+      const rangeStart = new Date(Date.UTC(year, 0, 1));
+      const rangeEnd = year === endYear
+        ? today
+        : new Date(Date.UTC(year, 11, 31, 23, 59, 59));
+      const yearly = await fetchContributionCalendar({
+        token,
+        login,
+        from: toIsoDate(rangeStart),
+        to: toIsoDate(rangeEnd),
+      });
+      if (yearly?.calendar) {
+        allDays.push(...flattenDays(yearly.calendar));
+      }
+    }
+
+    const { current, longest } = computeStreaks(allDays, todayIso);
 
     const stats = {
       success: true,
       user: login,
       range: { from: from.toISOString().slice(0, 10), to: to.toISOString().slice(0, 10) },
-      totalContributions: calendar.totalContributions ?? 0,
+      totalContributions: initial.calendar.totalContributions ?? 0,
       currentStreak: current,
       longestStreak: longest,
       dailyUsage: days,
