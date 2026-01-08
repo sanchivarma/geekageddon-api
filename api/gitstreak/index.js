@@ -27,6 +27,11 @@ const monthsAgo = (date, count) => {
   return new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() - count, 1));
 };
 
+const monthsAhead = (date, count) => {
+  const base = startOfMonth(date);
+  return new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() + count, 1));
+};
+
 const toIsoDate = (date) => date.toISOString();
 
 const ensureUser = (user) => String(user ?? "").trim();
@@ -226,7 +231,12 @@ const buildSvg = ({ login, currentStreak, longestStreak, days, showGraph, theme,
         const level = bucketLevel(day.count, maxCount);
         const x = padding + wIdx * (cellSize + cellGap);
         const y = graphYOffset + dIdx * (cellSize + cellGap);
-        rects += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" fill="${colors[level]}"></rect>`;
+        const formatDate = (iso) => {
+          const [year, month, dayNum] = String(iso).split("-");
+          return `${dayNum}-${month}-${year.slice(-2)}`;
+        };
+        const tooltip = `${formatDate(day.date)} • ${day.count} contributions`;
+        rects += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" rx="2" fill="${colors[level]}"><title>${tooltip}</title></rect>`;
       });
     });
   }
@@ -332,14 +342,13 @@ export default async function handler(req, res) {
   const format = String(req.query.format ?? "").toLowerCase();
   const borderAnimation = String(req.query.borderAnimation ?? req.query.border ?? "none");
   const reduceMotion = parseBoolean(req.query.reduceMotion ?? req.query.reducedMotion);
-  const monthsBack = Number(process.env.GITSTREAK_MONTHS_BACK ?? 5);
   const themesPath = path.join(process.cwd(), "lib", "themes.json");
   const themes = JSON.parse(fs.readFileSync(themesPath, "utf8"));
   const theme = getCustomTheme(req.query, themes);
 
   const today = new Date();
-  const from = monthsAgo(today, Math.max(0, monthsBack));
-  const to = today;
+  const from = monthsAgo(today, 5);
+  const to = monthsAhead(today, 1);
 
   try {
     const calendar = await fetchContributionCalendar({
