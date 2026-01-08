@@ -391,12 +391,12 @@ export default async function handler(req, res) {
       reduceMotion,
     });
 
-    if (format === "svg") {
-      res.setHeader("Content-Type", "image/svg+xml");
-      return res.status(200).send(svg);
+    if (format === "json") {
+      return res.status(200).json({ ...stats, svg });
     }
 
-    return res.status(200).json({ ...stats, svg });
+    res.setHeader("Content-Type", "image/svg+xml");
+    return res.status(200).send(svg);
   } catch (error) {
     console.error("[gitstreak] error", error);
     return res.status(500).json({
