@@ -59,5 +59,17 @@
     "imageUrl": "https://www.reuters.com/resizer/v2/IDFDQ3YY3ZMHBCJDF6FXNAH2QA.jpg?auth=0654e3942eafd64725d33bc0f39f98682e66748e63b14ed25e88e22d363b82ef&width=720&quality=80",
     "categories": ["infrastructure", "cloud", "investment"],
     "tags": ["google", "data centres", "renewable energy", "germany"]
+  },
+  {
+    "id": "feat-6",
+    "sourceName": "Microsoft",
+    "title": "Maia 200: Microsoft’s inference accelerator aimed at shifting the economics of large-scale AI",
+    "summary": "A hyperscaler’s serious in-house inference silicon — optimized for serving large models — signals the next phase of AI: cost-per-token wars.",
+    "url": "https://blogs.microsoft.com/blog/2026/01/26/maia-200-the-ai-accelerator-built-for-inference/",
+    "publishedAt": "2026-01-26T00:00:00Z",
+    "author": "Microsoft",
+    "imageUrl": "https://blogs.microsoft.com/wp-content/uploads/2026/01/Maia200_header-1920x1080.jpg",
+    "categories": ["ai", "chips", "inference", "cloud"],
+    "tags": ["microsoft", "maia 200", "azure", "ai hardware"]
   }
 ]
