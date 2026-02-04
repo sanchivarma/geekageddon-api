@@ -2,6 +2,55 @@
   {
     "id": "feat-1",
     "sourceName": "Reuters",
+    "title": "AI chipmaker Cerebras Systems raises $1 billion, valued at about $23 billion",
+    "summary": "Cerebras secured a $1B late-stage round that nearly tripled its valuation in just over four months, underscoring the accelerating race to fund AI compute alternatives.",
+    "url": "https://www.reuters.com/business/ai-chip-maker-cerebras-systems-raises-1-billion-late-stage-funding-2026-02-04/",
+    "publishedAt": "2026-02-04T00:00:00Z",
+    "author": "Reuters",
+    "imageUrl": "https://www.reuters.com/resizer/v2/WYSQLIVVLRILDAPGVO3O6B37DI.jpg?auth=e7afc4728f49c16774191f9f186d657631be7b9e7bf1115a8c5e965afb997f10&width=720&quality=80",
+    "categories": ["ai", "chips", "funding", "infrastructure"],
+    "tags": ["cerebras", "ai chips", "compute", "funding"]
+  },
+  {
+    "id": "feat-2",
+    "sourceName": "Reuters",
+    "title": "Nvidia AI chip sales to China stalled by U.S. security review, FT reports",
+    "summary": "Nvidia’s H200 shipments to China remain uncertain as a national security review delays clarity, highlighting ongoing geopolitical risk around AI hardware supply chains.",
+    "url": "https://www.reuters.com/world/china/nvidia-ai-chip-sales-china-stalled-by-us-security-review-ft-reports-2026-02-04/",
+    "publishedAt": "2026-02-04T00:00:00Z",
+    "author": "Reuters",
+    "imageUrl": "https://www.reuters.com/resizer/v2/NWVJSFBF3BKYLMQY7MC2KRT7L4.jpg?auth=948a55a525e9932be6c96c88f6a941a0a7a1adc440d48b01371b5a4379d6eda2&width=960&quality=80",
+    "categories": ["ai", "chips", "geopolitics", "export controls"],
+    "tags": ["nvidia", "china", "h200", "export review"]
+  },
+  {
+    
+    "id": "feat-3",
+    "sourceName": "Reuters",
+    "title": "Anthropic's new AI tools deepen selloff in data analytics and software stocks",
+    "summary": "Anthropic launched plug-ins for its Claude Cowork agent targeting legal, sales, marketing and analytics workflows—triggering a sharp market reaction across data/software names.",
+    "url": "https://www.reuters.com/business/media-telecom/ai-concerns-pummel-european-software-stocks-2026-02-03/",
+    "publishedAt": "2026-02-03T00:00:00Z",
+    "author": "Reuters",
+    "imageUrl": "https://www.reuters.com/resizer/v2/K5AJV5IGXNJCLGR5WE6GIGCARY.jpg?auth=63ba65f03a9f4fc65ee3a23ca3e5ad9eee9c8e58ee8d4e3fb7e9ae466f95bbab&width=720&quality=80",
+    "categories": ["ai", "enterprise", "products", "markets"],
+    "tags": ["anthropic", "claude", "agents", "legal tech", "automation"]
+  },
+  {
+    "id": "feat-4",
+    "sourceName": "Google DeepMind",
+    "title": "Project Genie: Infinite, interactive worlds powered by a world model (Genie 3)",
+    "summary": "DeepMind’s prototype shows real-time, explorable AI-generated worlds — a major step toward interactive simulation, game creation, and embodied-agent training.",
+    "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie/",
+    "publishedAt": "2026-01-29T00:00:00Z",
+    "author": "Google",
+    "imageUrl": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/genie-3__project-genie__hero-fil.width-1000.format-webp.webp",
+    "categories": ["ai", "research", "world models", "generative"],
+    "tags": ["deepmind", "genie 3", "interactive worlds", "simulation"]
+  },
+  {
+    "id": "feat-5",
+    "sourceName": "Reuters",
     "title": "Google to Build Massive Infrastructure Investment in Germany",
     "summary": "Google plans its largest-ever investment in Germany including data centres, renewable energy and frontier infrastructure in Munich, Frankfurt and Berlin.",
     "url": "https://www.reuters.com/business/google-announce-largest-ever-investment-plan-germany-handelsblatt-reports-2025-11-06/",
@@ -10,53 +59,5 @@
     "imageUrl": "https://www.reuters.com/resizer/v2/IDFDQ3YY3ZMHBCJDF6FXNAH2QA.jpg?auth=0654e3942eafd64725d33bc0f39f98682e66748e63b14ed25e88e22d363b82ef&width=720&quality=80",
     "categories": ["infrastructure", "cloud", "investment"],
     "tags": ["google", "data centres", "renewable energy", "germany"]
-  },
-  {
-    "id": "feat-2",
-    "sourceName": "TechCrunch",
-    "title": "Sora for Android saw nearly half a million installs on its first day",
-    "summary": "The Android launch of the Sora app from OpenAI broke 470,000 installs in one day across multiple markets, signalling strong momentum for consumer-video AI tools.",
-    "url": "https://techcrunch.com/2025/11/06/sora-for-android-saw-nearly-half-a-million-installs-on-its-first-day/",
-    "publishedAt": "2025-11-06T11:48:00Z",
-    "author": "Sarah Perez (TechCrunch)",
-    "imageUrl": "https://techcrunch.com/wp-content/uploads/2025/10/sora-app-GettyImages-2240278671.jpeg?resize=1280,853",
-    "categories": ["ai", "apps", "consumer"],
-    "tags": ["openai", "sora", "android", "video ai"]
-  },
-  {
-    "id": "feat-3",
-    "sourceName": "The Guardian",
-    "title": "EU Could Delay Key Parts of Landmark AI Act Amid Pressure from Big Tech",
-    "summary": "European Commission is considering postponing enforcement of parts of the AI Act, shifting deadlines and easing registration requirements for high-risk AI systems under pressure from industry and U.S. policy actors.",
-    "url": "https://www.theguardian.com/world/2025/nov/07/european-commission-ai-artificial-intelligence-act-trump-administration-tech-business",
-    "publishedAt": "2025-11-07T14:54:00Z",
-    "author": "The Guardian",
-    "imageUrl": "https://i.guim.co.uk/img/media/eacd1d1af30f8b9721168a25049ec459957c733d/663_0_7103_5682/master/7103.jpg?width=1900&dpr=2&s=none&crop=none",
-    "categories": ["policy", "ai", "regulation"],
-    "tags": ["eu", "ai act", "regulation", "big tech"]
-  },
-  {
-    "id": "feat-4",
-    "sourceName": "OpenAI",
-    "title": "OpenAI Introduces ChatGPT Atlas",
-    "summary": "With Atlas, ChatGPT can come with you anywhere across the web—helping you in the window right where you are, understanding what you’re trying to do, and completing tasks for you, all without copying and pasting or leaving the page.",
-    "url": "https://openai.com/index/introducing-chatgpt-atlas/",
-    "publishedAt": "2025-10-21T14:30:00Z",
-    "author": "OpenAI",
-    "imageUrl": "https://images.ctfassets.net/kftzwdyauwt9/7saYDwdsN5rfcrScPjtR7p/3f820ca3c9ad23a138c037a17248ab75/Homepage.png",
-    "categories": ["ai", "models"],
-    "tags": ["openai", "gpt5", "reasoning", "llm"]
-  },
-  {
-    "id": "feat-5",
-    "sourceName": "TechCrunch",
-    "title": "Meta has an AI product problem",
-    "summary": "Meta Platforms’s aggressive spending on AI talent and data-infrastructure has yet to deliver clear revenue results, raising concerns among investors about its heavy costs.",
-    "url": "https://techcrunch.com/2025/11/02/meta-has-an-ai-product-problem/",
-    "publishedAt": "2025-11-02T08:00:00Z",
-    "author": "Russell Brandom (TechCrunch)",
-    "imageUrl": "https://techcrunch.com/wp-content/uploads/2024/09/GettyImages-2173579243.jpg?resize=1280,852",
-    "categories": ["ai", "business", "infrastructure"],
-    "tags": ["meta", "ai", "investors", "infrastructure"]
   }
 ]
