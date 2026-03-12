@@ -144,7 +144,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, message: "Method not allowed" });
   }
 
-  const googleApiKey = process.env.GOOGLE_PLACES_API_KEY;
+  const googleApiKey = "AIzaSyC7SQbQD00d9OQboC01LaNputF8fKztDVk";
   const openAIApiKey = process.env.OPENAI_API_KEY;
   const languageCode = req.query.languageCode ?? req.query.locale ?? DEFAULT_LANGUAGE;
   const regionCode = req.query.regionCode ?? DEFAULT_REGION;
@@ -154,6 +154,7 @@ export default async function handler(req, res) {
   const userIntent = rawQuery || rawIntent || "Popular spots near me";
   const placesQuery = rawQuery || "Places near Berlin";
   const itemsFromQuery = extractComparisonItems(req.query);
+  const preferNearby = NEAR_ME_REGEX.test(rawQuery || "");
 
   const requestedType = normalizeMode(req.query.type ?? req.query.mode ?? DEFAULT_TYPE);
   const effectiveType = requestedType || TYPE_PLACES;
@@ -269,6 +270,7 @@ export default async function handler(req, res) {
       userIntent,
       origin,
       query: placesQuery,
+      preferNearby,
       includedTypes,
       radiusMeters,
       languageCode,
@@ -294,11 +296,13 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("[geekseek] handler error", error);
+    const errorBody = error?.body;
     return res.status(500).json({
       success: false,
       message: error.message,
       error: {
         message: error.message,
+        body: process.env.NODE_ENV === "development" ? errorBody : undefined,
         stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
       },
     });
