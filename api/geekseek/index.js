@@ -144,7 +144,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, message: "Method not allowed" });
   }
 
-  const googleApiKey = "AIzaSyC7SQbQD00d9OQboC01LaNputF8fKztDVk";
+  const googleApiKey = process.env.GOOGLE_PLACES_API_KEY;
   const openAIApiKey = process.env.OPENAI_API_KEY;
   const languageCode = req.query.languageCode ?? req.query.locale ?? DEFAULT_LANGUAGE;
   const regionCode = req.query.regionCode ?? DEFAULT_REGION;
